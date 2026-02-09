@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veille Alternances Marketing Digital</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .header {
+            background: white;
+            padding: 30px 40px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .header h1 { font-size: 32px; color: #2c3e50; margin-bottom: 8px; }
+        .header-subtitle { color: #7f8c8d; font-size: 15px; margin-bottom: 20px; }
+        .header-stats { display: flex; gap: 15px; flex-wrap: wrap; align-items: center; }
+        .stat-badge {
+            background: #ecf0f1;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        .stat-new { background: #e74c3c; color: white; }
+        .stat-source { background: #3498db; color: white; }
+        .stat-city { background: #95a5a6; color: white; }
+        .city-section { margin-bottom: 30px; }
+        .city-header {
+            background: white;
+            padding: 18px 30px;
+            border-radius: 10px 10px 0 0;
+            font-size: 18px;
+            font-weight: 700;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .city-rennes { border-left: 6px solid #e74c3c; }
+        .city-nantes { border-left: 6px solid #f39c12; }
+        .city-paris { border-left: 6px solid #3498db; }
+        .city-count { margin-left: auto; font-weight: normal; color: #7f8c8d; font-size: 15px; }
+        .offers-container {
+            background: white;
+            border-radius: 0 0 10px 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .offer-row {
+            display: grid;
+            grid-template-columns: 70px 1fr 180px 180px 120px;
+            gap: 25px;
+            padding: 25px 30px;
+            border-bottom: 1px solid #ecf0f1;
+            transition: background 0.2s;
+            align-items: start;
+        }
+        .offer-row:hover { background: #f8f9fa; }
+        .offer-row:last-child { border-bottom: none; }
+        .status-col { text-align: center; }
+        .new-badge {
+            background: #e74c3c;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-top: 5px;
+        }
+        .active-badge {
+            background: #95a5a6;
+            color: white;
+            padding: 8px;
+            border-radius: 50%;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            margin-top: 5px;
+        }
+        .offer-main { min-width: 0; }
+        .offer-title { font-size: 17px; font-weight: 700; color: #2c3e50; margin-bottom: 8px; line-height: 1.4; }
+        .offer-source { font-size: 11px; color: #95a5a6; text-transform: uppercase; font-weight: 600; margin-bottom: 6px; letter-spacing: 0.5px; }
+        .offer-company { font-size: 15px; color: #667eea; font-weight: 600; margin-bottom: 5px; }
+        .offer-location { font-size: 13px; color: #95a5a6; margin-bottom: 12px; }
+        .offer-description { font-size: 14px; color: #555; line-height: 1.6; margin-bottom: 12px; }
+        .offer-skills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+        .skill-badge { background: #e8f5e9; color: #27ae60; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+        .offer-info-box { background: #f8f9fa; padding: 14px 16px; border-radius: 8px; font-size: 13px; border: 1px solid #e9ecef; }
+        .info-title { font-size: 11px; font-weight: 700; color: #95a5a6; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.5px; }
+        .info-line { margin-bottom: 6px; color: #555; line-height: 1.5; }
+        .info-line:last-child { margin-bottom: 0; }
+        .info-label { font-weight: 600; color: #666; display: inline-block; min-width: 65px; }
+        .offer-action { text-align: center; display: flex; align-items: center; justify-content: center; }
+        .btn-postuler {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .btn-postuler:hover { background: #5568d3; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(102,126,234,0.3); }
+        @media (max-width: 1200px) {
+            .offer-row { grid-template-columns: 60px 1fr 150px 150px 100px; gap: 15px; padding: 20px; }
+        }
+        @media (max-width: 768px) {
+            .offer-row { grid-template-columns: 1fr; gap: 15px; }
+            .status-col, .offer-action { text-align: left; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Veille Alternances Marketing Digital</h1>
+            <div class="header-subtitle">Bachelor 3 RSB · Début: Septembre 2026 · Durée: 12-24 mois</div>
+            <div class="header-stats">
+                <span class="stat-badge stat-new">🆕 7 nouvelles</span>
+                <span class="stat-badge">📊 24 offres actives total</span>
+                <span class="stat-badge stat-source">LBA: 23</span>
+                <span class="stat-badge stat-source">Perplexity: 1</span>
+                <span class="stat-badge stat-city">📍 Rennes: 1 · Nantes: 3 · Paris: 20</span>
+                <span class="stat-badge">📅 2026-02-08 19:31:59</span>
+            </div>
+        </div>
+
+        <div class="city-section">
+            <div class="city-header city-rennes">
+                <span>RENNES Priorité #1</span>
+                <span class="city-count">(1 offres)</span>
+            </div>
+            <div class="offers-container">
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="new-badge">🆕 NEW</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">Alternance Consultant.e Marketing digital SEA / SMA</div>
+                        <div class="offer-source">Perplexity</div>
+                        <div class="offer-company">🏢 ADFORALL</div>
+                        <div class="offer-location">📍 Cesson-Sévigné, 35510 (proche Rennes)</div>
+                        <div class="offer-description">Gestion et optimisation de campagnes SEA/SMA sur Google Ads, Microsoft Advertising, Meta Ads. Suivi des performances, reporting client, tracking, analyse data. Agence webmarketing spécialisée en paid ...</div>
+                        <div class="offer-skills"><span class="skill-badge">SEA/Paid Media</span><span class="skill-badge">Social Media</span><span class="skill-badge">Analytics</span><span class="skill-badge">CRM/Automation</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Apprentissage + Professionnali</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> 12-24 mois</div>
+                        <div class="info-line"><span class="info-label">Début:</span> Flexible - rentrée 2026</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> -</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> -</div>
+                        <div class="info-line"><span class="info-label">Via:</span> Welcome to the Jungl</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="https://www.welcometothejungle.com/fr/companies/adforall/jobs/alternance-consultant-e-marketing-digital-sea-sma_cesson-sevigne" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="city-section">
+            <div class="city-header city-nantes">
+                <span>NANTES</span>
+                <span class="city-count">(3 offres)</span>
+            </div>
+            <div class="offers-container">
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="new-badge">🆕 NEW</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">Chargé(e) de Mission Commerce/Marketing (Nantes, 44)</div>
+                        <div class="offer-source">LBA</div>
+                        <div class="offer-company">🏢 Manpower RH</div>
+                        <div class="offer-location">📍 44000 Nantes</div>
+                        <div class="offer-description">Accompagnement du DR dans l'atteinte des objectifs opérationnels : centraliser des données et éléments d'analyse avec l'appui de différents experts, préparer les supports d'échange des RDV pilotage,.....</div>
+                        <div class="offer-skills"><span class="skill-badge">SEA/Paid Media</span><span class="skill-badge">Email Marketing</span><span class="skill-badge">UX/Design</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Apprentissage + Professionnali</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> 12 mois</div>
+                        <div class="info-line"><span class="info-label">Début:</span> 01/11/2020</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> 04/02/2026</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> 04/04/2026</div>
+                        <div class="info-line"><span class="info-label">Via:</span> Meteojob</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="https://www.meteojob.com/jobads/24159744?utm_source=labonnealternance&utm_medium=aggregator-free&utm_campaign=alternance" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="new-badge">🆕 NEW</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">Manager marketing Automation &amp; CRM</div>
+                        <div class="offer-source">LBA</div>
+                        <div class="offer-company">🏢 Maisons du Monde</div>
+                        <div class="offer-location">📍 Rue des Pays de la Loire 44300 Nantes</div>
+                        <div class="offer-description">🏡 Rejoins Maisons du Monde en tant que Manager Marketing Automation & CRM et deviens l'architecte de notre succès, en façonnant chaque espace comme un lieu d'inspiration et de convivialité 🌿 Chez...</div>
+                        <div class="offer-skills"><span class="skill-badge">Analytics</span><span class="skill-badge">CRM/Automation</span><span class="skill-badge">Growth/Acquisition</span><span class="skill-badge">UX/Design</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Apprentissage + Professionnali</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> -</div>
+                        <div class="info-line"><span class="info-label">Début:</span> -</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> 05/02/2026</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> 12/02/2026</div>
+                        <div class="info-line"><span class="info-label">Via:</span> Veritone</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="https://www.aplitrak.com/?adid=amxhc2Nob24uNzE5MzcuMTM2ODBAbWFpc29uc2R1bW9uZGUuYXBsaXRyYWsuY29t" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="new-badge">🆕 NEW</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">Manager marketing Automation &amp; CRM</div>
+                        <div class="offer-source">LBA</div>
+                        <div class="offer-company">🏢 Maisons du Monde</div>
+                        <div class="offer-location">📍 44120 Vertou</div>
+                        <div class="offer-description">🏡 Rejoins Maisons du Monde en tant que Manager Marketing Automation & CRM et deviens l'architecte de notre succès, en façonnant chaque espace comme un lieu d'inspiration et de convivialité 🌿 Chez...</div>
+                        <div class="offer-skills"><span class="skill-badge">Analytics</span><span class="skill-badge">CRM/Automation</span><span class="skill-badge">Growth/Acquisition</span><span class="skill-badge">UX/Design</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Apprentissage + Professionnali</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> -</div>
+                        <div class="info-line"><span class="info-label">Début:</span> -</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> 04/02/2026</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> 11/02/2026</div>
+                        <div class="info-line"><span class="info-label">Via:</span> Veritone</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="https://www.aplitrak.com/?adid=amxhc2Nob24uNjUzMDUuMTM2ODBAbWFpc29uc2R1bW9uZGUuYXBsaXRyYWsuY29t" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="city-section">
+            <div class="city-header city-paris">
+                <span>PARIS 🏙️</span>
+                <span class="city-count">(20 offres)</span>
+            </div>
+            <div class="offers-container">
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="new-badge">🆕 NEW</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">User Acquisition &amp; Marketing Manager H/F</div>
+                        <div class="offer-source">LBA</div>
+                        <div class="offer-company">🏢 Scalebay</div>
+                        <div class="offer-location">📍 75001 Paris</div>
+                        <div class="offer-description">Nous recherchons un User Acquisition Manager pour rejoindre notre équipe et soutenir l'expansion de Scalebay. Scalebay est une agence de mobile growth et de mobile consulting fraîchement lancée et...</div>
+                        <div class="offer-skills"><span class="skill-badge">SEA/Paid Media</span><span class="skill-badge">Analytics</span><span class="skill-badge">Growth/Acquisition</span><span class="skill-badge">UX/Design</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Apprentissage + Professionnali</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> 12 mois</div>
+                        <div class="info-line"><span class="info-label">Début:</span> -</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> 04/02/2026</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> 04/04/2026</div>
+                        <div class="info-line"><span class="info-label">Via:</span> Hellowork</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="https://r.holeest.com/redirect?poc=2&op=11051146498&o=1&from=https%3A%2F%2Fwww.hellowork.com%2Ffr-fr%2Femplois%2F75394456.html%3Futm_campaign%3Dalternance%2B-%2Bmarketing%252cgraphisme%252caudiovisuel%252cpub%26utm_content%3Dfluxbonnealternance%26utm_medium%3Dmetamoteurs-free%26utm_source%3Dbonnealternance%26utm_term%3D75394456" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="new-badge">🆕 NEW</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">YUMI 🌶 Créateur.trice de Contenu (TikTok & Instagram) Actif Credit Standard</div>
+                        <div class="offer-source">LBA</div>
+                        <div class="offer-company">🏢 PEPITES ( YUMI / PAF)</div>
+                        <div class="offer-location">📍 75001 Paris</div>
+                        <div class="offer-description">Chez Yumi, on ne fait pas les choses à moitié : nos shots réveillent les papilles, et nos contenus doivent réveiller les réseaux. On cherche donc un(e) créateur(rice) de contenu prêt(e) à secouer...</div>
+                        <div class="offer-skills"><span class="skill-badge">SEA/Paid Media</span><span class="skill-badge">Social Media</span><span class="skill-badge">Content Marketing</span><span class="skill-badge">UX/Design</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Apprentissage + Professionnali</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> -</div>
+                        <div class="info-line"><span class="info-label">Début:</span> 01/01/2026</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> 22/01/2026</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> 22/03/2026</div>
+                        <div class="info-line"><span class="info-label">Via:</span> Jobteaser</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="https://www.jobteaser.com/fr/job-offers/4bd4976f-ca32-4e8d-bfa3-370a2b496907-pepites-yumi-paf-yumi-createur-trice-de-contenu-tiktok-instagram-actif-credit-standard?utm_campaign=partner_access&utm_source=la_bonne_alternance" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="new-badge">🆕 NEW</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">Stage ou alternance Attaché(e) Relation Presse / Experimental</div>
+                        <div class="offer-source">LBA</div>
+                        <div class="offer-company">🏢 EXPERIMENTAL GROUP</div>
+                        <div class="offer-location">📍 75009 Paris 9e Arrondissement</div>
+                        <div class="offer-description">Fondé par trois amis d'enfance Olivier Bon, Pierre-Charles Cros et Romée De Goriainoff en 2007 puis rejoints par Xavier Padovani en 2010, Experimental bouleverse les codes du secteur de l'hôtellerie.....</div>
+                        <div class="offer-skills"><span class="skill-badge">UX/Design</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Apprentissage + Professionnali</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> 6 mois</div>
+                        <div class="info-line"><span class="info-label">Début:</span> 18/12/2025</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> 18/12/2025</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> 18/02/2026</div>
+                        <div class="info-line"><span class="info-label">Via:</span> iquesta</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="https://www.iquesta.com/offer/index/343710" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="active-badge">✓</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">Alternance Assistant Marketing Produit - Paris H/F</div>
+                        <div class="offer-source">LBA</div>
+                        <div class="offer-company">🏢 Jobmania</div>
+                        <div class="offer-location">📍 75001 Paris</div>
+                        <div class="offer-description">La mission consistera à assister l'équipe Marketing Produit (responsable des produits de la gamme), sur tous les sujets opérationnels. Voici les missions : - Assurer la veille et l'analyse du marché.....</div>
+                        <div class="offer-skills"><span class="skill-badge">SEA/Paid Media</span><span class="skill-badge">UX/Design</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Apprentissage + Professionnali</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> 12 mois</div>
+                        <div class="info-line"><span class="info-label">Début:</span> -</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> 05/02/2026</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> 05/04/2026</div>
+                        <div class="info-line"><span class="info-label">Via:</span> Hellowork</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="https://r.holeest.com/redirect?poc=2&op=11051146507&o=1&from=https%3A%2F%2Fwww.hellowork.com%2Ffr-fr%2Femplois%2F75453749.html%3Futm_campaign%3Dalternance%2B-%2Bmarketing%252cgraphisme%252caudiovisuel%252cpub%26utm_content%3Dfluxbonnealternance%26utm_medium%3Dmetamoteurs-free%26utm_source%3Dbonnealternance%26utm_term%3D75453749" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="active-badge">✓</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">Alternant assistant Trade marketing et KAM H/F</div>
+                        <div class="offer-source">LBA</div>
+                        <div class="offer-company">🏢 Nestlé</div>
+                        <div class="offer-location">📍 75001 Paris</div>
+                        <div class="offer-description">VOTRE QUOTIDIEN CHEZ NESPRESSO • Vous mettez en place des opérations Online : activation de nouveaux leviers digitaux (Social Ads, Retargeting,Display...), développement des supports créatifs, suivi.....</div>
+                        <div class="offer-skills"><span class="skill-badge">UX/Design</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Apprentissage + Professionnali</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> -</div>
+                        <div class="info-line"><span class="info-label">Début:</span> -</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> 29/01/2026</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> 29/03/2026</div>
+                        <div class="info-line"><span class="info-label">Via:</span> Jobteaser</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="https://www.jobteaser.com/fr/job-offers/ec54bef3-ef83-4f91-aa61-bd3a2e076133-nestle-alternant-assistant-trade-marketing-et-kam-h-f?utm_campaign=partner_access&utm_source=la_bonne_alternance" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="active-badge">✓</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">Assistant(e) Marketing Alternance</div>
+                        <div class="offer-source">LBA</div>
+                        <div class="offer-company">🏢 Valeo</div>
+                        <div class="offer-location">📍 75001 Paris</div>
+                        <div class="offer-description">Valeo est une entreprise mondiale de haute technologie qui conçoit des solutions révolutionnaires pour réinventer la mobilité. Nous sommes un équipementier partenaire des constructeurs automobiles et....</div>
+                        <div class="offer-skills"><span class="skill-badge">SEA/Paid Media</span><span class="skill-badge">Social Media</span><span class="skill-badge">Analytics</span><span class="skill-badge">Growth/Acquisition</span><span class="skill-badge">UX/Design</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Apprentissage + Professionnali</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> -</div>
+                        <div class="info-line"><span class="info-label">Début:</span> -</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> 23/01/2026</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> 23/03/2026</div>
+                        <div class="info-line"><span class="info-label">Via:</span> Jobteaser</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="https://www.jobteaser.com/fr/job-offers/120d1330-52b3-4470-af0a-f3d323f0c8a4-valeo-assistant-e-marketing-alternance?utm_campaign=partner_access&utm_source=la_bonne_alternance" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="active-badge">✓</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">Alternance - Assistant(e) de Production de Contenus - Octobre Editions (H/F)</div>
+                        <div class="offer-source">LBA</div>
+                        <div class="offer-company">🏢 Sézane</div>
+                        <div class="offer-location">📍 75001 Paris</div>
+                        <div class="offer-description">Il y a plus de dix ans, j’ai osé imaginer la première marque de mode française née en ligne... elle s’appelait Les Composantes, elle s’appelle Sézane aujourd’hui. En 2016, la famille s'est agrandie...</div>
+                        <div class="offer-skills"><span class="skill-badge">SEA/Paid Media</span><span class="skill-badge">Social Media</span><span class="skill-badge">Content Marketing</span><span class="skill-badge">UX/Design</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Apprentissage + Professionnali</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> -</div>
+                        <div class="info-line"><span class="info-label">Début:</span> 01/09/2026</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> 16/01/2026</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> 16/03/2026</div>
+                        <div class="info-line"><span class="info-label">Via:</span> Jobteaser</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="https://www.jobteaser.com/fr/job-offers/b3567e98-1ded-44b6-b339-e5f7c1922949-sezane-alternance-assistant-e-de-production-de-contenus-octobre-editions-h-f?utm_campaign=partner_access&utm_source=la_bonne_alternance" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="active-badge">✓</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">Assist. Chargé(e) campagnes markt digital - Altern (H/F)</div>
+                        <div class="offer-source">LBA</div>
+                        <div class="offer-company">🏢 CCM Performance</div>
+                        <div class="offer-location">📍 75009 Paris 9e Arrondissement</div>
+                        <div class="offer-description">Vos missions au quotidien : En tant que Chargé(e) de Campagnes Marketing Digital Junior, vous serez un(e) véritable pilier dans la mise en oeuvre et le suivi des campagnes. Vos responsabilités...</div>
+                        <div class="offer-skills"><span class="skill-badge">SEA/Paid Media</span><span class="skill-badge">Social Media</span><span class="skill-badge">Content Marketing</span><span class="skill-badge">Email Marketing</span><span class="skill-badge">E-commerce</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Apprentissage</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> 6 mois</div>
+                        <div class="info-line"><span class="info-label">Début:</span> -</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> 19/01/2026</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> 19/03/2026</div>
+                        <div class="info-line"><span class="info-label">Via:</span> France Travail</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="http://app.mytalentplug.com/redirection.aspx?ojid=aB1mfs9fv95XRI3Azbt8zg==" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="active-badge">✓</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">[Alternance] Assistant Web Marketing F/H (H/F)</div>
+                        <div class="offer-source">LBA</div>
+                        <div class="offer-company">🏢 FINANCIERE DES PAIEMENTS  ELECTRONIQUES</div>
+                        <div class="offer-location">📍 94220 Charenton-le-Pont</div>
+                        <div class="offer-description">Vous rejoindrez la Tribe Customer Acquisition, au sein de l'équipe de Thomas constituée de 5 personnes, et en charge de la partie relative au parcours d'Onboarding de nos clients. Vous travaillerez...</div>
+                        <div class="offer-skills"><span class="skill-badge">SEO</span><span class="skill-badge">Content Marketing</span><span class="skill-badge">Growth/Acquisition</span><span class="skill-badge">UX/Design</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Apprentissage</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> 24 mois</div>
+                        <div class="info-line"><span class="info-label">Début:</span> -</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> 05/02/2026</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> 05/04/2026</div>
+                        <div class="info-line"><span class="info-label">Via:</span> France Travail</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="https://www.aplitrak.com/?adid=bHVjYXMuYm91c3NhdWQuNzcxNjguNjcwNkBuaWNrZWwuYXBsaXRyYWsuY29t" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="active-badge">✓</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">Apprentice - Group Marketing Assistant H/F</div>
+                        <div class="offer-source">LBA</div>
+                        <div class="offer-company">🏢 Forvis Mazars</div>
+                        <div class="offer-location">📍 92300 Levallois-Perret</div>
+                        <div class="offer-description">Group Marketing Assistant (apprenticeship) Are you looking to help shape and support the global go-to-market strategy of an international professional services firm? Then this could be the...</div>
+                        <div class="offer-skills"><span class="skill-badge">SEA/Paid Media</span><span class="skill-badge">Content Marketing</span><span class="skill-badge">Analytics</span><span class="skill-badge">UX/Design</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Apprentissage + Professionnali</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> -</div>
+                        <div class="info-line"><span class="info-label">Début:</span> -</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> 15/01/2026</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> 15/03/2026</div>
+                        <div class="info-line"><span class="info-label">Via:</span> Hellowork</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="https://r.holeest.com/redirect?poc=2&op=11051146416&o=1&from=https%3A%2F%2Fwww.hellowork.com%2Ffr-fr%2Femplois%2F74676981.html%3Futm_campaign%3Dalternance%2B-%2Bmarketing%252cgraphisme%252caudiovisuel%252cpub%26utm_content%3Dfluxbonnealternance%26utm_medium%3Dmetamoteurs-free%26utm_source%3Dbonnealternance%26utm_term%3D74676981" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="active-badge">✓</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">ASSISTANT MARKETING ET COMMUNICATION- ALTERNANCE - H/F</div>
+                        <div class="offer-source">LBA</div>
+                        <div class="offer-company">🏢 GLOBE GROUPE</div>
+                        <div class="offer-location">📍 92200 Neuilly-sur-Seine</div>
+                        <div class="offer-description">Description : Nous accompagnons les marques leaders dans leur industrie, notamment dans les secteurs Luxe et Beauté, High Tech et FMCG. Notre équipe est composée de passionnés de marketing, de...</div>
+                        <div class="offer-skills"><span class="skill-badge">SEA/Paid Media</span><span class="skill-badge">Social Media</span><span class="skill-badge">Content Marketing</span><span class="skill-badge">Email Marketing</span><span class="skill-badge">UX/Design</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Apprentissage</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> 12 mois</div>
+                        <div class="info-line"><span class="info-label">Début:</span> -</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> 15/01/2026</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> 15/03/2026</div>
+                        <div class="info-line"><span class="info-label">Via:</span> France Travail</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="https://techsell.softy.pro/offre/190656?idt=5&h=1906560" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="active-badge">✓</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">Alternance - Assistant Partenariats Sports Football H/F</div>
+                        <div class="offer-source">LBA</div>
+                        <div class="offer-company">🏢 Canal Plus</div>
+                        <div class="offer-location">📍 92130 Issy-les-Moulineaux</div>
+                        <div class="offer-description">Votre rôle et vos missions - Piloter la gestion 360° de la billetterie Football : organisation, coordination et distribution des places en lien avec les différentes activations (RPI, fidélisation...</div>
+                        <div class="offer-skills"><span class="skill-badge">SEA/Paid Media</span><span class="skill-badge">Social Media</span><span class="skill-badge">Content Marketing</span><span class="skill-badge">Email Marketing</span><span class="skill-badge">UX/Design</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Apprentissage + Professionnali</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> -</div>
+                        <div class="info-line"><span class="info-label">Début:</span> -</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> 05/02/2026</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> 05/04/2026</div>
+                        <div class="info-line"><span class="info-label">Via:</span> Hellowork</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="https://r.holeest.com/redirect?poc=2&op=11051142363&o=1&from=https%3A%2F%2Fwww.hellowork.com%2Ffr-fr%2Femplois%2F75466438.html%3Futm_campaign%3Dalternance%2B-%2Bcommunication%26utm_content%3Dfluxbonnealternance%26utm_medium%3Dmetamoteurs-free%26utm_source%3Dbonnealternance%26utm_term%3D75466438" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="active-badge">✓</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">Customer success manager Apprentice</div>
+                        <div class="offer-source">LBA</div>
+                        <div class="offer-company">🏢 Catalina France</div>
+                        <div class="offer-location">📍 92100 Boulogne-Billancourt</div>
+                        <div class="offer-description">Descriptif du poste : Tu es attiré(e) par l’univers de la grande consommation, tu aimes la vente et le Conseil en Marketing ? Cette annonce est pour toi ! Ta mission, si tu l’acceptes ! Tu intègres...</div>
+                        <div class="offer-skills"><span class="skill-badge">Analytics</span><span class="skill-badge">UX/Design</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Apprentissage + Professionnali</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> -</div>
+                        <div class="info-line"><span class="info-label">Début:</span> -</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> 04/02/2026</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> 05/04/2026</div>
+                        <div class="info-line"><span class="info-label">Via:</span> RH Alternance</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="https://rhalternance.com/jobs/commerce-et-distribution/boulogne-billancourt/customer-success-manager-apprentice-121170708" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="active-badge">✓</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">ALTERNANCE - ASSISTANT MARKETING DES VENTES TOURISME H/F</div>
+                        <div class="offer-source">LBA</div>
+                        <div class="offer-company">🏢 Sodexo Live</div>
+                        <div class="offer-location">📍 92100 Boulogne-Billancourt</div>
+                        <div class="offer-description">Sodexo Live ! est la marque mondiale du groupe Sodexo spécialisée dans la restauration et l'hospitalité dans les univers du sport, des loisirs et de l'événementiel. Rattaché au Responsable Marketing.....</div>
+                        <div class="offer-skills"><span class="skill-badge">Content Marketing</span><span class="skill-badge">Email Marketing</span><span class="skill-badge">UX/Design</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Apprentissage + Professionnali</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> -</div>
+                        <div class="info-line"><span class="info-label">Début:</span> -</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> 27/01/2026</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> 27/03/2026</div>
+                        <div class="info-line"><span class="info-label">Via:</span> Meteojob</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="https://www.meteojob.com/jobads/51407725?utm_source=labonnealternance&utm_medium=aggregator-free&utm_campaign=alternance" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="active-badge">✓</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">Alternance - Assistant Partenariats et Promotions H/F</div>
+                        <div class="offer-source">LBA</div>
+                        <div class="offer-company">🏢 Canal Plus</div>
+                        <div class="offer-location">📍 92800 Puteaux</div>
+                        <div class="offer-description">Bienvenue chez CANAL+ Group ! Séries, films, documentaires, émissions, sports, Ce qui nous tient à coeur c'est de créer les meilleurs contenus et une expérience immersive pour nos millions d'abonnés:....</div>
+                        <div class="offer-skills"><span class="skill-badge">Content Marketing</span><span class="skill-badge">Email Marketing</span><span class="skill-badge">UX/Design</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Apprentissage + Professionnali</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> -</div>
+                        <div class="info-line"><span class="info-label">Début:</span> -</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> 04/02/2026</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> 04/04/2026</div>
+                        <div class="info-line"><span class="info-label">Via:</span> Hellowork</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="https://r.holeest.com/redirect?poc=2&op=11051142359&o=1&from=https%3A%2F%2Fwww.hellowork.com%2Ffr-fr%2Femplois%2F75421202.html%3Futm_campaign%3Dalternance%2B-%2Bcommunication%26utm_content%3Dfluxbonnealternance%26utm_medium%3Dmetamoteurs-free%26utm_source%3Dbonnealternance%26utm_term%3D75421202" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="active-badge">✓</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">Alternant Assistant(e) Marketing (F/H) - ADELIA MEDICAL</div>
+                        <div class="offer-source">LBA</div>
+                        <div class="offer-company">🏢 ADELIA MEDICAL</div>
+                        <div class="offer-location">📍 92230 Gennevilliers</div>
+                        <div class="offer-description">Poste Alternant Marketing Agence de Gennevilliers Fonction : - La personne fera le lien entre les équipes opérationnelles et le graphiste pour la mise en oeuvre des plaquettes et outils marketing, -.....</div>
+                        <div class="offer-skills"><span class="skill-badge">SEA/Paid Media</span><span class="skill-badge">Social Media</span><span class="skill-badge">UX/Design</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Professionnalisation</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> 12 mois</div>
+                        <div class="info-line"><span class="info-label">Début:</span> -</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> 06/02/2026</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> 06/04/2026</div>
+                        <div class="info-line"><span class="info-label">Via:</span> France Travail</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="https://careers.werecruit.io/fr/adelia-medical/offres/alternant-assistante-marketing-fh-90565c?utm_source=francetravail&utm_medium=job-board" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="active-badge">✓</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">Chargé de marketing F/H</div>
+                        <div class="offer-source">LBA</div>
+                        <div class="offer-company">🏢 Elior</div>
+                        <div class="offer-location">📍 94000 Créteil</div>
+                        <div class="offer-description">Animation marketing Participer à l'animation des dispositifs marketing existants. Contribuer à la mise en œuvre d'actions terrain visant à renforcer la visibilité et l'attractivité de la marque....</div>
+                        <div class="offer-skills"><span class="skill-badge">SEA/Paid Media</span><span class="skill-badge">UX/Design</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Apprentissage + Professionnali</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> -</div>
+                        <div class="info-line"><span class="info-label">Début:</span> -</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> 30/01/2026</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> 30/03/2026</div>
+                        <div class="info-line"><span class="info-label">Via:</span> Meteojob</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="https://www.meteojob.com/jobads/50216765?utm_source=labonnealternance&utm_medium=aggregator-free&utm_campaign=alternance" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="active-badge">✓</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">Assistant Marketing de l'Offre Produits H/F</div>
+                        <div class="offer-source">LBA</div>
+                        <div class="offer-company">🏢 Krys Group</div>
+                        <div class="offer-location">📍 92000 Nanterre</div>
+                        <div class="offer-description">Notre Direction Marketing de l'offre produits recherche en contrat d'alternance pour 1 ou 2 ans un(e) Assistant(e) Marketing de l'offre produits. Vous assister la Responsable Marketing de l'offre...</div>
+                        <div class="offer-skills"><span class="skill-badge">CRM/Automation</span><span class="skill-badge">E-commerce</span><span class="skill-badge">UX/Design</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Apprentissage + Professionnali</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> 12 mois</div>
+                        <div class="info-line"><span class="info-label">Début:</span> -</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> 06/02/2026</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> 06/04/2026</div>
+                        <div class="info-line"><span class="info-label">Via:</span> Hellowork</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="https://r.holeest.com/redirect?poc=2&op=11051146518&o=1&from=https%3A%2F%2Fwww.hellowork.com%2Ffr-fr%2Femplois%2F75496193.html%3Futm_campaign%3Dalternance%2B-%2Bmarketing%252cgraphisme%252caudiovisuel%252cpub%26utm_content%3Dfluxbonnealternance%26utm_medium%3Dmetamoteurs-free%26utm_source%3Dbonnealternance%26utm_term%3D75496193" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="active-badge">✓</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">Assistant Chef de Projet Marketing Digital H/F</div>
+                        <div class="offer-source">LBA</div>
+                        <div class="offer-company">🏢 Krys Group</div>
+                        <div class="offer-location">📍 92000 Nanterre</div>
+                        <div class="offer-description">Notre Enseigne Krys recherche un(e) Assistant(e) Chef de projet marketing digital en alternance pour une durée de 1 an minimum à partir de septembre 2026. Au sein du Pôle Digital Groupe et sous la...</div>
+                        <div class="offer-skills"><span class="skill-badge">E-commerce</span><span class="skill-badge">UX/Design</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Apprentissage + Professionnali</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> -</div>
+                        <div class="info-line"><span class="info-label">Début:</span> -</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> 06/02/2026</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> 06/04/2026</div>
+                        <div class="info-line"><span class="info-label">Via:</span> Hellowork</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="https://r.holeest.com/redirect?poc=2&op=11051121041&o=1&from=https%3A%2F%2Fwww.hellowork.com%2Ffr-fr%2Femplois%2F75496061.html%3Futm_campaign%3Dalternance%2B-%2Bsecretariat%26utm_content%3Dfluxbonnealternance%26utm_medium%3Dmetamoteurs-free%26utm_source%3Dbonnealternance%26utm_term%3D75496061" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+
+                <div class="offer-row">
+                    <div class="status-col"><div class="active-badge">✓</div></div>
+                    <div class="offer-main">
+                        <div class="offer-title">Apprenti.e support publication médias groupe F/H - Raja France</div>
+                        <div class="offer-source">LBA</div>
+                        <div class="offer-company">🏢 Raja France</div>
+                        <div class="offer-location">📍 93290 Tremblay-en-France</div>
+                        <div class="offer-description">Au sein du service Contenu et Merchandising du Marketing France, vous serez rattaché(e) à la Responsable Process & Support Publication Médias Groupe. Vous contribuerez activement à la veille...</div>
+                        <div class="offer-skills"><span class="skill-badge">SEA/Paid Media</span><span class="skill-badge">Social Media</span><span class="skill-badge">Content Marketing</span><span class="skill-badge">Email Marketing</span><span class="skill-badge">UX/Design</span></div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📋 Alternance</div>
+                        <div class="info-line"><span class="info-label">Contrat:</span> Professionnalisation</div>
+                        <div class="info-line"><span class="info-label">Durée:</span> 12 mois</div>
+                        <div class="info-line"><span class="info-label">Début:</span> -</div>
+                    </div>
+                    <div class="offer-info-box">
+                        <div class="info-title">📅 Source</div>
+                        <div class="info-line"><span class="info-label">Créée:</span> 08/12/2025</div>
+                        <div class="info-line"><span class="info-label">Expire:</span> 08/02/2026</div>
+                        <div class="info-line"><span class="info-label">Via:</span> France Travail</div>
+                    </div>
+                    <div class="offer-action">
+                        <a href="https://careers.werecruit.io/fr/groupe-raja/offres/apprentie-support-publication-medias-groupe-fh-d85f32?utm_source=francetravail&utm_medium=job-board" class="btn-postuler" target="_blank">Postuler →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,399 @@
+
+================================================================================
+📋 GUIDE PROMPT PERPLEXITY - VERSION AMÉLIORÉE
+================================================================================
+
+🎯 OBJECTIF
+-----------
+Garantir une compatibilité 100% entre les offres Perplexity et LBA pour un merge sans erreur.
+
+📦 FICHIER GÉNÉRÉ
+-----------------
+✅ prompt_perplexity_improved.md → Prompt optimisé et cohérent avec LBA
+
+
+================================================================================
+🔄 PRINCIPALES MODIFICATIONS
+================================================================================
+
+1. STRUCTURE JSON ALIGNÉE AVEC LBA
+-----------------------------------
+AVANT (prompt original) :
+- Champs supplémentaires: missions_principales, outils_stack, avantages, 
+  point_fort, point_attention, score_qualite, statut_validation, typologie_entreprise
+- Ordre des champs différent
+- Formats de dates incohérents
+
+APRÈS (prompt amélioré) :
+✅ Exactement les mêmes champs que offres_lba.json
+✅ Même ordre des champs
+✅ Formats de dates unifiés
+✅ Types de données cohérents
+
+
+2. CHAMPS OBLIGATOIRES CLARIFIÉS
+---------------------------------
+Tableau récapitulatif ajouté avec :
+- Nom du champ
+- Type attendu (string, int, list, null)
+- Format exact (ex: DD/MM/YYYY)
+- Exemple concret
+
+Exemple :
+┌─────────────────┬────────┬──────────────┬──────────────────────┐
+│ Champ           │ Type   │ Format       │ Exemple              │
+├─────────────────┼────────┼──────────────┼──────────────────────┤
+│ date_creation   │ string │ DD/MM/YYYY   │ "05/02/2026"         │
+│ priorite_ville  │ int    │ 1, 2, ou 3   │ 1                    │
+│ source          │ string │ "Perplexity" │ "Perplexity"         │
+└─────────────────┴────────┴──────────────┴──────────────────────┘
+
+
+3. FORMAT DES DATES UNIFIÉ
+---------------------------
+AVANT :
+- Dates incohérentes entre les champs
+- Pas de règle claire
+
+APRÈS :
+┌──────────────────────┬─────────────────────┬──────────────────┐
+│ Champ                │ Format              │ Exemple          │
+├──────────────────────┼─────────────────────┼──────────────────┤
+│ date_creation        │ DD/MM/YYYY          │ "05/02/2026"     │
+│ date_debut           │ Texte libre         │ "Septembre 2026" │
+│ date_expiration      │ DD/MM/YYYY ou null  │ "05/04/2026"     │
+│ first_seen           │ YYYY-MM-DD          │ "2026-02-07"     │
+│ last_seen            │ YYYY-MM-DD          │ "2026-02-07"     │
+│ date_recherche (meta)│ YYYY-MM-DD HH:MM:SS │ "2026-02-07..."  │
+└──────────────────────┴─────────────────────┴──────────────────┘
+
+
+4. CHAMPS SUPPRIMÉS (incompatibles avec merge)
+-----------------------------------------------
+❌ missions_principales (array) → N'existe pas dans LBA
+❌ outils_stack (array) → N'existe pas dans LBA
+❌ avantages (array) → N'existe pas dans LBA
+❌ point_fort (string) → N'existe pas dans LBA
+❌ point_attention (string) → N'existe pas dans LBA
+❌ score_qualite (int) → N'existe pas dans LBA
+❌ statut_validation (string) → Remplacé par validation_status
+❌ typologie_entreprise (string) → Non utilisé dans merge
+
+💡 Ces informations peuvent être incluses dans description_complete
+
+
+5. INSTRUCTIONS CONSOLIDÉES
+----------------------------
+AVANT :
+- Règles répétées plusieurs fois
+- Sections redondantes
+- Difficile à suivre
+
+APRÈS :
+✅ Structure claire avec tableaux
+✅ Sections bien délimitées (##)
+✅ Checklist finale de validation
+✅ Exemples concrets d'exclusion
+✅ Règles anti-hallucination renforcées
+
+
+6. PRÉSENTATION AMÉLIORÉE
+--------------------------
+✅ Tableaux pour meilleure lisibilité
+✅ Emojis pour repérage rapide (🎯, ✅, ❌)
+✅ Code JSON avec syntax highlighting
+✅ Sections numérotées et hiérarchisées
+
+
+================================================================================
+📊 COMPATIBILITÉ MERGE
+================================================================================
+
+STRUCTURE OFFRE LBA (référence)
+--------------------------------
+{
+  "id": "...",
+  "source": "LBA",
+  "status": "active",
+  "titre": "...",
+  "entreprise": "...",
+  "ville": "...",
+  "code_postal": "...",
+  "adresse_complete": "...",
+  "description": "...",
+  "description_complete": "...",
+  "competences_detectees": [...],
+  "url_candidature": "...",
+  "type_contrat": "...",
+  "duree_contrat": null,
+  "date_debut": null,
+  "date_creation": "DD/MM/YYYY",
+  "date_expiration": "DD/MM/YYYY",
+  "plateforme_source": "...",
+  "ville_recherche": "...",
+  "priorite_ville": 1,
+  "first_seen": "YYYY-MM-DD",
+  "last_seen": "YYYY-MM-DD"
+}
+
+STRUCTURE OFFRE PERPLEXITY IMPROVED
+------------------------------------
+{
+  "id": "...",
+  "source": "Perplexity",        ⬅️ Toujours "Perplexity"
+  "status": "new",               ⬅️ Toujours "new"
+  "titre": "...",
+  "entreprise": "...",
+  "ville": "...",
+  "code_postal": "...",
+  "adresse_complete": "...",
+  "description": "...",
+  "description_complete": "...",
+  "competences_detectees": [...],
+  "url_candidature": "...",
+  "type_contrat": "...",
+  "duree_contrat": "24 mois",
+  "date_debut": "Septembre 2026",
+  "date_creation": "DD/MM/YYYY",
+  "date_expiration": null,
+  "plateforme_source": "LinkedIn",
+  "ville_recherche": "Paris",
+  "priorite_ville": 3,
+  "first_seen": "YYYY-MM-DD",    ⬅️ Date du jour
+  "last_seen": "YYYY-MM-DD"      ⬅️ Date du jour
+}
+
+✅ IDENTIQUES → merge sans conflit
+
+
+================================================================================
+🚀 UTILISATION DU NOUVEAU PROMPT
+================================================================================
+
+ÉTAPE 1 : Préparer le contexte
+-------------------------------
+1. Avoir le fichier offres_lba.json à jour
+2. Utiliser prompt_perplexity_improved.md
+
+
+ÉTAPE 2 : Lancer la recherche Perplexity
+-----------------------------------------
+1. Ouvrir Perplexity AI
+2. Joindre offres_lba.json au chat
+3. Coller le prompt complet de prompt_perplexity_improved.md
+4. Attendre la génération du JSON
+
+
+ÉTAPE 3 : Sauvegarder le JSON
+------------------------------
+1. Copier UNIQUEMENT le bloc JSON généré (sans texte avant/après)
+2. Créer le fichier offres_perplexity.json
+3. Vérifier que le JSON est valide (pas d'erreur de syntaxe)
+
+
+ÉTAPE 4 : Lancer le merge
+--------------------------
+python merge_offers.py
+
+→ Résultat : offres_merged.json (LBA + Perplexity fusionnés)
+
+
+================================================================================
+⚠️ POINTS DE VIGILANCE
+================================================================================
+
+1. CHAMP source
+---------------
+❌ ERREUR : mettre "LinkedIn", "WTTJ", etc.
+✅ CORRECT : toujours "Perplexity"
+
+Le champ plateforme_source contient la vraie source (LinkedIn, WTTJ, etc.)
+
+
+2. CHAMP status
+---------------
+❌ ERREUR : mettre "active", "validated", etc.
+✅ CORRECT : toujours "new"
+
+Le statut sera mis à jour automatiquement par le système d'historisation
+
+
+3. CHAMP priorite_ville
+------------------------
+❌ ERREUR : texte ("Rennes"), autre numérotation
+✅ CORRECT : 
+- Rennes = 1
+- Nantes = 2
+- Paris = 3
+
+
+4. FORMAT DES DATES
+-------------------
+❌ ERREUR : 
+- date_creation: "2026-02-05" (format ISO)
+- first_seen: "05/02/2026" (format français)
+
+✅ CORRECT :
+- date_creation: "05/02/2026" (format français DD/MM/YYYY)
+- first_seen: "2026-02-07" (format ISO YYYY-MM-DD)
+
+
+5. CHAMP id
+-----------
+❌ ERREUR : 
+- Espaces : "doctolib alternance digital paris"
+- Majuscules : "Doctolib_AlternanceDigital_Paris"
+
+✅ CORRECT :
+- Lowercase sans espaces : "doctolib_alternancedigital_paris"
+- Format : entreprise_titre_ville
+
+
+6. NULL vs STRING
+-----------------
+❌ ERREUR : "null" (string)
+✅ CORRECT : null (sans guillemets)
+
+Exemples :
+- "date_expiration": null ✅
+- "duree_contrat": null ✅
+- "date_expiration": "null" ❌
+
+
+================================================================================
+🧪 VALIDATION DU JSON GÉNÉRÉ
+================================================================================
+
+CHECKLIST AVANT SAUVEGARDE
+---------------------------
+□ JSON valide (pas d'erreur de syntaxe)
+□ Champ source = "Perplexity" pour toutes les offres
+□ Champ status = "new" pour toutes les offres
+□ Dates au bon format (date_creation: DD/MM/YYYY)
+□ priorite_ville = 1, 2 ou 3 (int, pas string)
+□ Pas de champs supplémentaires (missions_principales, etc.)
+□ Tous les champs obligatoires présents
+□ Pas de doublons avec offres_lba.json
+□ URLs vérifiées et accessibles
+
+
+COMMANDE DE VALIDATION
+-----------------------
+# Vérifier que le JSON est valide
+python -m json.tool offres_perplexity.json
+
+# Si OK : affiche le JSON formaté
+# Si erreur : affiche la ligne du problème
+
+
+================================================================================
+📈 WORKFLOW COMPLET
+================================================================================
+
+┌────────────────────────────────────────────────────────────┐
+│  1. SCRAPING LBA                                           │
+│  python scraper_lba.py                                     │
+│  → offres_lba.json                                         │
+└────────────────────────────────────────────────────────────┘
+                        ⬇️
+┌────────────────────────────────────────────────────────────┐
+│  2. RECHERCHE PERPLEXITY (manuelle)                        │
+│  - Joindre offres_lba.json                                 │
+│  - Coller prompt_perplexity_improved.md                    │
+│  → offres_perplexity.json                                  │
+└────────────────────────────────────────────────────────────┘
+                        ⬇️
+┌────────────────────────────────────────────────────────────┐
+│  3. VALIDATION LBA (optionnel mais recommandé)             │
+│  python validator_lba.py --quick                           │
+│  → offres_lba_validated.json                               │
+└────────────────────────────────────────────────────────────┘
+                        ⬇️
+┌────────────────────────────────────────────────────────────┐
+│  4. MERGE LBA + PERPLEXITY                                 │
+│  python merge_offers.py                                    │
+│  → offres_merged.json                                      │
+└────────────────────────────────────────────────────────────┘
+
+
+================================================================================
+💡 CONSEILS D'OPTIMISATION
+================================================================================
+
+1. QUALITÉ > QUANTITÉ
+   - Mieux vaut 3-5 offres validées que 20 incertaines
+   - Perplexity doit vérifier CHAQUE URL avant inclusion
+
+2. ÉVITER LES DOUBLONS
+   - Toujours joindre offres_lba.json à Perplexity
+   - Vérifier entreprise + titre + ville
+
+3. PRIORISER RENNES
+   - Chercher d'abord à Rennes (priorite_ville: 1)
+   - Compléter avec Nantes et Paris si peu de résultats
+
+4. FOCUS SUR ENTREPRISES CIBLES
+   - Utiliser la liste des entreprises prioritaires
+   - Checker leurs sites carrières directement
+
+5. DATES RÉELLES UNIQUEMENT
+   - Ne jamais inventer une date
+   - Si date introuvable → mettre null
+
+
+================================================================================
+🆘 DÉPANNAGE
+================================================================================
+
+PROBLÈME : Merge échoue avec erreur "KeyError: 'xxx'"
+SOLUTION : Un champ obligatoire manque dans offres_perplexity.json
+           Vérifier la liste des champs obligatoires
+
+
+PROBLÈME : Merge génère des doublons
+SOLUTION : La clé de déduplication = entreprise + titre + ville
+           Vérifier l'orthographe exacte (espaces, accents)
+
+
+PROBLÈME : Date au mauvais format
+SOLUTION : Vérifier le tableau des formats de dates
+           date_creation: DD/MM/YYYY (français)
+           first_seen/last_seen: YYYY-MM-DD (ISO)
+
+
+PROBLÈME : Perplexity génère des champs supplémentaires
+SOLUTION : Bien préciser dans le prompt : "EXACTEMENT ces champs"
+           Supprimer les champs non-standards avant sauvegarde
+
+
+================================================================================
+✅ RÉCAPITULATIF
+================================================================================
+
+AVANT (prompt original)
+-----------------------
+❌ Champs incompatibles avec merge
+❌ Formats de dates incohérents
+❌ Instructions redondantes
+❌ Difficile à suivre
+
+APRÈS (prompt_perplexity_improved.md)
+--------------------------------------
+✅ 100% compatible avec offres_lba.json
+✅ Formats de dates unifiés
+✅ Instructions consolidées
+✅ Tableaux et structure claire
+✅ Checklist de validation
+✅ Exemples concrets
+
+RÉSULTAT
+--------
+✅ Merge sans erreur
+✅ Pas de champs manquants
+✅ Pas de conflits de types
+✅ Déduplication efficace
+
+
+================================================================================
+Dernière mise à jour : 07/02/2026
+================================================================================

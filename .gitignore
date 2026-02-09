@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.Python
+env/
+venv/
+.env
+*.env
+credentials.json
+token.txt
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+snapshot_lba_*.json
+Alternances_Marketing_Digital_*.html

@@ -1,0 +1,112 @@
+{
+  "meta": {
+    "date_recherche": "2026-02-08 14:14:00",
+    "sources_consultees": [
+      "Welcome to the Jungle",
+      "LinkedIn",
+      "Indeed",
+      "HelloWork",
+      "Jooble"
+    ],
+    "total_offres_trouvees": 1,
+    "offres_validees": 1,
+    "offres_incertaines": 0,
+    "raisons_exclusion": {
+      "ecoles_formation": 8,
+      "date_debut_passee": 4,
+      "stage_non_alternance": 2,
+      "publication_ancienne": 3,
+      "url_non_directe": 12
+    },
+    "note_importante": "Très peu d'offres validées car la plupart des résultats correspondent à des écoles de formation (MyDigitalSchool, AFTEC, Digital Campus, Studi), des offres avec dates de début passées (septembre 2025), ou des agrégateurs sans URL directe. Les entreprises cibles prioritaires (Klaxoon, Skeepers, Akeneo à Rennes, Lengow, Sellsy à Nantes) n'ont pas d'offres d'alternance marketing digital publiées actuellement."
+  },
+  "offres": [
+    {
+      "id": "adforall_consultantseadsma_cessonsevigne",
+      "source": "Perplexity",
+      "status": "new",
+      "titre": "Alternance Consultant.e Marketing digital SEA / SMA",
+      "entreprise": "ADFORALL",
+      "ville": "Cesson-Sévigné",
+      "code_postal": "35510",
+      "adresse_complete": "Cesson-Sévigné, 35510 (proche Rennes)",
+      "description": "Gestion et optimisation de campagnes SEA/SMA sur Google Ads, Microsoft Advertising, Meta Ads. Suivi des performances, reporting client, tracking, analyse data. Agence webmarketing spécialisée en paid media à taille humaine.",
+      "description_complete": "Dans le cadre de son développement, ADFORALL, agence webmarketing spécialisée en SEA, SMA et SEO, ouvre un nouveau poste de consultant paid media en alternance. Vous serez responsable du développement, suivi et optimisation des comptes clients sur Google Ads, Microsoft Advertising, Meta Ads. Missions : montage de campagnes publicitaires en ligne (budgets, production d'annonces), suivi des tags de tracking, optimisation des budgets pour améliorer les performances clients, analyse détaillée des rapports statistiques, gestion quotidienne et optimisation des campagnes, force de proposition sur la stratégie (A/B tests, bêta tests). Environnement agence à taille humaine très axée sur la performance. Rythme : présence en entreprise chaque semaine obligatoire, 1 à 2 jours en formation par semaine.",
+      "competences_detectees": [
+        "SEA/Paid Media",
+        "Social Media",
+        "Analytics",
+        "CRM/Automation"
+      ],
+      "url_candidature": "https://www.welcometothejungle.com/fr/companies/adforall/jobs/alternance-consultant-e-marketing-digital-sea-sma_cesson-sevigne",
+      "type_contrat": "Apprentissage + Professionnalisation",
+      "duree_contrat": "12-24 mois",
+      "date_debut": "Flexible - rentrée 2026",
+      "date_creation": null,
+      "date_expiration": null,
+      "plateforme_source": "Welcome to the Jungle",
+      "ville_recherche": "Rennes",
+      "priorite_ville": 1,
+      "first_seen": "2026-02-08",
+      "last_seen": "2026-02-08",
+      "notes_validation": "Exigence mentionnée : au moins 1 an d'expérience en gestion Google Ads/Facebook Ads. À vérifier si compatible profil Bachelor 3. Pas de date de publication trouvée, statut du bouton 'Postuler' non vérifié directement."
+    }
+  ],
+  "entreprises_sans_offre": [
+    {
+      "entreprise": "Klaxoon",
+      "ville": "Rennes",
+      "typologie": "Scale-up SaaS - Travail collaboratif",
+      "page_carriere": "https://jobs.klaxoon.com",
+      "action": "📧 Candidature spontanée fortement recommandée - Entreprise en forte croissance (150 recrutements sur 18 mois annoncés)",
+      "note": "Leader français du travail en équipe, créé en 2015, culture innovation forte"
+    },
+    {
+      "entreprise": "Skeepers",
+      "ville": "Rennes",
+      "typologie": "Scale-up SaaS - UGC & Avis clients",
+      "page_carriere": "https://skeepers.io/fr/careers/",
+      "action": "📧 Candidature spontanée recommandée",
+      "note": "Leader européen des solutions d'avis clients et contenu généré par utilisateurs"
+    },
+    {
+      "entreprise": "Akeneo",
+      "ville": "Nantes",
+      "typologie": "Scale-up SaaS - PIM (Product Information Management)",
+      "page_carriere": "https://www.akeneo.com/fr/careers/",
+      "action": "📧 Candidature spontanée recommandée",
+      "note": "Leader mondial du PIM, clients internationaux prestigieux"
+    },
+    {
+      "entreprise": "Lengow",
+      "ville": "Nantes",
+      "typologie": "Scale-up SaaS - E-commerce & Marketplaces",
+      "page_carriere": "https://www.lengow.com/careers/",
+      "action": "📧 Candidature spontanée recommandée",
+      "note": "Plateforme d'automatisation e-commerce pour marketplaces"
+    },
+    {
+      "entreprise": "Sellsy",
+      "ville": "Nantes",
+      "typologie": "Scale-up SaaS - CRM & Gestion",
+      "page_carriere": "https://www.sellsy.com/fr/about/careers/",
+      "action": "📧 Candidature spontanée recommandée",
+      "note": "Solution CRM et gestion commerciale pour PME françaises"
+    },
+    {
+      "entreprise": "ManoMano",
+      "ville": "Nantes",
+      "typologie": "Unicorn - Marketplace bricolage/jardinage",
+      "page_carriere": "https://careers.manomano.jobs/jobs",
+      "action": "📧 Surveiller régulièrement les offres - Marketplace en forte croissance",
+      "note": "Leader européen du bricolage en ligne, 1 offre alternance marketing vue mais pas de détail"
+    }
+  ],
+  "recommandations_recherche": [
+    "Surveiller quotidiennement Welcome to the Jungle avec filtres 'Rennes + Marketing + Alternance'",
+    "Configurer alertes LinkedIn avec mots-clés : 'alternance marketing digital Rennes septembre 2026'",
+    "Contacter directement les agences prioritaires : Kreactive, Markentive, Yumens, Jinnove (Rennes), Lunaweb, Raccourci Agency (Nantes)",
+    "Période optimale de publication : mars-mai 2026 pour rentrée septembre 2026",
+    "Privilégier candidatures spontanées auprès des scale-ups tech listées (Klaxoon, Skeepers, Lengow, Sellsy, Akeneo) qui recrutent régulièrement mais publient peu en alternance"
+  ]
+}
