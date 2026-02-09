@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
 import smtplib
@@ -19,6 +19,7 @@ SCRIPT_DIR = Path(__file__).parent
 BASE_DIR = SCRIPT_DIR.parent
 DATA_DIR = BASE_DIR / "data"
 DOCS_DIR = BASE_DIR / "docs"
+ARCHIVES_DIR = DOCS_DIR / "archives"
 
 # Fichiers
 OFFRES_MERGED = DATA_DIR / "offres_merged.json"
@@ -36,6 +37,7 @@ if not GMAIL_USER or not GMAIL_PASSWORD:
     raise ValueError("❌ Erreur : GMAIL_USER et GMAIL_PASSWORD doivent être définis dans le fichier .env")
 
 GITHUB_PAGES_URL = "https://fhonore5312.github.io/alternances-veille/"
+RETENTION_DAYS = 30  # Conserver 30 jours d'archives
 
 
 def load_offers():
@@ -66,7 +68,6 @@ def generate_html(data):
     # Stats
     total_offers = meta['total_offres']
     new_count = meta['nouvelles']
-    
     stats_by_city = {
         'Rennes': len(offers_by_city.get('Rennes', [])),
         'Nantes': len(offers_by_city.get('Nantes', [])),
@@ -79,565 +80,891 @@ def generate_html(data):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Veille Alternances - Marketing Digital</title>
+    <title>🎯 Veille Alternances Marketing Digital</title>
     <style>
-        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+        * {{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }}
+        
         body {{
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             padding: 20px;
         }}
+        
         .container {{
             max-width: 1400px;
             margin: 0 auto;
         }}
+        
+        /* Header */
         .header {{
             background: white;
-            padding: 25px 30px;
-            border-radius: 12px;
+            padding: 30px;
+            border-radius: 15px;
             margin-bottom: 25px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
         }}
+        
         .header h1 {{
-            margin: 0 0 10px 0;
             color: #2c3e50;
-            font-size: 28px;
-        }}
-        .header-stats {{
+            font-size: 32px;
+            margin-bottom: 8px;
             display: flex;
-            gap: 25px;
-            margin-top: 15px;
+            align-items: center;
+            gap: 10px;
+        }}
+        
+        .header-subtitle {{
+            color: #7f8c8d;
             font-size: 14px;
-            color: #666;
+            margin-bottom: 20px;
+        }}
+        
+        /* Stats */
+        .stats {{
+            display: flex;
+            gap: 15px;
             flex-wrap: wrap;
         }}
-        .stat-badge {{
-            background: #f0f4ff;
-            padding: 6px 14px;
-            border-radius: 20px;
-            color: #667eea;
-            font-weight: 600;
-        }}
-        .stat-new {{
-            background: #e74c3c;
-            color: white;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-weight: 700;
-        }}
-        .stat-source {{
-            background: #3498db;
-            color: white;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 11px;
-        }}
-        .city-section {{
-            margin-bottom: 35px;
-        }}
-        .city-header {{
-            background: white;
-            padding: 18px 30px;
+        
+        .stat-card {{
+            background: #f8f9fa;
+            padding: 15px 25px;
             border-radius: 10px;
-            font-size: 20px;
-            font-weight: 700;
-            color: #2c3e50;
+            flex: 1;
+            min-width: 140px;
+            text-align: center;
+        }}
+        
+        .stat-card.highlight {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }}
+        
+        .stat-card.highlight .stat-number {{
+            color: white;
+        }}
+        
+        .stat-number {{
+            font-size: 36px;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }}
+        
+        .stat-label {{
+            font-size: 13px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }}
+        
+        .stat-card.highlight .stat-label {{
+            color: white;
+            opacity: 0.95;
+        }}
+        
+        /* City sections */
+        .city-section {{
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }}
+        
+        .city-header {{
+            padding: 20px 30px;
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
             display: flex;
             align-items: center;
-            gap: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            margin-bottom: 15px;
+            gap: 10px;
         }}
-        .city-icon {{
-            font-size: 24px;
+        
+        .city-header.rennes {{
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
         }}
-        .city-rennes {{
-            border-left: 5px solid #e74c3c;
+        
+        .city-header.nantes {{
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
         }}
-        .city-nantes {{
-            border-left: 5px solid #f39c12;
+        
+        .city-header.paris {{
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
         }}
-        .city-paris {{
-            border-left: 5px solid #3498db;
+        
+        /* Offer cards */
+        .offer-card {{
+            border-bottom: 1px solid #ecf0f1;
+            padding: 25px 30px;
+            transition: all 0.3s ease;
         }}
-        .offers-container {{
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
-        }}
-        .offer-row {{
-            display: grid;
-            grid-template-columns: 60px 1fr 160px 160px 110px;
-            gap: 25px;
-            padding: 22px 30px;
-            border-bottom: 1px solid #f0f0f0;
-            transition: background 0.2s;
-            align-items: start;
-        }}
-        .offer-row:hover {{
-            background: #f8f9ff;
-        }}
-        .offer-row:last-child {{
+        
+        .offer-card:last-child {{
             border-bottom: none;
         }}
-        .new-badge {{
-            background: #e74c3c;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 6px;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            text-align: center;
-            margin-top: 5px;
+        
+        .offer-card:hover {{
+            background: #f8f9fa;
+            transform: translateX(5px);
         }}
-        .active-badge {{
-            background: #95a5a6;
-            color: white;
-            padding: 8px 10px;
-            border-radius: 50%;
+        
+        .offer-header {{
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }}
+        
+        .offer-title {{
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }}
+        
+        .offer-company {{
+            color: #7f8c8d;
             font-size: 14px;
-            text-align: center;
-            margin-top: 5px;
-            width: 35px;
-            height: 35px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 8px;
         }}
-        .source-tag {{
-            display: inline-block;
+        
+        .offer-badges {{
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }}
+        
+        .badge {{
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }}
+        
+        .badge.new {{
+            background: #e74c3c;
             color: white;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 9px;
-            font-weight: 700;
-            margin-left: 5px;
         }}
-        .source-tag.lba {{
-            background: #27ae60;
+        
+        .badge.active {{
+            background: #95a5a6;
+            color: white;
         }}
-        .source-tag.perplexity {{
+        
+        .badge.lba {{
+            background: #3498db;
+            color: white;
+        }}
+        
+        .badge.perplexity {{
             background: #9b59b6;
+            color: white;
         }}
-        .offer-main {{
-            min-width: 0;
-        }}
-        .offer-title {{
-            font-size: 16px;
-            font-weight: 700;
-            color: #2c3e50;
-            margin-bottom: 6px;
-            line-height: 1.3;
-        }}
-        .offer-company {{
-            font-size: 14px;
-            color: #667eea;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }}
-        .offer-location {{
-            font-size: 12px;
-            color: #95a5a6;
-            margin-bottom: 10px;
-        }}
+        
         .offer-description {{
-            font-size: 13px;
             color: #555;
-            line-height: 1.5;
-            margin-bottom: 10px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 14px;
         }}
+        
         .offer-skills {{
             display: flex;
             flex-wrap: wrap;
-            gap: 5px;
-            margin-top: 8px;
+            gap: 8px;
+            margin-bottom: 15px;
         }}
-        .skill-badge {{
-            background: #e8f5e9;
-            color: #27ae60;
-            padding: 3px 8px;
-            border-radius: 10px;
-            font-size: 10px;
-            font-weight: 600;
-        }}
-        .offer-info-box {{
-            background: #f8f9fa;
-            padding: 12px 14px;
-            border-radius: 8px;
+        
+        .skill-tag {{
+            background: #d4edda;
+            color: #155724;
+            padding: 5px 12px;
+            border-radius: 5px;
             font-size: 12px;
-            border: 1px solid #e9ecef;
+            font-weight: 600;
         }}
-        .info-title {{
-            font-size: 11px;
-            font-weight: 700;
-            color: #888;
+        
+        .offer-details {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }}
+        
+        .detail-group {{
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+        }}
+        
+        .detail-title {{
+            font-weight: bold;
+            color: #667eea;
+            font-size: 12px;
             text-transform: uppercase;
-            margin-bottom: 8px;
-            letter-spacing: 0.5px;
-        }}
-        .info-line {{
             margin-bottom: 5px;
-            display: flex;
-            color: #555;
         }}
-        .info-line:last-child {{
-            margin-bottom: 0;
-        }}
-        .info-label {{
-            font-weight: 600;
-            color: #666;
-            min-width: 60px;
-        }}
-        .offer-action {{
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }}
-        .btn-postuler {{
-            display: inline-block;
-            background: #667eea;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 6px;
-            text-decoration: none;
+        
+        .detail-content {{
+            color: #2c3e50;
             font-size: 13px;
-            font-weight: 600;
-            transition: background 0.2s;
-            white-space: nowrap;
         }}
-        .btn-postuler:hover {{
-            background: #5568d3;
+        
+        .offer-actions {{
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }}
+        
+        .btn-apply {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }}
+        
+        .btn-apply:hover {{
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }}
+        
+        /* Footer */
+        .footer {{
+            text-align: center;
+            color: white;
+            padding: 30px;
+            font-size: 14px;
+        }}
+        
+        .footer-timestamp {{
+            font-size: 12px;
+            opacity: 0.9;
+            margin-top: 5px;
         }}
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- Header -->
         <div class="header">
             <h1>🎯 Veille Alternances Marketing Digital</h1>
-            <p style="margin: 5px 0; color: #666;">Bachelor 3 RSB · Début: Septembre 2026 · Durée: 12-24 mois</p>
-            <div class="header-stats">
-                <span class="stat-new">🆕 {new_count} nouvelles</span>
-                <span class="stat-badge">📊 {total_offers} offres actives total</span>
-                <span class="stat-source" style="background: #27ae60;">LBA: {meta.get('source_lba', 0)}</span>
-                <span class="stat-source" style="background: #9b59b6;">Perplexity: {meta.get('source_perplexity', 0)}</span>
-                <span class="stat-badge">📍 Rennes: {stats_by_city['Rennes']} · Nantes: {stats_by_city['Nantes']} · Paris: {stats_by_city['Paris']}</span>
-                <span class="stat-badge">🗓️ {meta['date_generation']}</span>
+            <p class="header-subtitle">Bachelor 3 RSB · Début: Septembre 2026 · Durée: 12-24 mois</p>
+            
+            <div class="stats">
+                <div class="stat-card highlight">
+                    <span class="stat-number">🆕 {new_count}</span>
+                    <div class="stat-label">nouvelles</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">📊 {total_offers}</span>
+                    <div class="stat-label">offres actives total</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">LBA: {meta.get('source_lba', 0)}</span>
+                    <div class="stat-label">La Bonne Alternance</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">Perplexity: {meta.get('source_perplexity', 0)}</span>
+                    <div class="stat-label">Recherche complémentaire</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">📍 Rennes: {stats_by_city['Rennes']}</span>
+                    <div class="stat-label">· Nantes: {stats_by_city['Nantes']} · Paris: {stats_by_city['Paris']}</div>
+                </div>
             </div>
         </div>
 """
     
-    # Icônes et configurations par ville
-    city_icons = {
-        'Rennes': ('🎯', 'Priorité #1', 'city-rennes'),
-        'Nantes': ('🔶', '', 'city-nantes'),
-        'Paris': ('🗼', 'ÎLE-DE-FRANCE', 'city-paris')
+    # Ordre de priorité des villes
+    city_priority = ['Rennes', 'Nantes', 'Paris']
+    city_classes = {
+        'Rennes': 'rennes',
+        'Nantes': 'nantes',
+        'Paris': 'paris'
     }
     
     # Générer les sections par ville
-    for ville_name in ['Rennes', 'Nantes', 'Paris']:
-        ville_offers = offers_by_city.get(ville_name, [])
-        if not ville_offers:
+    for city in city_priority:
+        if city not in offers_by_city:
             continue
         
-        icon, subtitle, css_class = city_icons[ville_name]
+        city_offers = offers_by_city[city]
+        city_class = city_classes.get(city, '')
         
         html += f"""
+        <!-- {city} Section -->
         <div class="city-section">
-            <div class="city-header {css_class}">
-                <span class="city-icon">{icon}</span>
-                <span>{ville_name.upper()} {subtitle}</span>
-                <span style="margin-left: auto; font-size: 15px; font-weight: normal; color: #666;">({len(ville_offers)} offres)</span>
+            <div class="city-header {city_class}">
+                🎯 {city} Priorité #{city_priority.index(city) + 1} ({len(city_offers)} offres)
             </div>
-            <div class="offers-container">
 """
         
-        # Générer les lignes d'offres
-        for offer in ville_offers:
-            # Badge source
-            source_class = "lba" if offer['source'] == "LBA" else "perplexity"
-            source_badge = f'<span class="source-tag {source_class}">{offer["source"]}</span>'
+        for offer in city_offers:
+            # Extraction des données
+            status = offer.get('status', 'active')
+            source = offer.get('source', 'LBA')
+            titre = offer.get('titre', 'Sans titre')
+            entreprise = offer.get('entreprise', 'Non précisé')
+            ville = offer.get('ville', city)
+            description = offer.get('description', 'Pas de description disponible')
+            competences = offer.get('competences', [])
+            contrat = offer.get('type_contrat', 'Apprentissage')
+            duree = offer.get('duree_contrat', '12 mois')
+            debut = offer.get('debut', 'Septembre 2026')
+            date_creation = offer.get('date_creation', '—')
+            date_expiration = offer.get('date_expiration', '—')
+            via = offer.get('via', 'ISME')
+            url_candidature = offer.get('url_candidature', '#')
+            
+            # Badges
+            badge_status = f'<span class="badge new">🆕 NEW</span>' if status == 'new' else '<span class="badge active">Active</span>'
+            badge_source = f'<span class="badge {"lba" if source == "LBA" else "perplexity"}">{source}</span>'
             
             # Compétences
             skills_html = ""
-            if offer.get('competences_detectees'):
-                skills_badges = ''.join([f'<span class="skill-badge">{skill}</span>' for skill in offer['competences_detectees'][:5]])
-                skills_html = f'<div class="offer-skills">{skills_badges}</div>'
-            
-            # Badge statut
-            if offer.get('status') == 'new':
-                badge_html = '<div class="new-badge">🆕 NEW</div>'
-            else:
-                badge_html = '<div class="active-badge">✓</div>'
-            
-            # Dates
-            creation_display = offer.get('date_creation') or '—'
-            expiration_display = offer.get('date_expiration') or '—'
-            start_display = offer.get('date_debut') or '—'
-            duration_display = offer.get('duree_contrat') or '—'
+            if competences:
+                skills_html = '<div class="offer-skills">'
+                for skill in competences:
+                    skills_html += f'<span class="skill-tag">{skill}</span>'
+                skills_html += '</div>'
             
             html += f"""
-                <div class="offer-row">
-                    <div style="text-align: center;">
-                        {badge_html}
+            <div class="offer-card">
+                <div class="offer-header">
+                    <div>
+                        <div class="offer-title">{titre}</div>
+                        <div class="offer-company">🏢 {entreprise} · 📍 {ville}</div>
                     </div>
-                    <div class="offer-main">
-                        <div class="offer-title">{offer['titre']} {source_badge}</div>
-                        <div class="offer-company">🏢 {offer['entreprise']}</div>
-                        <div class="offer-location">📍 {offer['ville']} ({offer['code_postal']})</div>
-                        <div class="offer-description">{offer['description']}</div>
-                        {skills_html}
-                    </div>
-                    <div class="offer-info-box">
-                        <div class="info-title">💼 Alternance</div>
-                        <div class="info-line">
-                            <span class="info-label">Contrat:</span>
-                            <span>{offer['type_contrat']}</span>
-                        </div>
-                        <div class="info-line">
-                            <span class="info-label">Durée:</span>
-                            <span>{duration_display}</span>
-                        </div>
-                        <div class="info-line">
-                            <span class="info-label">Début:</span>
-                            <span>{start_display}</span>
-                        </div>
-                    </div>
-                    <div class="offer-info-box">
-                        <div class="info-title">📅 Dates</div>
-                        <div class="info-line">
-                            <span class="info-label">Créé:</span>
-                            <span>{creation_display}</span>
-                        </div>
-                        <div class="info-line">
-                            <span class="info-label">Expire:</span>
-                            <span>{expiration_display}</span>
-                        </div>
-                        <div class="info-line">
-                            <span class="info-label">Via:</span>
-                            <span>{offer.get('plateforme_source', '—')}</span>
-                        </div>
-                    </div>
-                    <div class="offer-action">
-                        <a href="{offer['url_candidature']}" class="btn-postuler" target="_blank">Postuler →</a>
+                    <div class="offer-badges">
+                        {badge_status}
+                        {badge_source}
                     </div>
                 </div>
+                
+                <div class="offer-description">
+                    {description}
+                </div>
+                
+                {skills_html}
+                
+                <div class="offer-details">
+                    <div class="detail-group">
+                        <div class="detail-title">📋 ALTERNANCE</div>
+                        <div class="detail-content">
+                            Contrat: {contrat}<br>
+                            Durée: {duree}<br>
+                            Début: {debut}
+                        </div>
+                    </div>
+                    <div class="detail-group">
+                        <div class="detail-title">🔍 SOURCE</div>
+                        <div class="detail-content">
+                            Créée: {date_creation}<br>
+                            Expire: {date_expiration}<br>
+                            Via: {via}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="offer-actions">
+                    <a href="{url_candidature}" target="_blank" class="btn-apply">Postuler →</a>
+                </div>
+            </div>
 """
         
         html += """
-            </div>
         </div>
 """
     
-    html += """
+    # Footer
+    html += f"""
+        <div class="footer">
+            <div>📅 Mise à jour : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</div>
+            <div class="footer-timestamp">🤖 Scraper automatique LBA + Recherche Perplexity</div>
+        </div>
     </div>
 </body>
 </html>
 """
     
-    # Créer le dossier docs s'il n'existe pas
-    DOCS_DIR.mkdir(exist_ok=True)
-    
-    # Sauvegarder
-    with open(OUTPUT_HTML_DOCS, 'w', encoding='utf-8') as f:
-        f.write(html)
-    
-    return OUTPUT_HTML_DOCS
+    return html
 
 
-def git_commit_and_push():
-    """Commit et push sur GitHub (si Git disponible)"""
-    git_cmd = shutil.which('git')
+def cleanup_old_archives():
+    """Supprime les archives de plus de RETENTION_DAYS jours"""
+    if not ARCHIVES_DIR.exists():
+        return
     
-    if not git_cmd:
-        print("\n[3/4] Publication sur GitHub...")
-        print("⚠️  Git non disponible - Skip de la publication GitHub")
-        print("   (Normal en local Windows, OK dans GitHub Actions)")
-        return False
+    cutoff_date = datetime.now() - timedelta(days=RETENTION_DAYS)
+    deleted_count = 0
     
-    try:
-        print("\n[3/4] Publication sur GitHub...")
-        subprocess.run([git_cmd, 'add', 'docs/index.html', 'data/'], check=True, cwd=BASE_DIR)
-        subprocess.run([git_cmd, 'commit', '-m', f'🤖 Update: {datetime.now().strftime("%Y-%m-%d %H:%M")}'], check=True, cwd=BASE_DIR)
-        subprocess.run([git_cmd, 'push'], check=True, cwd=BASE_DIR)
-        print("✅ Publié sur GitHub Pages")
-        return True
-    except subprocess.CalledProcessError as e:
-        print(f"⚠️  Erreur Git (non bloquant) : {e}")
-        return False
+    for archive_file in ARCHIVES_DIR.glob("*.html"):
+        try:
+            # Format attendu : YYYY-MM-DD.html
+            file_date_str = archive_file.stem
+            file_date = datetime.strptime(file_date_str, '%Y-%m-%d')
+            
+            if file_date < cutoff_date:
+                archive_file.unlink()
+                deleted_count += 1
+                print(f"  🗑️  Archive supprimée : {archive_file.name}")
+        except ValueError:
+            continue
+    
+    if deleted_count > 0:
+        print(f"✅ {deleted_count} archive(s) supprimée(s) (> {RETENTION_DAYS} jours)")
 
 
-def send_email(html_filename, data):
-    """Envoie l'email avec le HTML en pièce jointe"""
-    meta = data['meta']
-    nb_new = meta['nouvelles']
-    nb_total = meta['total_offres']
+def generate_historique_page():
+    """Génère la page historique.html listant toutes les archives"""
+    archives = sorted(ARCHIVES_DIR.glob("*.html"), reverse=True)
     
-    # Subject
-    if nb_new > 0:
-        subject = f"🆕 {nb_new} nouvelles alternances ({nb_total} total) - {datetime.now().strftime('%d/%m/%Y')}"
-    else:
-        subject = f"📊 Veille alternances ({nb_total} actives) - {datetime.now().strftime('%d/%m/%Y')}"
-    
-    # Corps email HTML
-    body_html = f"""<html>
+    html = f"""<!DOCTYPE html>
+<html lang="fr">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historique - Veille Alternances</title>
     <style>
         body {{
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-            color: #333;
-            line-height: 1.6;
-        }}
-        .summary-box {{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 10px;
-            margin: 20px 0;
+            min-height: 100vh;
         }}
-        .summary-box h2 {{
-            margin: 0 0 15px 0;
-            font-size: 24px;
+        .container {{
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
         }}
-        .stats {{
+        h1 {{
+            color: #667eea;
+            margin-bottom: 10px;
+        }}
+        .subtitle {{
+            color: #666;
+            margin-bottom: 30px;
+        }}
+        .archive-list {{
+            list-style: none;
+            padding: 0;
+        }}
+        .archive-item {{
+            padding: 15px;
+            margin-bottom: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }}
+        .archive-item:hover {{
+            background: #f5f5f5;
+            border-color: #667eea;
+            transform: translateX(5px);
+        }}
+        .archive-item a {{
+            text-decoration: none;
+            color: #333;
             display: flex;
-            gap: 30px;
-            margin-top: 15px;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
         }}
-        .stat-item {{
-            background: rgba(255,255,255,0.2);
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
+        .date {{
+            font-weight: bold;
+            color: #667eea;
         }}
-        .stat-new {{
-            background: #e74c3c;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 700;
-        }}
-        .info-box {{
-            background: #f8f9fa;
-            border-left: 4px solid #667eea;
-            padding: 15px 20px;
-            margin: 20px 0;
-            border-radius: 4px;
-        }}
-        .link-button {{
-            display: inline-block;
+        .badge {{
             background: #667eea;
             color: white;
-            padding: 12px 24px;
-            border-radius: 6px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+        }}
+        .back-link {{
+            display: inline-block;
+            margin-top: 30px;
+            color: #667eea;
             text-decoration: none;
-            font-weight: 600;
-            margin: 10px 0;
+            font-weight: bold;
+        }}
+        .back-link:hover {{
+            text-decoration: underline;
         }}
     </style>
 </head>
 <body>
-    <div class="summary-box">
-        <h2>🎯 Veille Alternances Marketing Digital</h2>
-        <p style="margin: 5px 0; opacity: 0.9;">Bachelor 3 RSB · Début: Septembre 2026</p>
-        <div class="stats">
-            <div class="stat-new">{nb_new} NOUVELLES</div>
-            <div class="stat-item">{nb_total} offres actives total</div>
-            <div class="stat-item">LBA: {meta.get('source_lba', 0)}</div>
-            <div class="stat-item">Perplexity: {meta.get('source_perplexity', 0)}</div>
-        </div>
-    </div>
+    <div class="container">
+        <h1>📚 Historique des veilles</h1>
+        <p class="subtitle">Consultez les veilles des {RETENTION_DAYS} derniers jours</p>
+        
+        <ul class="archive-list">
+"""
     
-    <div class="info-box">
-        <p><strong>📎 Consulter les offres :</strong></p>
-        <p style="margin: 15px 0;">
-            <a href="{GITHUB_PAGES_URL}" class="link-button">🌐 Voir en ligne sur GitHub Pages →</a>
-        </p>
-        <p>ou ouvre la <strong>pièce jointe HTML</strong> pour consulter hors ligne.</p>
-        <ul>
-            <li>Badge <strong style="background: #e74c3c; color: white; padding: 2px 6px; border-radius: 4px;">NEW</strong> : Nouvelle offre détectée aujourd'hui</li>
-            <li>Badge gris : Offre toujours active (déjà connue)</li>
-            <li><span style="background: #27ae60; color: white; padding: 2px 6px; border-radius: 4px; font-size: 10px;">LBA</span> : Source API La Bonne Alternance</li>
-            <li><span style="background: #9b59b6; color: white; padding: 2px 6px; border-radius: 4px; font-size: 10px;">Perplexity</span> : Recherche complémentaire</li>
+    for i, archive in enumerate(archives):
+        date_str = archive.stem  # YYYY-MM-DD
+        try:
+            date_obj = datetime.strptime(date_str, '%Y-%m-%d')
+            date_formatted = date_obj.strftime('%d/%m/%Y')
+            
+            badge = '<span class="badge">Aujourd\'hui</span>' if i == 0 else ''
+            
+            html += f"""
+            <li class="archive-item">
+                <a href="archives/{archive.name}">
+                    <span class="date">{date_formatted}</span>
+                    {badge}
+                </a>
+            </li>
+"""
+        except ValueError:
+            continue
+    
+    html += """
         </ul>
+        
+        <a href="index.html" class="back-link">← Retour à la dernière veille</a>
     </div>
-    
-    <p style="margin-top: 30px; color: #666; font-size: 13px;">
-        📅 Mise à jour : {datetime.now().strftime('%d/%m/%Y %H:%M')}<br>
-        🤖 Scraper automatique LBA + Recherche Perplexity
-    </p>
 </body>
 </html>
 """
     
-    # Construction du message
-    msg = MIMEMultipart('mixed')
-    msg['Subject'] = subject
+    historique_path = DOCS_DIR / "historique.html"
+    historique_path.write_text(html, encoding='utf-8')
+    print(f"✅ Page historique générée : {historique_path}")
+
+
+def save_html_with_archives(html_content):
+    """Sauvegarde index.html + archive datée + génère historique"""
+    today = datetime.now().strftime('%Y-%m-%d')
+    
+    # Créer le dossier archives
+    ARCHIVES_DIR.mkdir(parents=True, exist_ok=True)
+    
+    # 1. Sauvegarder l'archive datée
+    archive_path = ARCHIVES_DIR / f"{today}.html"
+    archive_path.write_text(html_content, encoding='utf-8')
+    print(f"✅ Archive sauvegardée : {archive_path}")
+    
+    # 2. Écraser index.html (dernière version)
+    index_path = DOCS_DIR / "index.html"
+    index_path.write_text(html_content, encoding='utf-8')
+    print(f"✅ Index mis à jour : {index_path}")
+    
+    # 3. Nettoyer les vieilles archives
+    cleanup_old_archives()
+    
+    # 4. Générer la page historique
+    generate_historique_page()
+    
+    return index_path
+
+
+def git_commit_and_push():
+    """Commit et push HTML sur GitHub (non bloquant)"""
+    if not shutil.which('git'):
+        print("⚠️  Git non disponible - Skip publication")
+        print("   (Normal en local Windows, OK dans GitHub Actions)")
+        return
+    
+    try:
+        subprocess.run(['git', 'add', 'docs/'], cwd=BASE_DIR, check=True, capture_output=True)
+        subprocess.run([
+            'git', 'commit', '-m', 
+            f'Update veille {datetime.now().strftime("%Y-%m-%d %H:%M")}'
+        ], cwd=BASE_DIR, check=True, capture_output=True)
+        subprocess.run(['git', 'push'], cwd=BASE_DIR, check=True, capture_output=True)
+        print("✅ Publié sur GitHub Pages")
+    except subprocess.CalledProcessError:
+        print("⚠️  Erreur Git (non bloquant)")
+
+
+def send_email(html_path, data):
+    """Envoie l'email avec lien amélioré + pièce jointe HTML"""
+    meta = data.get('meta', {})
+    nb_total = meta.get('total_offres', 0)
+    nb_new = meta.get('nouvelles', 0)
+    
+    # Configuration email
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = f"🎯 Veille Alternances : {nb_new} nouvelles offres ({nb_total} total)"
     msg['From'] = GMAIL_USER
     msg['To'] = GMAIL_USER
     
-    # Attacher le corps du mail
-    msg.attach(MIMEText(body_html, 'html', 'utf-8'))
-    
-    # Attacher le fichier HTML
-    try:
-        with open(html_filename, 'rb') as f:
-            attachment = MIMEBase('text', 'html')
-            attachment.set_payload(f.read())
-            encoders.encode_base64(attachment)
+    # Corps HTML de l'email - AMÉLIORÉ avec lien plus visible
+    email_html = f"""<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {{
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }}
+        .container {{
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }}
+        .header {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 25px;
+        }}
+        .header h1 {{
+            margin: 0 0 10px 0;
+            font-size: 24px;
+        }}
+        .header p {{
+            margin: 0;
+            opacity: 0.95;
+            font-size: 14px;
+        }}
+        .stats {{
+            display: flex;
+            justify-content: space-around;
+            margin: 25px 0;
+            text-align: center;
+        }}
+        .stat {{
+            flex: 1;
+        }}
+        .stat-number {{
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+            display: block;
+        }}
+        .stat-label {{
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+        }}
+        
+        /* LIENS AMÉLIORÉS - Plus visibles */
+        .links-section {{
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: center;
+        }}
+        .links-title {{
+            font-size: 16px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }}
+        .btn {{
+            display: inline-block;
+            padding: 16px 32px;
+            margin: 8px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }}
+        .btn-primary {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white !important;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }}
+        .btn-primary:hover {{
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }}
+        .btn-secondary {{
+            background: #95a5a6;
+            color: white !important;
+        }}
+        .btn-secondary:hover {{
+            background: #7f8c8d;
+        }}
+        
+        .attachment-note {{
+            font-size: 13px;
+            color: #666;
+            margin-top: 15px;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }}
+        
+        .legend {{
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 13px;
+        }}
+        .legend-title {{
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }}
+        .legend ul {{
+            margin: 5px 0;
+            padding-left: 20px;
+        }}
+        .legend li {{
+            margin: 5px 0;
+        }}
+        .badge {{
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: bold;
+            color: white;
+        }}
+        .badge.new {{ background: #e74c3c; }}
+        .badge.lba {{ background: #3498db; }}
+        .badge.perplexity {{ background: #9b59b6; }}
+        
+        .footer {{
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎯 Veille Alternances Marketing Digital</h1>
+            <p>Bachelor 3 RSB · Début: Septembre 2026</p>
+        </div>
+        
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat">
+                <span class="stat-number">{nb_new}</span>
+                <div class="stat-label">Nouvelles</div>
+            </div>
+            <div class="stat">
+                <span class="stat-number">{nb_total}</span>
+                <div class="stat-label">Total actives</div>
+            </div>
+        </div>
+        
+        <!-- Liens principaux - AMÉLIORÉS -->
+        <div class="links-section">
+            <div class="links-title">📋 Consulter les offres détaillées</div>
             
-            filename = f'Alternances_Marketing_Digital_{datetime.now().strftime("%Y%m%d")}.html'
-            attachment.add_header('Content-Disposition', f'attachment; filename="{filename}"')
-            msg.attach(attachment)
-    except Exception as e:
-        print(f"⚠️ Erreur attachement : {e}")
+            <a href="{GITHUB_PAGES_URL}" class="btn btn-primary">
+                🌐 Voir les dernières offres en ligne
+            </a>
+            <br>
+            <a href="{GITHUB_PAGES_URL}historique.html" class="btn btn-secondary">
+                📁 Consulter l'historique des 30 jours
+            </a>
+            
+            <div class="attachment-note">
+                💡 <strong>Conseil :</strong> Ou ouvre la <strong>pièce jointe HTML</strong> ci-dessous pour consulter hors ligne
+            </div>
+        </div>
+        
+        <!-- Légende -->
+        <div class="legend">
+            <div class="legend-title">Légende des badges :</div>
+            <ul>
+                <li><span class="badge new">NEW</span> : Nouvelle offre détectée aujourd'hui</li>
+                <li><span class="badge">Active</span> : Offre toujours active (déjà connue)</li>
+                <li><span class="badge lba">LBA</span> : Source API La Bonne Alternance</li>
+                <li><span class="badge perplexity">Perplexity</span> : Recherche complémentaire</li>
+            </ul>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            📅 Mise à jour : {datetime.now().strftime('%d/%m/%Y %H:%M')}<br>
+            🤖 Scraper automatique quotidien LBA + Recherche Perplexity
+        </div>
+    </div>
+</body>
+</html>
+"""
+    
+    msg.attach(MIMEText(email_html, 'html'))
+    
+    # Pièce jointe HTML
+    with open(html_path, 'rb') as f:
+        attachment = MIMEBase('text', 'html')
+        attachment.set_payload(f.read())
+        encoders.encode_base64(attachment)
+        attachment.add_header(
+            'Content-Disposition',
+            f'attachment; filename="veille_alternances_{datetime.now().strftime("%Y-%m-%d")}.html"'
+        )
+        msg.attach(attachment)
     
     # Envoi
     try:
-        print("Envoi de l'email...")
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
             server.login(GMAIL_USER, GMAIL_PASSWORD)
             server.send_message(msg)
-        print(f"✅ Email envoyé : {nb_new} nouvelles, {nb_total} total")
-        return True
+        print(f"✅ Email envoyé à : {GMAIL_USER}")
     except Exception as e:
-        print(f"❌ Erreur email : {e}")
-        return False
+        print(f"❌ Erreur envoi email : {e}")
 
 
 def main():
-    print("=" * 60)
-    print("🚀 GÉNÉRATION HTML + ENVOI EMAIL")
-    print("=" * 60)
+    """Fonction principale avec gestion des archives"""
+    print("=" * 70)
+    print("🚀 GÉNÉRATION HTML + ARCHIVES + ENVOI EMAIL")
+    print("=" * 70)
     
-    # 1. Charger les offres fusionnées
+    print("\n[1/5] Chargement des données...")
     data = load_offers()
-    print(f"\n✅ {data['meta']['total_offres']} offres chargées")
-    print(f"🆕 {data['meta']['nouvelles']} nouvelles")
-    print(f"📊 Sources : {', '.join(data['meta']['sources'])}")
+    print(f"✅ {len(data['offres'])} offres chargées")
     
-    # 2. Générer HTML
-    print("\nGénération du HTML...")
-    html_path = generate_html(data)
-    print(f"✅ HTML sauvegardé : {html_path}")
+    print("\n[2/5] Génération du HTML...")
+    html_content = generate_html(data)
     
-    # 3. Git commit (si disponible)
+    print("\n[3/5] Sauvegarde avec archives (30 jours)...")
+    html_path = save_html_with_archives(html_content)
+    
+    print("\n[4/5] Publication GitHub...")
     git_commit_and_push()
     
-    # 4. Envoyer email
-    print("\n[4/4] Envoi de l'email...")
+    print("\n[5/5] Envoi de l'email...")
     send_email(html_path, data)
     
-    print("\n" + "=" * 60)
+    print("\n" + "=" * 70)
     print("✅ PROCESSUS TERMINÉ")
-    print(f"📄 Fichier HTML : {html_path}")
+    print(f"📄 Index : {html_path}")
     print(f"📧 Email envoyé à : {GMAIL_USER}")
-    print("=" * 60)
+    print(f"🌐 URL en ligne : {GITHUB_PAGES_URL}")
+    print(f"📚 Historique : {GITHUB_PAGES_URL}historique.html")
+    print("=" * 70)
 
 
 if __name__ == "__main__":

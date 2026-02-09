@@ -1,0 +1,99 @@
+name: 🎯 Veille Alternances Quotidienne
+
+on:
+  push:
+    paths:
+      - 'data/offres_perplexity.json'
+      - 'data/offres_lba.json'
+  
+  schedule:
+    - cron: '30 8 * * *'
+  
+  workflow_dispatch:
+
+jobs:
+  veille-alternances:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+      
+      - name: 🐍 Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: 📦 Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: 🔍 [1/4] Scraper LBA
+        run: |
+          echo "════════════════════════════════════════"
+          echo "🔍 [1/4] Scraping La Bonne Alternance..."
+          echo "════════════════════════════════════════"
+          python scripts/scraper_lba.py || echo "⚠️ Scraper LBA échoué (non bloquant)"
+          echo "✅ Scraping LBA terminé"
+          echo ""
+      
+      - name: ✅ [2/4] Validation LBA
+        run: |
+          echo "════════════════════════════════════════"
+          echo "✅ [2/4] Validation des offres LBA..."
+          echo "════════════════════════════════════════"
+          python scripts/validator_lba.py || echo "⚠️ Validation échouée (non bloquant)"
+          echo "✅ Validation terminée"
+          echo ""
+      
+      - name: 🔀 [3/4] Merge offres LBA + Perplexity
+        run: |
+          echo "════════════════════════════════════════"
+          echo "🔀 [3/4] Fusion des offres..."
+          echo "════════════════════════════════════════"
+          python scripts/merge_offers.py
+          echo "✅ Fusion terminée"
+          echo ""
+      
+      - name: 📧 [4/4] Generate HTML + Send Email
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
+        run: |
+          echo "════════════════════════════════════════"
+          echo "📧 [4/4] Génération HTML et envoi email..."
+          echo "════════════════════════════════════════"
+          python scripts/generate_html_email.py
+          echo "✅ Email envoyé avec succès"
+          echo ""
+      
+      - name: 💾 Commit et Push HTML généré
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "Veille Alternances Bot"
+          git add docs/
+          git add data/
+          
+          if git diff --staged --quiet; then
+            echo "Aucun changement à commiter"
+          else
+            git commit -m "🤖 Mise à jour veille $(date +'%Y-%m-%d %H:%M')"
+            git push
+            echo "✅ Changements publiés sur GitHub Pages"
+          fi
+      
+      - name: 📊 Résumé final
+        run: |
+          echo ""
+          echo "════════════════════════════════════════"
+          echo "✅ WORKFLOW TERMINÉ AVEC SUCCÈS"
+          echo "════════════════════════════════════════"
+          echo "📄 HTML : docs/index.html"
+          echo "📚 Archives : docs/archives/"
+          echo "🌐 URL : https://fhonore5312.github.io/alternances-veille/"
+          echo "════════════════════════════════════════"
