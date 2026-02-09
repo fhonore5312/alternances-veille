@@ -1,14 +1,14 @@
 {
   "meta": {
-    "date_generation": "2026-02-08 19:21:07",
+    "date_generation": "2026-02-09 18:35:24",
     "sources": [
       "LBA"
     ],
-    "total_offres": 11,
-    "nouvelles": 4,
-    "actives": 7,
-    "validation_date": "2026-02-08 19:31:50",
-    "validated": 11,
+    "total_offres": 10,
+    "nouvelles": 0,
+    "actives": 10,
+    "validation_date": "2026-02-09 18:36:22",
+    "validated": 10,
     "expired": 7,
     "errors": 0,
     "uncertain": 5
@@ -17,7 +17,7 @@
     {
       "id": "chargé(e)demissioncommercemarketing(nantes,44)_manpowerrh_44000",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "Chargé(e) de Mission Commerce/Marketing (Nantes, 44)",
       "entreprise": "Manpower RH",
       "ville": "Nantes",
@@ -41,7 +41,7 @@
       "priorite_ville": 2,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-08 19:30:31",
+        "checked_at": "2026-02-09 18:35:25",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -52,7 +52,7 @@
     {
       "id": "managermarketingautomation&amp;crm_maisonsdumonde_44300",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "Manager marketing Automation &amp; CRM",
       "entreprise": "Maisons du Monde",
       "ville": "Nantes",
@@ -77,7 +77,7 @@
       "priorite_ville": 2,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-08 19:30:34",
+        "checked_at": "2026-02-09 18:35:28",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -88,7 +88,7 @@
     {
       "id": "managermarketingautomation&amp;crm_maisonsdumonde_44120",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "Manager marketing Automation &amp; CRM",
       "entreprise": "Maisons du Monde",
       "ville": "Vertou",
@@ -113,7 +113,7 @@
       "priorite_ville": 2,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-08 19:30:37",
+        "checked_at": "2026-02-09 18:35:30",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -151,7 +151,7 @@
       "priorite_ville": 3,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-08 19:31:02",
+        "checked_at": "2026-02-09 18:35:48",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -162,7 +162,7 @@
     {
       "id": "stageoualternanceattaché(e)relationpresseexperimental_experimentalgroup_75009",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "Stage ou alternance Attaché(e) Relation Presse / Experimental",
       "entreprise": "EXPERIMENTAL GROUP",
       "ville": "Paris 9e Arrondissement",
@@ -184,7 +184,7 @@
       "priorite_ville": 3,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-08 19:31:05",
+        "checked_at": "2026-02-09 18:35:51",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -221,7 +221,7 @@
       "priorite_ville": 3,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-08 19:31:18",
+        "checked_at": "2026-02-09 18:36:00",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -255,7 +255,7 @@
       "priorite_ville": 3,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-08 19:31:24",
+        "checked_at": "2026-02-09 18:36:05",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -290,7 +290,7 @@
       "priorite_ville": 3,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-08 19:31:28",
+        "checked_at": "2026-02-09 18:36:08",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -325,7 +325,7 @@
       "priorite_ville": 3,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-08 19:31:35",
+        "checked_at": "2026-02-09 18:36:13",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -359,48 +359,11 @@
       "priorite_ville": 3,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-08 19:31:38",
+        "checked_at": "2026-02-09 18:36:16",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
         "detected_date": "publiées sur meteojob. postulez dès maintenant en ligne.\"><meta property=\"og:type\" content=\"website\"><meta property=\"og:title\" content=\"chargé de marketing f/h\"><meta property=\"og:url\" content=\"https://www.meteojob.com/candidat/offres/offre-d-emploi-charge-de-marketing-h-f-creteil-ile-de-france-alternance-apprentissage-50216765\"><meta property=\"og:image\" content=\"https://www.meteojob.com/images/4/8/8/1884",
-        "confidence": "high"
-      }
-    },
-    {
-      "id": "apprenti.esupportpublicationmédiasgroupefh-rajafrance_rajafrance_93290",
-      "source": "LBA",
-      "status": "active",
-      "titre": "Apprenti.e support publication médias groupe F/H - Raja France",
-      "entreprise": "Raja France",
-      "ville": "Tremblay-en-France",
-      "code_postal": "93290",
-      "adresse_complete": "93290 Tremblay-en-France",
-      "description": "Au sein du service Contenu et Merchandising du Marketing France, vous serez rattaché(e) à la Responsable Process & Support Publication Médias Groupe. Vous contribuerez activement à la veille...",
-      "description_complete": "Au sein du service Contenu et Merchandising du Marketing France, vous serez rattaché(e) à la Responsable Process & Support Publication Médias Groupe. Vous contribuerez activement à la veille concurrentielle, à la publication multicanale et au support e-marketing, en partenariat avec les équipes internes. Vos principales missions seront : Veille concurrence & analyse stratégique - Analyser les stratégies concurrentes Print et Web. - Suivre l’actualité produits et services (prix, innovations, nouvelles gammes...). - Identifier les actions de communication des concurrents (réseaux sociaux, campagnes, supports…). - Étudier les pratiques commerciales (prospection, argumentaires, gestion client…). - Formuler des analyses et recommandations sur les best practices du marché. Support à la chaîne de publication multicanale - Contribuer à la préparation des briefs (catalogues, newsletters, posts réseaux sociaux...). - Participer à la relecture des supports print et digitaux. - Aider à la recette fonctionnelle du site raja.fr (nouveautés, corners, parcours clients…). - Apprendre et appliquer les étapes du processus Print (du MDM à la maquette) et du processus Web (de la MC Offer à Intershop). Support e-marketing & évènementiel - Aider à l’organisation et la préparation des salons professionnels. - Participer à la réalisation des brochures et supports force de vente.- Formation préparée : Bac+3 à Bac+5 en marketing, communication, e-business ou commerce. - Compétences techniques : - Connaissances en merchandising / e-merchandising. - Maîtrise des outils bureautiques (Excel, PowerPoint, Word). - Bonne compréhension des environnements web et print. - Langues : Bon niveau d’anglais souhaité. - Qualités personnelles : - Rigueur et sens du détail - Curiosité et réactivité - Esprit d'équipe - Aisance communicationnelle - Sens de l’entreprise et volonté d’apprendre Ce que nous offrons : - Des opportunités de développement professionnel et de formation continue. - Primes de participation et intéressement sous conditions d'ancienneté - Mutuelle (prise en à charge à 82% par RAJA) / prévoyance - Prime de transport de 300€/an OU remboursement du Passe Navigo à hauteur de 75 %/mois. - Tickets restaurant de 12€ (60% employeur / 40% salarié) / Restaurants inter-entreprises ou cantine avec traiteur sur place. - Chèque CESU 300 €/an (jusqu’à fin décembre 2025) - Programme RAJASport (30€/an), esthéticienne, coiffeur, ostéopathe - Programme RAJApeople : MicroDon, participation aux évènements solidaires - Autres : CSE, Chèques vacances, chèques rentrée scolaire, chèques cadeaux, Avantages sur les produits, Crèche… - Events : De nombreuses fêtes organisées tout le long de l’année (fête de Noel, fête de l’été, galette des rois, semaine du développement durable…)",
-      "competences_detectees": [
-        "SEA/Paid Media",
-        "Social Media",
-        "Content Marketing",
-        "Email Marketing",
-        "UX/Design"
-      ],
-      "url_candidature": "https://careers.werecruit.io/fr/groupe-raja/offres/apprentie-support-publication-medias-groupe-fh-d85f32?utm_source=francetravail&utm_medium=job-board",
-      "type_contrat": "Professionnalisation",
-      "duree_contrat": "12 mois",
-      "date_debut": null,
-      "date_creation": "08/12/2025",
-      "date_expiration": "08/02/2026",
-      "plateforme_source": "France Travail",
-      "ville_recherche": "Paris",
-      "priorite_ville": 3,
-      "validation_status": "validated",
-      "validation_details": {
-        "checked_at": "2026-02-08 19:31:50",
-        "status_code": 200,
-        "is_expired": false,
-        "has_apply_button": true,
-        "detected_date": null,
         "confidence": "high"
       }
     }
