@@ -1,21 +1,21 @@
 {
   "meta": {
-    "date_generation": "2026-02-10 09:35:21",
+    "date_generation": "2026-02-10 20:46:09",
     "sources": [
       "LBA",
       "Perplexity"
     ],
-    "total_offres": 26,
-    "nouvelles": 2,
-    "actives": 24,
+    "total_offres": 24,
+    "nouvelles": 24,
+    "actives": 0,
     "source_lba": 24,
-    "source_perplexity": 2
+    "source_perplexity": 1
   },
   "offres": [
     {
       "id": "chargé(e)demissioncommercemarketing(nantes,44)_manpowerrh_44000",
       "source": "LBA",
-      "status": "active",
+      "status": "new",
       "titre": "Chargé(e) de Mission Commerce/Marketing (Nantes, 44)",
       "entreprise": "Manpower RH",
       "ville": "Nantes",
@@ -41,7 +41,7 @@
     {
       "id": "managermarketingautomation&amp;crm_maisonsdumonde_44300",
       "source": "LBA",
-      "status": "active",
+      "status": "new",
       "titre": "Manager marketing Automation &amp; CRM",
       "entreprise": "Maisons du Monde",
       "ville": "Nantes",
@@ -68,7 +68,7 @@
     {
       "id": "managermarketingautomation&amp;crm_maisonsdumonde_44120",
       "source": "LBA",
-      "status": "active",
+      "status": "new",
       "titre": "Manager marketing Automation &amp; CRM",
       "entreprise": "Maisons du Monde",
       "ville": "Vertou",
@@ -93,68 +93,9 @@
       "priorite_ville": 2
     },
     {
-      "id": "bankin_alternancegrowthmarketing_paris",
-      "source": "Perplexity",
-      "status": "new",
-      "titre": "Alternance / Growth Marketing - Paris (H/F/X)",
-      "entreprise": "Bankin'",
-      "ville": "Paris",
-      "code_postal": "75011",
-      "adresse_complete": "Métro République/Parmentier/Oberkampf, 75011 Paris",
-      "description": "Gestion campagnes acquisition online (Meta, TikTok, Google Ads, Snapchat), analyse performance ROAS, création dashboards KPIs, optimisation process, tests A/B. Équipe marketing dynamique, app finance grand public.",
-      "description_complete": "Au sein de l'équipe Marketing de Bankin', une des applications les plus téléchargées sur les stores, tu seras responsable de la mise en place, du suivi et de l'optimisation des campagnes d'acquisition en ligne sur différentes plateformes (Meta, TikTok, Google Ads, Snapchat). Tu analyseras la performance des campagnes et proposeras des améliorations pour augmenter le ROAS. Tu participeras également à l'élaboration des publicités (benchmark et brief), créeras des dashboards pour mesurer les performances, t'approprieras les principaux KPIs de croissance, et participeras à l'amélioration et l'automatisation des process. Environnement dynamique avec équipe jeune et expérimentée, bureaux au centre de Paris, culture startup avec activités team-building.",
-      "competences_detectees": [
-        "SEA/Paid Media",
-        "Analytics",
-        "Growth/Acquisition",
-        "Social Media"
-      ],
-      "url_candidature": "https://www.welcometothejungle.com/fr/companies/bankin/jobs/alternance-growth-marketing-paris-h-f-x_paris_BANKI_aKpP4Mr",
-      "type_contrat": "Apprentissage + Professionnalisation",
-      "duree_contrat": "12 mois minimum",
-      "date_debut": "Septembre 2026",
-      "date_creation": "13/01/2026",
-      "date_expiration": null,
-      "plateforme_source": "Welcome to the Jungle",
-      "ville_recherche": "Paris",
-      "priorite_ville": 3,
-      "first_seen": "2026-02-10",
-      "last_seen": "2026-02-10"
-    },
-    {
-      "id": "botanik_alternantseocontentmarketing_paris",
-      "source": "Perplexity",
-      "status": "new",
-      "titre": "[Botanik] Alternant(e) Marketing / Content (H/F) - SEO",
-      "entreprise": "Botanik (agence Junto)",
-      "ville": "Paris",
-      "code_postal": "75000",
-      "adresse_complete": "Paris",
-      "description": "Création contenus SEO (articles blog, posts LinkedIn, ebooks), gestion site web et publications, coordination campagnes multicanales (Google Ads, LinkedIn Ads), suivi KPIs et optimisation. Agence SEO spécialisée GEO, collaboration directe fondateurs.",
-      "description_complete": "Intégré(e) à Botanik.ai, agence SEO axée sur la croissance durable, tu seras un pilier de la stratégie de visibilité : création de contenus à forte valeur ajoutée (articles de blog orientés SEO, posts LinkedIn, ebooks, guides, newsletters, cas clients), gestion de la publication et animation des canaux (site, LinkedIn, email), mise à jour du site web (landing pages, cas clients, articles), coordination des campagnes marketing multicanales (Google Ads, LinkedIn Ads, SEO, réseaux sociaux, événements) en lien avec les équipes design, conseil et tech, et suivi des performances avec analyse des KPIs (trafic, engagement, leads) pour optimiser les actions. Tu collaboreras directement avec les fondateurs dans une structure dynamique et ambitieuse.",
-      "competences_detectees": [
-        "SEO",
-        "Content Marketing",
-        "SEA/Paid Media",
-        "Social Media",
-        "Analytics"
-      ],
-      "url_candidature": "https://www.welcometothejungle.com/fr/companies/junto/jobs/botanik-alternant-marketing-content-h-f-seo_paris",
-      "type_contrat": "Apprentissage + Professionnalisation",
-      "duree_contrat": "12-24 mois",
-      "date_debut": "Septembre 2026",
-      "date_creation": "05/02/2026",
-      "date_expiration": null,
-      "plateforme_source": "Welcome to the Jungle",
-      "ville_recherche": "Paris",
-      "priorite_ville": 3,
-      "first_seen": "2026-02-10",
-      "last_seen": "2026-02-10"
-    },
-    {
       "id": "alternanceassistantmarketingproduit-parishf_jobmania_75001",
       "source": "LBA",
-      "status": "active",
+      "status": "new",
       "titre": "Alternance Assistant Marketing Produit - Paris H/F",
       "entreprise": "Jobmania",
       "ville": "Paris",
@@ -179,7 +120,7 @@
     {
       "id": "useracquisition&amp;marketingmanagerhf_scalebay_75001",
       "source": "LBA",
-      "status": "active",
+      "status": "new",
       "titre": "User Acquisition &amp; Marketing Manager H/F",
       "entreprise": "Scalebay",
       "ville": "Paris",
@@ -206,7 +147,7 @@
     {
       "id": "alternantassistanttrademarketingetkamhf_nestlé_75001",
       "source": "LBA",
-      "status": "active",
+      "status": "new",
       "titre": "Alternant assistant Trade marketing et KAM H/F",
       "entreprise": "Nestlé",
       "ville": "Paris",
@@ -228,33 +169,9 @@
       "priorite_ville": 3
     },
     {
-      "id": "alternantassistanttrademarketingetkamhf_nestlé_75001",
-      "source": "LBA",
-      "status": "active",
-      "titre": "Alternant assistant Trade marketing et KAM H/F",
-      "entreprise": "Nestlé",
-      "ville": "Paris",
-      "code_postal": "75001",
-      "adresse_complete": "75001 Paris",
-      "description": "VOTRE QUOTIDIEN CHEZ NESPRESSO • Vous mettez en place des opérations Online : activation de nouveaux leviers digitaux (Social Ads, Retargeting,Display...), développement des supports créatifs, suivi...",
-      "description_complete": "VOTRE QUOTIDIEN CHEZ NESPRESSO • Vous mettez en place des opérations Online : activation de nouveaux leviers digitaux (Social Ads, Retargeting,Display...), développement des supports créatifs, suivi de la mise en place des leviers et veille concurrentielle • Vous contribuez au développement des opérations Offline : création des supports spécifiques pour les enseignes, brief agence, production des éléments de PLV et mise en place et suivi dans les magasins. • Vous réalisez des présentations analytiques sur les résultats des différents projets menés • Vous participez au merchandising des enseignes : accompagnement briefs aux agences, suivi du déploiement de nouveaux mobiliers, suivi de la qualité de la prestation, suivi de la facturation. • Vous contribuez à la mise en place/suivi/développement d'offres sur les canaux alternatifs Prendre part à des tournées terrain aux cotés des commerciaux afin d'identifier de nouveaux leviers. Prêt(e) à relever le challenge ? CE QU'ON VOUS PROPOSE • Alternance • Rémunération : Plus favorable que la rémunération légale, variable selon profil • Remboursement des frais de transport à hauteur de 75% • Primes de participation et d'intéressement sur les résultats de l'année n-1 avec un dispositif d'épargne salariale entreprise • Avantages CSE : Remboursement \" Loisirs et Vacances \", chèques cadeaux... • 2 jours de télétravail possible par semaine CE QU'ON ATTEND DE VOUS • Vous .avez un niveau bac +4/5 avec un spécialité marketing • Vous maîtrisez Powerpoint et Excel • Vous êtes reconnu(e) pour vos capacité d'analyse et de synthèse • Votre êtes orienté résultats et vous savez faire preuve d'initiative et de créativité • Vous êtes un(e) vrai(e) team player, car chez Nespresso, le collectif prime ! • Vous êtes curieux(se) et agile Et si le café n'est pas votre tasse de thé ? Aucun problème, nous sommes là pour vous accompagner ! LE PROCESSUS DE RECRUTEMENT 1 : Votre CV a été sélectionné, vous rencontrez l'équipe recrutement. 2 : Votre profil matche, le tuteur vous appelle pour un entretien. 3 : Ça y est ! Vous êtes arrivés au bout du process ! Vous êtes en situation de handicap ? Nespresso est une entreprise handiaccueillante et nos équipes seront à votre écoute dès le processus de recrutement pour vous en dire plus sur nos actions d'accompagnement. Notre culture d'inclusion et de respect mutuel a pour vocation de permettre à tout le monde d'être soi-même au travail. CULTIVONS ENSEMBLE LE MEILLEUR EN CHACUN DE NOUS Chez Nespresso, nous sommes tous des passionnés de la relation client, peu importe notre métier ! Que ce soit en travaillant avec le grand public (B2C) ou avec les professionnels (B2B), nous mettons tout en œuvre pour offrir la meilleure expérience à nos clients. En tant qu'entreprise engagée et certifiée Bcorp™, nous agissons chaque jour pour préserver l'avenir du café en prenant soin de l'environnement, des caféiculteurs, de nos collaborateurs et des communautés auxquelles nous appartenons. Avec des opportunités d'évolution et un parcours de formation complet, Nespresso, certifiée Top Employer, est l'endroit idéal pour faire grandir votre carrière. Rejoignez-nous et découvrez une entreprise innovante où travailler rime avec passion ! Pour en savoir plus sur nos engagements et sur notre culture d'entreprise, rendez-vous sur notre site Nespresso Agit et sur notre page Welcome to the Jungle #SPONSO",
-      "competences_detectees": [
-        "UX/Design"
-      ],
-      "url_candidature": "https://www.jobteaser.com/fr/job-offers/ec54bef3-ef83-4f91-aa61-bd3a2e076133-nestle-alternant-assistant-trade-marketing-et-kam-h-f?utm_campaign=partner_access&utm_source=la_bonne_alternance&utm_medium=www",
-      "type_contrat": "Apprentissage + Professionnalisation",
-      "duree_contrat": null,
-      "date_debut": null,
-      "date_creation": "29/01/2026",
-      "date_expiration": "29/03/2026",
-      "plateforme_source": "Jobteaser",
-      "ville_recherche": "Paris",
-      "priorite_ville": 3
-    },
-    {
       "id": "assistant(e)marketingalternance_valeo_75001",
       "source": "LBA",
-      "status": "active",
+      "status": "new",
       "titre": "Assistant(e) Marketing Alternance",
       "entreprise": "Valeo",
       "ville": "Paris",
@@ -282,7 +199,7 @@
     {
       "id": "yumi🌶créateur.tricedecontenu(tiktok&instagram)actifcreditstandard_pepites(yumi/paf)_75001",
       "source": "LBA",
-      "status": "active",
+      "status": "new",
       "titre": "YUMI 🌶 Créateur.trice de Contenu (TikTok & Instagram) Actif Credit Standard",
       "entreprise": "PEPITES ( YUMI / PAF)",
       "ville": "Paris",
@@ -309,7 +226,7 @@
     {
       "id": "alternance-assistant(e)deproductiondecontenus-octobreeditions(hf)_sézane_75001",
       "source": "LBA",
-      "status": "active",
+      "status": "new",
       "titre": "Alternance - Assistant(e) de Production de Contenus - Octobre Editions (H/F)",
       "entreprise": "Sézane",
       "ville": "Paris",
@@ -336,7 +253,7 @@
     {
       "id": "assist.chargé(e)campagnesmarktdigital-altern(hf)_ccmperformance_75009",
       "source": "LBA",
-      "status": "active",
+      "status": "new",
       "titre": "Assist. Chargé(e) campagnes markt digital - Altern (H/F)",
       "entreprise": "CCM Performance",
       "ville": "Paris 9e Arrondissement",
@@ -365,7 +282,7 @@
     {
       "id": "stageoualternanceattaché(e)relationpresseexperimental_experimentalgroup_75009",
       "source": "LBA",
-      "status": "active",
+      "status": "new",
       "titre": "Stage ou alternance Attaché(e) Relation Presse / Experimental",
       "entreprise": "EXPERIMENTAL GROUP",
       "ville": "Paris 9e Arrondissement",
@@ -389,7 +306,7 @@
     {
       "id": "[alternance]assistantwebmarketingfh(hf)_financieredespaiementselectroniques_94220",
       "source": "LBA",
-      "status": "active",
+      "status": "new",
       "titre": "[Alternance] Assistant Web Marketing F/H (H/F)",
       "entreprise": "FINANCIERE DES PAIEMENTS  ELECTRONIQUES",
       "ville": "Charenton-le-Pont",
@@ -416,7 +333,7 @@
     {
       "id": "apprentice-groupmarketingassistanthf_forvismazars_92300",
       "source": "LBA",
-      "status": "active",
+      "status": "new",
       "titre": "Apprentice - Group Marketing Assistant H/F",
       "entreprise": "Forvis Mazars",
       "ville": "Levallois-Perret",
@@ -443,7 +360,7 @@
     {
       "id": "alternant(e)créationdecontenusvidéo-communicationinterne-fh_pwcfrance_92200",
       "source": "LBA",
-      "status": "active",
+      "status": "new",
       "titre": "Alternant(e) Création de Contenus Vidéo - Communication Interne - F/H",
       "entreprise": "PwC France",
       "ville": "Neuilly-sur-Seine",
@@ -469,7 +386,7 @@
     {
       "id": "assistantmarketingetcommunication-alternance-hf_globegroupe_92200",
       "source": "LBA",
-      "status": "active",
+      "status": "new",
       "titre": "ASSISTANT MARKETING ET COMMUNICATION- ALTERNANCE - H/F",
       "entreprise": "GLOBE GROUPE",
       "ville": "Neuilly-sur-Seine",
@@ -497,7 +414,7 @@
     {
       "id": "alternance-assistantpartenariatssportsfootballhf_canalplus_92130",
       "source": "LBA",
-      "status": "active",
+      "status": "new",
       "titre": "Alternance - Assistant Partenariats Sports Football H/F",
       "entreprise": "Canal Plus",
       "ville": "Issy-les-Moulineaux",
@@ -525,7 +442,7 @@
     {
       "id": "customersuccessmanagerapprentice_catalinafrance_92100",
       "source": "LBA",
-      "status": "active",
+      "status": "new",
       "titre": "Customer success manager Apprentice",
       "entreprise": "Catalina France",
       "ville": "Boulogne-Billancourt",
@@ -550,7 +467,7 @@
     {
       "id": "alternance-assistantmarketingdesventestourismehf_sodexolive_92100",
       "source": "LBA",
-      "status": "active",
+      "status": "new",
       "titre": "ALTERNANCE - ASSISTANT MARKETING DES VENTES TOURISME H/F",
       "entreprise": "Sodexo Live",
       "ville": "Boulogne-Billancourt",
@@ -576,7 +493,7 @@
     {
       "id": "apprenti(e)coordinateurriceseo_antalis_92100",
       "source": "LBA",
-      "status": "active",
+      "status": "new",
       "titre": "Apprenti(e) Coordinateur/rice SEO",
       "entreprise": "Antalis",
       "ville": "Boulogne-Billancourt",
@@ -603,7 +520,7 @@
     {
       "id": "alternance-assistantpartenariatsetpromotionshf_canalplus_92800",
       "source": "LBA",
-      "status": "active",
+      "status": "new",
       "titre": "Alternance - Assistant Partenariats et Promotions H/F",
       "entreprise": "Canal Plus",
       "ville": "Puteaux",
@@ -629,7 +546,7 @@
     {
       "id": "alternantassistant(e)marketing(fh)-adeliamedical_adeliamedical_92230",
       "source": "LBA",
-      "status": "active",
+      "status": "new",
       "titre": "Alternant Assistant(e) Marketing (F/H) - ADELIA MEDICAL",
       "entreprise": "ADELIA MEDICAL",
       "ville": "Gennevilliers",
@@ -655,7 +572,7 @@
     {
       "id": "assistantmarketingdel'offreproduitshf_krysgroup_92000",
       "source": "LBA",
-      "status": "active",
+      "status": "new",
       "titre": "Assistant Marketing de l'Offre Produits H/F",
       "entreprise": "Krys Group",
       "ville": "Nanterre",
@@ -681,7 +598,7 @@
     {
       "id": "assistantchefdeprojetmarketingdigitalhf_krysgroup_92000",
       "source": "LBA",
-      "status": "active",
+      "status": "new",
       "titre": "Assistant Chef de Projet Marketing Digital H/F",
       "entreprise": "Krys Group",
       "ville": "Nanterre",
@@ -702,6 +619,35 @@
       "plateforme_source": "Hellowork",
       "ville_recherche": "Paris",
       "priorite_ville": 3
+    },
+    {
+      "id": "bankin_alternancegrowthmktg_paris",
+      "source": "Perplexity",
+      "status": "new",
+      "titre": "Alternance / Growth Marketing - Paris (H/F/X)",
+      "entreprise": "Bankin'",
+      "ville": "Paris",
+      "code_postal": "75000",
+      "adresse_complete": "Paris, France",
+      "description": "Mise en place et optimisation de campagnes d'acquisition online (Meta, TikTok, Google Ads, Snapchat). Analyse de performance, amélioration du ROAS, création de dashboards et automatisation des process.",
+      "description_complete": "Bankin' recherche un alternant en Growth Marketing pour rejoindre une équipe dynamique. Tu seras responsable de la mise en place, du suivi et de l'optimisation des campagnes d'acquisition en ligne sur différentes plateformes (Meta, TikTok, Google Ads, Snapchat). Tes missions incluront l'analyse de la performance des campagnes avec proposition d'améliorations pour augmenter le ROAS, la participation à l'élaboration des publicités (benchmark et brief), la création de dashboards pour mesurer les performances, l'appropriation des principaux KPIs de croissance, et la participation à l'amélioration et l'automatisation des process. Tu travailleras au sein d'une des applications les plus téléchargées sur les stores avec toute l'équipe Marketing.",
+      "competences_detectees": [
+        "SEA/Paid Media",
+        "Analytics",
+        "Growth/Acquisition",
+        "Social Media"
+      ],
+      "url_candidature": "https://www.welcometothejungle.com/fr/companies/bankin/jobs/alternance-growth-marketing-paris-h-f-x_paris_BANKI_aKpP4Mr",
+      "type_contrat": "Apprentissage + Professionnalisation",
+      "duree_contrat": "12 mois minimum",
+      "date_debut": "Septembre 2026",
+      "date_creation": "13/01/2026",
+      "date_expiration": null,
+      "plateforme_source": "Welcome to the Jungle",
+      "ville_recherche": "Paris",
+      "priorite_ville": 3,
+      "first_seen": "2026-02-10",
+      "last_seen": "2026-02-10"
     }
   ]
 }
