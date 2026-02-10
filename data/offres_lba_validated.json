@@ -1,17 +1,17 @@
 {
   "meta": {
-    "date_generation": "2026-02-09 18:45:41",
+    "date_generation": "2026-02-10 08:58:32",
     "sources": [
       "LBA"
     ],
-    "total_offres": 10,
+    "total_offres": 9,
     "nouvelles": 0,
-    "actives": 10,
-    "validation_date": "2026-02-09 18:46:38",
-    "validated": 10,
+    "actives": 9,
+    "validation_date": "2026-02-10 08:59:36",
+    "validated": 9,
     "expired": 7,
     "errors": 0,
-    "uncertain": 5
+    "uncertain": 8
   },
   "offres": [
     {
@@ -41,7 +41,7 @@
       "priorite_ville": 2,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-09 18:45:42",
+        "checked_at": "2026-02-10 08:58:33",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -77,7 +77,7 @@
       "priorite_ville": 2,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-09 18:45:44",
+        "checked_at": "2026-02-10 08:58:36",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -113,7 +113,7 @@
       "priorite_ville": 2,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-09 18:45:47",
+        "checked_at": "2026-02-10 08:58:38",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -151,7 +151,7 @@
       "priorite_ville": 3,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-09 18:46:05",
+        "checked_at": "2026-02-10 08:58:59",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -184,7 +184,7 @@
       "priorite_ville": 3,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-09 18:46:08",
+        "checked_at": "2026-02-10 08:59:02",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -221,7 +221,7 @@
       "priorite_ville": 3,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-09 18:46:16",
+        "checked_at": "2026-02-10 08:59:14",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -255,7 +255,7 @@
       "priorite_ville": 3,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-09 18:46:22",
+        "checked_at": "2026-02-10 08:59:19",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -290,7 +290,7 @@
       "priorite_ville": 3,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-09 18:46:24",
+        "checked_at": "2026-02-10 08:59:22",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -325,45 +325,11 @@
       "priorite_ville": 3,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-09 18:46:30",
+        "checked_at": "2026-02-10 08:59:30",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
         "detected_date": null,
-        "confidence": "high"
-      }
-    },
-    {
-      "id": "chargédemarketingfh_elior_94000",
-      "source": "LBA",
-      "status": "active",
-      "titre": "Chargé de marketing F/H",
-      "entreprise": "Elior",
-      "ville": "Créteil",
-      "code_postal": "94000",
-      "adresse_complete": "94000 Créteil",
-      "description": "Animation marketing Participer à l'animation des dispositifs marketing existants. Contribuer à la mise en œuvre d'actions terrain visant à renforcer la visibilité et l'attractivité de la marque....",
-      "description_complete": "Animation marketing Participer à l'animation des dispositifs marketing existants. Contribuer à la mise en œuvre d'actions terrain visant à renforcer la visibilité et l'attractivité de la marque. Proposer des idées d'animations innovantes et adaptées aux cibles internes et externes. Benchmark événements et salons Réaliser une veille active sur les événements, salons professionnels et réseaux pertinents. Analyser les formats, concepts et bonnes pratiques observés sur le terrain. Formaliser des recommandations opérationnelles exploitables par l'équipe marketing. Marketing produit et événements internes Participer à la conception et à l'organisation d'événements internes à vocation marketing. Contribuer à la création de supports valorisant les offres et projets de l'entreprise. Accompagner le déploiement des événements, de la phase de préparation jusqu'au bilan. Projets nationaux type « Tour de France » Assister l'équipe dans la préparation et la coordination d'événements itinérants à l'échelle nationale. Contribuer à l'harmonisation des actions marketing sur l'ensemble des étapes. Participer à l'évaluation de l'impact des actions menées. Poste: Chargé de marketing (H/F) Temps Plein Profil: Formation Étudiant·e en formation Bac +3 à Bac +5 en marketing, communication ou événementiel. Contrat d'alternance (apprentissage ou professionnalisation). Compétences attendues Intérêt marqué pour le marketing opérationnel et l'événementiel. Capacité à analyser des actions terrain et à en tirer des enseignements concrets. Aisance rédactionnelle et capacité de synthèse. Organisation, rigueur et sens des priorités. Qualités personnelles Curiosité et force de proposition. Goût du terrain et des projets concrets. Esprit d'équipe et bon relationnel. Autonomie progressive et sens des responsabilités.",
-      "competences_detectees": [
-        "SEA/Paid Media",
-        "UX/Design"
-      ],
-      "url_candidature": "https://www.meteojob.com/jobads/50216765?utm_source=labonnealternance&utm_medium=aggregator-free&utm_campaign=alternance",
-      "type_contrat": "Apprentissage + Professionnalisation",
-      "duree_contrat": null,
-      "date_debut": null,
-      "date_creation": "30/01/2026",
-      "date_expiration": "30/03/2026",
-      "plateforme_source": "Meteojob",
-      "ville_recherche": "Paris",
-      "priorite_ville": 3,
-      "validation_status": "validated",
-      "validation_details": {
-        "checked_at": "2026-02-09 18:46:33",
-        "status_code": 200,
-        "is_expired": false,
-        "has_apply_button": true,
-        "detected_date": "publiées sur meteojob. postulez dès maintenant en ligne.\"><meta property=\"og:type\" content=\"website\"><meta property=\"og:title\" content=\"chargé de marketing f/h\"><meta property=\"og:url\" content=\"https://www.meteojob.com/candidat/offres/offre-d-emploi-charge-de-marketing-h-f-creteil-ile-de-france-alternance-apprentissage-50216765\"><meta property=\"og:image\" content=\"https://www.meteojob.com/images/4/8/8/1884",
         "confidence": "high"
       }
     }
