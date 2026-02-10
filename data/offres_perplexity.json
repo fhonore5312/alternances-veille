@@ -1,142 +1,89 @@
 {
   "meta": {
-    "date_recherche": "2026-02-09 19:40:00",
-    "sources_consultees": ["Welcome to the Jungle", "LinkedIn", "Indeed", "Rennes-emplois", "HelloWork", "Sites carrières"],
-    "total_offres_trouvees": 8,
+    "date_recherche": "2026-02-10 09:49:00",
+    "sources_consultees": ["Welcome to the Jungle", "LinkedIn", "Indeed", "We Recruit", "Jooble"],
+    "total_offres_trouvees": 15,
     "offres_validees": 2,
-    "offres_incertaines": 0,
-    "note_importante": "Recherche limitée par contraintes de vérification. Beaucoup d'offres trouvées sont soit expirées, soit issues d'écoles de formation (MyDigitalSchool, AFTEC, Alticome, ISCOD), soit sans URL directe vérifiable. Les offres ci-dessous sont les seules entièrement validées."
+    "offres_incertaines": 0
   },
   "offres": [
     {
-      "id": "alpiq_alternancemarketingdigital_ladefense",
+      "id": "bankin_alternancegrowthmarketing_paris",
       "source": "Perplexity",
       "status": "new",
-      "titre": "Alternance Marketing Digital - Septembre 2026",
-      "entreprise": "Alpiq France",
-      "ville": "La Défense",
-      "code_postal": "92400",
-      "adresse_complete": "La Défense, 92400",
-      "description": "Alternance au sein d'Alpiq Retail en Direction Marketing et Service Client. Missions : SEO/SEA, social media, création de contenus, campagnes d'acquisition, génération de leads, veille marketing, gestion CMS.",
-      "description_complete": "Au sein de l'entité Alpiq Retail, vous êtes intégré(e) à la Direction Marketing et Service Client. Vous participerez aux projets stratégiques de l'équipe et développerez vos compétences en marketing digital, acquisition et génération de leads. Vos missions incluent : suivi et animation des réseaux sociaux, élaboration de planning éditorial, création de contenus visuels et textes, modération communauté, conception de supports print et digitaux, veille concurrentielle et sectorielle, intégration de contenus via CMS, mise à jour des pages web, participation au suivi et optimisation des campagnes d'acquisition, contribution aux campagnes de génération de leads, initiation SEO/SEA avec analyse de performances et recommandations. Environnement dynamique dans le secteur de l'énergie avec focus sur l'acquisition digitale.",
-      "competences_detectees": ["SEO", "SEA/Paid Media", "Social Media", "Content Marketing", "Analytics"],
-      "url_candidature": "https://www.welcometothejungle.com/fr/companies/alpiq-fr/jobs/alternance-marketing-digital-septembre-2026_la-defense",
-      "type_contrat": "Apprentissage + Professionnalisation",
-      "duree_contrat": "24 mois",
-      "date_debut": "Septembre 2026",
-      "date_creation": "20/01/2026",
-      "date_expiration": null,
-      "plateforme_source": "Welcome to the Jungle",
-      "ville_recherche": "Paris/IDF",
-      "priorite_ville": 3,
-      "first_seen": "2026-02-09",
-      "last_seen": "2026-02-09"
-    },
-    {
-      "id": "spliit_chefdeprojetmarketingdigital_paris",
-      "source": "Perplexity",
-      "status": "new",
-      "titre": "Chef de Projet Marketing Digital & Content en Alternance",
-      "entreprise": "Spliit",
+      "titre": "Alternance / Growth Marketing - Paris (H/F/X)",
+      "entreprise": "Bankin'",
       "ville": "Paris",
-      "code_postal": "75009",
-      "adresse_complete": "23 rue de Mogador, 75009 Paris",
-      "description": "Alternance marketing digital et content chez Spliit (immobilier professionnel). Pilotage stratégie 360° : vidéo, SEO, social media. 1 jour télétravail, démarrage septembre 2026.",
-      "description_complete": "Rejoignez Spliit pour une alternance chef de projet marketing digital et content dans le secteur de l'immobilier professionnel en pleine expansion. Missions : piloter une stratégie content 360° incluant vidéo, SEO et social media, transformer des idées créatives en résultats concrets et mesurables. Poste basé dans les locaux au 23 rue de Mogador, Paris 9ème avec 1 jour de télétravail accepté. Démarrage à partir du 1er septembre 2026. Avantages : participation aux tickets restaurants et transports. Environnement dynamique avec fort accent sur la création de contenu et l'impact mesurable.",
-      "competences_detectees": ["SEO", "Social Media", "Content Marketing"],
-      "url_candidature": "https://www.welcometothejungle.com/fr/companies/spliit/jobs/chef-de-projet-marketing-digital-content-en-alternance_paris",
-      "type_contrat": "Alternance",
-      "duree_contrat": "24 mois",
+      "code_postal": "75011",
+      "adresse_complete": "Métro République/Parmentier/Oberkampf, 75011 Paris",
+      "description": "Gestion campagnes acquisition online (Meta, TikTok, Google Ads, Snapchat), analyse performance ROAS, création dashboards KPIs, optimisation process, tests A/B. Équipe marketing dynamique, app finance grand public.",
+      "description_complete": "Au sein de l'équipe Marketing de Bankin', une des applications les plus téléchargées sur les stores, tu seras responsable de la mise en place, du suivi et de l'optimisation des campagnes d'acquisition en ligne sur différentes plateformes (Meta, TikTok, Google Ads, Snapchat). Tu analyseras la performance des campagnes et proposeras des améliorations pour augmenter le ROAS. Tu participeras également à l'élaboration des publicités (benchmark et brief), créeras des dashboards pour mesurer les performances, t'approprieras les principaux KPIs de croissance, et participeras à l'amélioration et l'automatisation des process. Environnement dynamique avec équipe jeune et expérimentée, bureaux au centre de Paris, culture startup avec activités team-building.",
+      "competences_detectees": ["SEA/Paid Media", "Analytics", "Growth/Acquisition", "Social Media"],
+      "url_candidature": "https://www.welcometothejungle.com/fr/companies/bankin/jobs/alternance-growth-marketing-paris-h-f-x_paris_BANKI_aKpP4Mr",
+      "type_contrat": "Apprentissage + Professionnalisation",
+      "duree_contrat": "12 mois minimum",
       "date_debut": "Septembre 2026",
-      "date_creation": "02/02/2026",
+      "date_creation": "13/01/2026",
       "date_expiration": null,
       "plateforme_source": "Welcome to the Jungle",
       "ville_recherche": "Paris",
       "priorite_ville": 3,
-      "first_seen": "2026-02-09",
-      "last_seen": "2026-02-09"
+      "first_seen": "2026-02-10",
+      "last_seen": "2026-02-10"
+    },
+    {
+      "id": "botanik_alternantseocontentmarketing_paris",
+      "source": "Perplexity",
+      "status": "new",
+      "titre": "[Botanik] Alternant(e) Marketing / Content (H/F) - SEO",
+      "entreprise": "Botanik (agence Junto)",
+      "ville": "Paris",
+      "code_postal": "75000",
+      "adresse_complete": "Paris",
+      "description": "Création contenus SEO (articles blog, posts LinkedIn, ebooks), gestion site web et publications, coordination campagnes multicanales (Google Ads, LinkedIn Ads), suivi KPIs et optimisation. Agence SEO spécialisée GEO, collaboration directe fondateurs.",
+      "description_complete": "Intégré(e) à Botanik.ai, agence SEO axée sur la croissance durable, tu seras un pilier de la stratégie de visibilité : création de contenus à forte valeur ajoutée (articles de blog orientés SEO, posts LinkedIn, ebooks, guides, newsletters, cas clients), gestion de la publication et animation des canaux (site, LinkedIn, email), mise à jour du site web (landing pages, cas clients, articles), coordination des campagnes marketing multicanales (Google Ads, LinkedIn Ads, SEO, réseaux sociaux, événements) en lien avec les équipes design, conseil et tech, et suivi des performances avec analyse des KPIs (trafic, engagement, leads) pour optimiser les actions. Tu collaboreras directement avec les fondateurs dans une structure dynamique et ambitieuse.",
+      "competences_detectees": ["SEO", "Content Marketing", "SEA/Paid Media", "Social Media", "Analytics"],
+      "url_candidature": "https://www.welcometothejungle.com/fr/companies/junto/jobs/botanik-alternant-marketing-content-h-f-seo_paris",
+      "type_contrat": "Apprentissage + Professionnalisation",
+      "duree_contrat": "12-24 mois",
+      "date_debut": "Septembre 2026",
+      "date_creation": "05/02/2026",
+      "date_expiration": null,
+      "plateforme_source": "Welcome to the Jungle",
+      "ville_recherche": "Paris",
+      "priorite_ville": 3,
+      "first_seen": "2026-02-10",
+      "last_seen": "2026-02-10"
     }
   ],
   "entreprises_sans_offre": [
     {
       "entreprise": "Klaxoon",
       "ville": "Rennes",
-      "typologie": "Scale-up SaaS",
+      "typologie": "Scale-up SaaS B2B",
       "page_carriere": "https://jobs.klaxoon.com",
-      "action": "📧 Candidature spontanée recommandée - entreprise cible prioritaire"
+      "action": "📧 Candidature spontanée recommandée - Scale-up rennaise en forte croissance"
     },
     {
       "entreprise": "Skeepers",
       "ville": "Rennes",
-      "typologie": "SaaS/Tech",
-      "page_carriere": "https://www.skeepers.io/fr/carriere/",
-      "action": "📧 Candidature spontanée recommandée - entreprise cible prioritaire"
+      "typologie": "SaaS UGC Marketing",
+      "page_carriere": "https://careers.skeepers.com",
+      "action": "📧 Candidature spontanée recommandée - Présence Indeed (AI Engineer alternance trouvée mais pas marketing)"
     },
     {
       "entreprise": "Akeneo",
       "ville": "Nantes",
       "typologie": "Scale-up SaaS PIM",
-      "page_carriere": "https://www.welcometothejungle.com/fr/companies/akeneo",
-      "action": "📧 Surveiller régulièrement - offre Working Student trouvée mais pas alternance complète"
+      "page_carriere": "https://www.akeneo.com/fr/carrieres/",
+      "action": "📧 Candidature spontanée recommandée - Leader PIM en forte croissance"
     },
     {
       "entreprise": "Lengow",
       "ville": "Nantes",
-      "typologie": "SaaS E-commerce",
-      "page_carriere": "https://www.lengow.com/fr/recrutement/",
-      "action": "📧 Candidature spontanée recommandée - entreprise cible prioritaire"
-    },
-    {
-      "entreprise": "Sellsy",
-      "ville": "Nantes",
-      "typologie": "SaaS CRM",
-      "page_carriere": "https://www.welcometothejungle.com/fr/companies/sellsy",
-      "action": "📧 Surveiller régulièrement leurs offres"
-    },
-    {
-      "entreprise": "Lunaweb",
-      "ville": "Nantes",
-      "typologie": "Agence digitale",
-      "page_carriere": "https://www.lunaweb.fr/agence/nous-rejoindre/",
-      "action": "📧 Candidature spontanée recommandée"
-    },
-    {
-      "entreprise": "Yumens",
-      "ville": "Rennes (Cesson-Sévigné)",
-      "typologie": "Agence conseil stratégie digitale",
-      "page_carriere": "https://www.yumens.fr/carrieres",
-      "action": "📧 Offre stage trouvée mais pas alternance - surveiller ou candidature spontanée"
-    },
-    {
-      "entreprise": "Kreactive",
-      "ville": "Rennes",
-      "typologie": "Agence digitale",
-      "page_carriere": "Site carrière à vérifier",
-      "action": "📧 Candidature spontanée recommandée"
-    },
-    {
-      "entreprise": "Markentive",
-      "ville": "Rennes",
-      "typologie": "Agence marketing",
-      "page_carriere": "Site carrière à vérifier",
-      "action": "📧 Candidature spontanée recommandée"
+      "typologie": "SaaS E-commerce Feed Management",
+      "page_carriere": "https://www.lengow.com/fr/carrieres/",
+      "action": "📧 Candidature spontanée recommandée - Pure player e-commerce marketing"
     }
-  ],
-  "notes_recherche": {
-    "offres_exclues_raisons": [
-      "Alticome Rennes - École de formation (exclue selon critères)",
-      "Akeneo Paris - Working Student, pas contrat alternance standard",
-      "MyDigitalSchool Nantes - École de formation (multiples offres exclues)",
-      "AFTEC Rennes - École de formation (multiples offres exclues)",
-      "Veepee - Offre publiée mars 2025 (> 6 mois, expirée)",
-      "Eskimoz SEO - Lien direct non trouvé lors de la recherche"
-    ],
-    "recommandations": [
-      "Prioriser les candidatures spontanées sur Rennes (Klaxoon, Skeepers, Yumens, Kreactive)",
-      "Surveiller quotidiennement Welcome to the Jungle avec filtres 'alternance marketing digital Rennes septembre 2026'",
-      "Contacter directement les agences Lunaweb et Raccourci Agency à Nantes",
-      "Élargir la recherche aux Scale-ups parisiennes dans 2-3 semaines si peu de résultats Rennes/Nantes",
-      "Relancer la recherche mi-mars 2026 (pic de publications pour rentrée septembre)"
-    ]
-  }
+  ]
 }
