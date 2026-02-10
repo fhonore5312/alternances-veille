@@ -1,23 +1,23 @@
 {
   "meta": {
-    "date_recherche": "2026-02-10 09:49:00",
-    "sources_consultees": ["Welcome to the Jungle", "LinkedIn", "Indeed", "We Recruit", "Jooble"],
-    "total_offres_trouvees": 15,
-    "offres_validees": 2,
-    "offres_incertaines": 0
+    "date_recherche": "2026-02-10 21:33:00",
+    "sources_consultees": ["Welcome to the Jungle", "LinkedIn Jobs", "Indeed", "Sites carrières"],
+    "total_offres_trouvees": 2,
+    "offres_validees": 1,
+    "offres_incertaines": 1
   },
   "offres": [
     {
-      "id": "bankin_alternancegrowthmarketing_paris",
+      "id": "bankin_alternancegrowthmktg_paris",
       "source": "Perplexity",
       "status": "new",
       "titre": "Alternance / Growth Marketing - Paris (H/F/X)",
       "entreprise": "Bankin'",
       "ville": "Paris",
-      "code_postal": "75011",
-      "adresse_complete": "Métro République/Parmentier/Oberkampf, 75011 Paris",
-      "description": "Gestion campagnes acquisition online (Meta, TikTok, Google Ads, Snapchat), analyse performance ROAS, création dashboards KPIs, optimisation process, tests A/B. Équipe marketing dynamique, app finance grand public.",
-      "description_complete": "Au sein de l'équipe Marketing de Bankin', une des applications les plus téléchargées sur les stores, tu seras responsable de la mise en place, du suivi et de l'optimisation des campagnes d'acquisition en ligne sur différentes plateformes (Meta, TikTok, Google Ads, Snapchat). Tu analyseras la performance des campagnes et proposeras des améliorations pour augmenter le ROAS. Tu participeras également à l'élaboration des publicités (benchmark et brief), créeras des dashboards pour mesurer les performances, t'approprieras les principaux KPIs de croissance, et participeras à l'amélioration et l'automatisation des process. Environnement dynamique avec équipe jeune et expérimentée, bureaux au centre de Paris, culture startup avec activités team-building.",
+      "code_postal": "75000",
+      "adresse_complete": "Paris, France",
+      "description": "Mise en place et optimisation de campagnes d'acquisition online (Meta, TikTok, Google Ads, Snapchat). Analyse de performance, amélioration du ROAS, création de dashboards et automatisation des process.",
+      "description_complete": "Bankin' recherche un alternant en Growth Marketing pour rejoindre une équipe dynamique. Tu seras responsable de la mise en place, du suivi et de l'optimisation des campagnes d'acquisition en ligne sur différentes plateformes (Meta, TikTok, Google Ads, Snapchat). Tes missions incluront l'analyse de la performance des campagnes avec proposition d'améliorations pour augmenter le ROAS, la participation à l'élaboration des publicités (benchmark et brief), la création de dashboards pour mesurer les performances, l'appropriation des principaux KPIs de croissance, et la participation à l'amélioration et l'automatisation des process. Tu travailleras au sein d'une des applications les plus téléchargées sur les stores avec toute l'équipe Marketing.",
       "competences_detectees": ["SEA/Paid Media", "Analytics", "Growth/Acquisition", "Social Media"],
       "url_candidature": "https://www.welcometothejungle.com/fr/companies/bankin/jobs/alternance-growth-marketing-paris-h-f-x_paris_BANKI_aKpP4Mr",
       "type_contrat": "Apprentissage + Professionnalisation",
@@ -30,60 +30,72 @@
       "priorite_ville": 3,
       "first_seen": "2026-02-10",
       "last_seen": "2026-02-10"
-    },
-    {
-      "id": "botanik_alternantseocontentmarketing_paris",
-      "source": "Perplexity",
-      "status": "new",
-      "titre": "[Botanik] Alternant(e) Marketing / Content (H/F) - SEO",
-      "entreprise": "Botanik (agence Junto)",
-      "ville": "Paris",
-      "code_postal": "75000",
-      "adresse_complete": "Paris",
-      "description": "Création contenus SEO (articles blog, posts LinkedIn, ebooks), gestion site web et publications, coordination campagnes multicanales (Google Ads, LinkedIn Ads), suivi KPIs et optimisation. Agence SEO spécialisée GEO, collaboration directe fondateurs.",
-      "description_complete": "Intégré(e) à Botanik.ai, agence SEO axée sur la croissance durable, tu seras un pilier de la stratégie de visibilité : création de contenus à forte valeur ajoutée (articles de blog orientés SEO, posts LinkedIn, ebooks, guides, newsletters, cas clients), gestion de la publication et animation des canaux (site, LinkedIn, email), mise à jour du site web (landing pages, cas clients, articles), coordination des campagnes marketing multicanales (Google Ads, LinkedIn Ads, SEO, réseaux sociaux, événements) en lien avec les équipes design, conseil et tech, et suivi des performances avec analyse des KPIs (trafic, engagement, leads) pour optimiser les actions. Tu collaboreras directement avec les fondateurs dans une structure dynamique et ambitieuse.",
-      "competences_detectees": ["SEO", "Content Marketing", "SEA/Paid Media", "Social Media", "Analytics"],
-      "url_candidature": "https://www.welcometothejungle.com/fr/companies/junto/jobs/botanik-alternant-marketing-content-h-f-seo_paris",
-      "type_contrat": "Apprentissage + Professionnalisation",
-      "duree_contrat": "12-24 mois",
-      "date_debut": "Septembre 2026",
-      "date_creation": "05/02/2026",
-      "date_expiration": null,
-      "plateforme_source": "Welcome to the Jungle",
-      "ville_recherche": "Paris",
-      "priorite_ville": 3,
-      "first_seen": "2026-02-10",
-      "last_seen": "2026-02-10"
     }
   ],
   "entreprises_sans_offre": [
     {
       "entreprise": "Klaxoon",
       "ville": "Rennes",
-      "typologie": "Scale-up SaaS B2B",
-      "page_carriere": "https://jobs.klaxoon.com",
-      "action": "📧 Candidature spontanée recommandée - Scale-up rennaise en forte croissance"
+      "typologie": "Scale-up SaaS",
+      "page_carriere": "https://www.welcometothejungle.com/fr/companies/klaxoon/jobs",
+      "action": "📧 Candidature spontanée recommandée - Pas d'offre alternance marketing active actuellement"
     },
     {
       "entreprise": "Skeepers",
       "ville": "Rennes",
-      "typologie": "SaaS UGC Marketing",
-      "page_carriere": "https://careers.skeepers.com",
-      "action": "📧 Candidature spontanée recommandée - Présence Indeed (AI Engineer alternance trouvée mais pas marketing)"
+      "typologie": "Scale-up SaaS UGC",
+      "page_carriere": "https://www.welcometothejungle.com/fr/companies/skeepers/jobs",
+      "action": "📧 Candidature spontanée recommandée - Vérifier régulièrement les nouvelles offres"
     },
     {
       "entreprise": "Akeneo",
-      "ville": "Nantes",
+      "ville": "Rennes",
       "typologie": "Scale-up SaaS PIM",
-      "page_carriere": "https://www.akeneo.com/fr/carrieres/",
-      "action": "📧 Candidature spontanée recommandée - Leader PIM en forte croissance"
+      "page_carriere": "https://www.welcometothejungle.com/fr/companies/akeneo/jobs",
+      "action": "📧 Candidature spontanée recommandée - Offre Marketing Working Student à Paris trouvée mais pas sur Rennes"
+    },
+    {
+      "entreprise": "iAdvize",
+      "ville": "Nantes",
+      "typologie": "Scale-up SaaS conversationnel",
+      "page_carriere": "https://www.welcometothejungle.com/fr/companies/iadvize/jobs",
+      "action": "⚠️ Offre Marketing Digital trouvée mais publiée en septembre 2024 (trop ancienne). Vérifier nouvelles publications"
     },
     {
       "entreprise": "Lengow",
       "ville": "Nantes",
-      "typologie": "SaaS E-commerce Feed Management",
+      "typologie": "Scale-up E-commerce SaaS",
       "page_carriere": "https://www.lengow.com/fr/carrieres/",
-      "action": "📧 Candidature spontanée recommandée - Pure player e-commerce marketing"
+      "action": "📧 Candidature spontanée recommandée - Pas d'offre alternance active trouvée"
+    },
+    {
+      "entreprise": "Contentsquare",
+      "ville": "Paris",
+      "typologie": "Scale-up Analytics/UX",
+      "page_carriere": "https://contentsquare.com/careers/",
+      "action": "📧 Candidature spontanée recommandée - Entreprise avec forte croissance"
+    },
+    {
+      "entreprise": "Back Market",
+      "ville": "Paris",
+      "typologie": "Marketplace refurb tech",
+      "page_carriere": "https://www.welcometothejungle.com/en/companies/back-market/jobs",
+      "action": "📧 Candidature spontanée recommandée - Offres recrutement trouvées mais pas alternance marketing digital actuellement"
+    },
+    {
+      "entreprise": "Make the Grade",
+      "ville": "Rennes",
+      "typologie": "Agence Growth Marketing",
+      "page_carriere": "https://www.welcometothejungle.com/fr/companies/make-the-grade/jobs",
+      "action": "⚠️ Offre Chargé.e Marketing interne trouvée mais dates de début non précisées. À contacter directement"
     }
+  ],
+  "notes_recherche": [
+    "⚠️ RECHERCHE LIMITÉE: Peu d'offres validées trouvées respectant tous les critères stricts (URL directe, dates confirmées, statut actif, publication récente)",
+    "🔍 RECOMMANDATION 1: Élargir la recherche aux candidatures spontanées auprès des entreprises cibles prioritaires (Klaxoon, Skeepers, Akeneo à Rennes)",
+    "🔍 RECOMMANDATION 2: Surveiller quotidiennement les nouvelles publications sur Welcome to the Jungle et LinkedIn avec alertes email",
+    "🔍 RECOMMANDATION 3: Beaucoup d'offres via écoles de formation (MyDigitalSchool, ISCOD, Alticome) - exclues selon critères mais peuvent être des points d'entrée vers entreprises partenaires réelles",
+    "📅 TIMING: Février 2026 est encore tôt pour des offres septembre 2026 - pic de publication attendu entre mars et juin 2026",
+    "🎯 PRIORITÉ: Concentrer les efforts sur Rennes (ville prioritaire #1) avec candidatures spontanées ciblées"
   ]
 }
