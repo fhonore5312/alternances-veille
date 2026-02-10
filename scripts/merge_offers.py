@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Fusion des offres LBA + Perplexity
-Adapté pour la nouvelle structure de dossiers
+Fusion des offres LBA + Perplexity + Gestion historique
 """
 
 import json
 from datetime import datetime
-import os
 from pathlib import Path
 
 # Configuration des chemins
@@ -18,7 +16,9 @@ DATA_DIR = BASE_DIR / "data"
 # Fichiers
 LBA_FILE = DATA_DIR / "offres_lba.json"
 PERPLEXITY_FILE = DATA_DIR / "offres_perplexity.json"
+HISTORIQUE_FILE = DATA_DIR / "offres_historique.json"
 OUTPUT_FILE = DATA_DIR / "offres_merged.json"
+
 
 def load_json(filepath):
     """Charge un fichier JSON"""
@@ -27,11 +27,27 @@ def load_json(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
         return json.load(f)
 
+
+def save_json(filepath, data):
+    """Sauvegarde un fichier JSON"""
+    with open(filepath, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+def generate_offer_id(offer):
+    """Génère un ID unique pour une offre"""
+    # Clé unique basée sur : titre + entreprise + ville
+    titre = offer.get('titre', '').lower().strip()
+    entreprise = offer.get('entreprise', '').lower().strip()
+    ville = offer.get('ville', '').lower().strip()
+    return f"{titre}|{entreprise}|{ville}"
+
+
 def merge_offers():
-    """Fusionne les offres LBA + Perplexity"""
-    print("=" * 60)
-    print("🔄 FUSION DES OFFRES LBA + PERPLEXITY")
-    print("=" * 60)
+    """Fusionne les offres LBA + Perplexity + Gère l'historique"""
+    print("=" * 70)
+    print("🔄 FUSION DES OFFRES LBA + PERPLEXITY + HISTORIQUE")
+    print("=" * 70)
 
     # 1. Charger LBA (obligatoire)
     lba_data = load_json(LBA_FILE)
@@ -42,70 +58,116 @@ def merge_offers():
 
     # 2. Charger Perplexity (optionnel)
     perplexity_data = load_json(PERPLEXITY_FILE)
-    if perplexity_data:
-        print(f"📥 Perplexity : {len(perplexity_data.get('offres', []))} offres")
+    if perplexity_data and perplexity_data.get('offres'):
+        print(f"📥 Perplexity : {len(perplexity_data['offres'])} offres")
     else:
-        print("ℹ️  Aucun fichier offres_perplexity.json (mode LBA seul)")
+        print("ℹ️  Aucune offre Perplexity (mode LBA seul)")
         perplexity_data = {"offres": []}
 
-    # 3. Fusionner
-    merged_offers = lba_data['offres'].copy()
+    # 3. Charger l'historique (optionnel)
+    historique_data = load_json(HISTORIQUE_FILE)
+    if historique_data:
+        print(f"📚 Historique : {len(historique_data.get('offres', []))} offres")
+        historique_ids = {generate_offer_id(o): o for o in historique_data.get('offres', [])}
+    else:
+        print("ℹ️  Aucun historique (première exécution)")
+        historique_ids = {}
 
-    duplicates = 0
-    added = 0
+    # 4. Fusionner LBA + Perplexity
+    all_offers = []
+    seen_ids = set()
+    duplicates_perplexity = 0
+    
+    # Ajouter offres LBA
+    for offer in lba_data['offres']:
+        offer_id = generate_offer_id(offer)
+        if offer_id not in seen_ids:
+            all_offers.append(offer)
+            seen_ids.add(offer_id)
 
-    for perplexity_offer in perplexity_data.get('offres', []):
-        # Vérifier doublon (même entreprise + même titre + même ville)
-        is_duplicate = False
-        for existing in merged_offers:
-            if (existing['entreprise'].lower() == perplexity_offer['entreprise'].lower() and
-                existing['titre'].lower() == perplexity_offer['titre'].lower() and
-                existing['ville'].lower() == perplexity_offer['ville'].lower()):
-                is_duplicate = True
-                duplicates += 1
-                print(f"  ⚠️  Doublon ignoré : {perplexity_offer['titre']} - {perplexity_offer['entreprise']}")
-                break
+    # Ajouter offres Perplexity (sans doublons)
+    for offer in perplexity_data.get('offres', []):
+        offer_id = generate_offer_id(offer)
+        if offer_id in seen_ids:
+            duplicates_perplexity += 1
+            print(f"  ⚠️  Doublon Perplexity ignoré : {offer['titre']} - {offer['entreprise']}")
+        else:
+            all_offers.append(offer)
+            seen_ids.add(offer_id)
+            print(f"  ✅ Perplexity ajoutée : {offer['titre']} - {offer['entreprise']}")
 
-        if not is_duplicate:
-            merged_offers.append(perplexity_offer)
-            added += 1
-            print(f"  ✅ Ajoutée : {perplexity_offer['titre']} - {perplexity_offer['entreprise']}")
+    # 5. Comparer avec l'historique et marquer status
+    nouvelles = 0
+    actives = 0
 
-    print(f"\n📊 Fusion :")
-    print(f"  ✅ {added} offres Perplexity ajoutées")
-    print(f"  ⚠️  {duplicates} doublons ignorés")
+    for offer in all_offers:
+        offer_id = generate_offer_id(offer)
+        
+        if offer_id in historique_ids:
+            # Offre existante dans l'historique
+            offer['status'] = 'active'
+            actives += 1
+        else:
+            # Nouvelle offre jamais vue
+            offer['status'] = 'new'
+            nouvelles += 1
+            print(f"  🆕 NOUVELLE : {offer['titre']} - {offer['entreprise']}")
 
-    # 4. Trier
-    merged_offers.sort(key=lambda x: (
-        x['priorite_ville'],
+    print(f"\n📊 Résultat fusion :")
+    print(f"  ✅ {len(perplexity_data.get('offres', [])) - duplicates_perplexity} offres Perplexity ajoutées")
+    print(f"  ⚠️  {duplicates_perplexity} doublons Perplexity ignorés")
+    print(f"  🆕 {nouvelles} nouvelles offres")
+    print(f"  ♻️  {actives} offres déjà connues")
+
+    # 6. Trier par priorité
+    all_offers.sort(key=lambda x: (
+        x.get('priorite_ville', 99),
         0 if x['status'] == 'new' else 1
     ))
 
-    # 5. JSON final
+    # 7. Mettre à jour l'historique (ajouter les nouvelles offres)
+    updated_historique = list(historique_ids.values())  # Anciennes offres
+    
+    for offer in all_offers:
+        offer_id = generate_offer_id(offer)
+        if offer_id not in historique_ids:
+            # Ajouter uniquement les nouvelles offres à l'historique
+            updated_historique.append(offer.copy())
+
+    # Sauvegarder l'historique mis à jour
+    historique_output = {
+        "meta": {
+            "date_mise_a_jour": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            "total_offres": len(updated_historique)
+        },
+        "offres": updated_historique
+    }
+    save_json(HISTORIQUE_FILE, historique_output)
+    print(f"\n📚 Historique mis à jour : {len(updated_historique)} offres totales")
+
+    # 8. Sauvegarder offres_merged.json (pour affichage)
     output = {
         "meta": {
             "date_generation": datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
             "sources": ["LBA"] if not perplexity_data.get('offres') else ["LBA", "Perplexity"],
-            "total_offres": len(merged_offers),
-            "nouvelles": len([o for o in merged_offers if o['status'] == 'new']),
-            "actives": len([o for o in merged_offers if o['status'] == 'active']),
+            "total_offres": len(all_offers),
+            "nouvelles": nouvelles,
+            "actives": actives,
             "source_lba": lba_data['meta']['total_offres'],
             "source_perplexity": len(perplexity_data.get('offres', []))
         },
-        "offres": merged_offers
+        "offres": all_offers
     }
 
-    # 6. Sauvegarder
-    with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
-        json.dump(output, f, ensure_ascii=False, indent=2)
+    save_json(OUTPUT_FILE, output)
 
-    print(f"\n💾 Fichier fusionné sauvegardé : {OUTPUT_FILE}")
-    print(f"📊 Total : {output['meta']['total_offres']} offres")
+    print(f"\n💾 Fichier fusionné : {OUTPUT_FILE}")
+    print(f"📊 Total : {output['meta']['total_offres']} offres actives")
     print(f"  🆕 {output['meta']['nouvelles']} nouvelles")
-    print(f"  ♻️  {output['meta']['actives']} actives")
+    print(f"  ♻️  {output['meta']['actives']} déjà connues")
     print("\n➡️  PROCHAINE ÉTAPE : Génération HTML + Email")
-    print("  Exécute : python generate_html_email.py")
-    print("=" * 60)
+    print("=" * 70)
+
 
 if __name__ == '__main__':
     merge_offers()
