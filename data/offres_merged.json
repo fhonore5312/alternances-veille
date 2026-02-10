@@ -1,13 +1,13 @@
 {
   "meta": {
-    "date_generation": "2026-02-10 08:59:36",
+    "date_generation": "2026-02-10 09:35:21",
     "sources": [
       "LBA",
       "Perplexity"
     ],
     "total_offres": 26,
-    "nouvelles": 4,
-    "actives": 22,
+    "nouvelles": 2,
+    "actives": 24,
     "source_lba": 24,
     "source_perplexity": 2
   },
@@ -91,59 +91,6 @@
       "plateforme_source": "Veritone",
       "ville_recherche": "Nantes",
       "priorite_ville": 2
-    },
-    {
-      "id": "alternant(e)créationdecontenusvidéo-communicationinterne-fh_pwcfrance_92200",
-      "source": "LBA",
-      "status": "new",
-      "titre": "Alternant(e) Création de Contenus Vidéo - Communication Interne - F/H",
-      "entreprise": "PwC France",
-      "ville": "Neuilly-sur-Seine",
-      "code_postal": "92200",
-      "adresse_complete": "92200 Neuilly-sur-Seine",
-      "description": "PwC, cabinet pluridisciplinaire, rassemble 7 000 collaborateurs en France et au Maghreb, au sein d'un réseau mondial de plus de 364 000 personnes dans 136 pays. Chaque jour, nous exerçons des métiers...",
-      "description_complete": "PwC, cabinet pluridisciplinaire, rassemble 7 000 collaborateurs en France et au Maghreb, au sein d'un réseau mondial de plus de 364 000 personnes dans 136 pays. Chaque jour, nous exerçons des métiers d'excellence pour concrétiser notre ambition : être utiles à nos clients et accélérateurs de mouvement. Dans un monde en constante évolution, nous investissons dans le développement de nos équipes avec une proposition de valeur forte : Grow here. Go further. Un engagement mondial pour accompagner nos talents dans l'évolution de leurs compétences. Ce que nous recherchons ? Des expertises, bien sûr. Mais surtout, des personnalités curieuses, passionnées, prêtes à incarner les comportements du PwC Professional, notre référentiel commun qui guide notre manière de travailler ensemble. Reconnu Top Employer pour la 6ème année consécutive, PwC s'engage à offrir un environnement de travail inclusif et handi-accueillant, où chacun peut pleinement collaborer et avoir un impact. Si vous avez besoin d'un aménagement spécifique en vue de l'entretien de recrutement, n'hésitez pas à nous en faire part. Votre équipe Dans le cadre du développement de notre communication interne de la DSI de PwC France, nous souhaitons renforcer notre capacité à produire des contenus vidéo dynamiques et engageants. Ces vidéos, diffusées exclusivement en interne, sont de deux types : Informatives : diffusées pendant nos événements (plénière, business call, webcast firm ...) ou via SharePoint et Teams. Elles ont pour objectif de valoriser les initiatives, projets et événements de l'entreprise, tout en facilitant la transmission d'informations clés. Pédagogiques : partagées via une Knowledge Base à des fins de formation et de tutoriels pour expliquer les différentes nouvelles features déployées dans nos applications. Pour cela, nous recherchons un alternant créatif et polyvalent, capable de prendre en charge l'ensemble du processus de création : de la captation (image et son), au montage, en passant par l'intégration d'éléments de motion design pour illustrer des données clés (\"keyfacts\", \"keynumbers\"). Vos missions Participer à la conception des vidéos : brief, storyboard, choix des formats. Réaliser des captations vidéo et audio lors d'événements internes ou interviews. Assurer le montage des vidéos en respectant la charte graphique et les codes de l'entreprise. Intégrer des éléments de motion design pour illustrer des données clés ou renforcer l'impact visuel. Adapter les formats aux différents canaux de diffusion internes (SharePoint, Teams, événements). Proposer des idées créatives pour valoriser les contenus internes de manière engageante. Votre profil Un profil polyvalent, créatif et autonome, avec des compétences en : Prise de vue / son : cadrage, lumière, micro, tournage en environnement pro. Montage vidéo : Adobe Premiere Pro, DaVinci Resolve, Final Cut... Motion design : After Effects, Canva Pro, ou outils similaires. Sens de la narration : capacité à synthétiser des messages internes en formats engageants. Connaissance des outils de diffusion : SharePoint, Teams, etc. Connaissance des formats adaptés à la diffusion interne Intérêt pour la communication corporate ou RH. Capacité à travailler en autonomie avec des interlocuteurs internes variés. Vos avantages Un environnement technologique innovant : accès à des outils de pointe comme le Tech Lab, Copilot M365 et l'IA Factory pour façonner le monde de demain. Des possibilités d'apprentissage et de développement hors normes , grâce à notre plateforme de formation intelligente et notre culture du feedback continu. Un cycle de performance stimulant, aligné avec le référentiel PwC Professional, pour vous aider à atteindre vos objectifs et viser l'excellence jour après jour. Un cadre de travail positif et inclusif pour vous permettre d'être pleinement vous-même et de collaborer efficacement au service de nos clients (programmes de parentalité, d'équité femmes-hommes, de santé et bien-être Be Well, Work Well, d'inclusion LGBT+ et de maintien dans l'emploi des personnes en situation de handicap). Pour en savoir plus sur nos avantages, rendez-vous sur notre page dédiée. Notre processus de recrutement Pour vous permettre de vivre une expérience fluide et transparente, notre processus de recrutement se déroule en plusieurs étapes : 1. Évaluation en ligne avec un test de compétences et/ou un test d'anglais 2. Entretien RH 3. Rencontres avec les équipes opérationnelles (un ou plusieurs entretiens en physique) 4. Vérification des informations : avant l'embauche, un organisme spécialisé procédera à la vérification des éléments figurant sur votre CV",
-      "competences_detectees": [
-        "SEA/Paid Media",
-        "Content Marketing",
-        "UX/Design"
-      ],
-      "url_candidature": "https://www.jobteaser.com/fr/job-offers/c46d51a9-8ff3-4861-8384-fe4642177c62-pwc-france-alternant-e-creation-de-contenus-video-communication-interne-f-h?utm_campaign=partner_access&utm_source=la_bonne_alternance&utm_medium=www",
-      "type_contrat": "Apprentissage + Professionnalisation",
-      "duree_contrat": null,
-      "date_debut": null,
-      "date_creation": "08/02/2026",
-      "date_expiration": "08/04/2026",
-      "plateforme_source": "Jobteaser",
-      "ville_recherche": "Paris",
-      "priorite_ville": 3
-    },
-    {
-      "id": "apprenti(e)coordinateurriceseo_antalis_92100",
-      "source": "LBA",
-      "status": "new",
-      "titre": "Apprenti(e) Coordinateur/rice SEO",
-      "entreprise": "Antalis",
-      "ville": "Boulogne-Billancourt",
-      "code_postal": "92100",
-      "adresse_complete": "92100 Boulogne-Billancourt",
-      "description": "ENTREPRISE : Antalis est une des filiales majeures du groupe japonais Kokusai Pulp & Paper –KPP-, leader mondial de la distribution de papiers, d'emballages et de communication visuelle. Opérant...",
-      "description_complete": "ENTREPRISE : Antalis est une des filiales majeures du groupe japonais Kokusai Pulp & Paper –KPP-, leader mondial de la distribution de papiers, d'emballages et de communication visuelle. Opérant principalement en Europe et en Amérique latine, Antalis est le premier distributeur B2B de produits et de services dans les Papiers et Emballages industriels, et le numéro 2 de la distribution de supports de communication visuelle. Basé en région parisienne (Boulogne-Billancourt), Antalis est présent dans 31 pays. Grace à ses 4 000 employés Antalis assurent un service de qualité et de proximité auprès de plus de 110 000 clients et déploie des solutions de commerce électronique innovantes. Nos 103 centres de distribution axés sur l'éco-responsabilité, coordonnent plus de 11 000 livraisons quotidiennes MISSIONS : Dans le cadre du développement de notre stratégie digitale, nous sommes à la recherche d’un(e) Chef de Projet SEO Éditorial pour notre activité e-commerce, sous contrat d’apprentissage ou de professionnalisation. Intégré(e) au sein des équipes digitales du groupe, et travaillerez en collaboration avec les équipes e-business des différents marchés locaux à l’amélioration des contenus Web dans une optique d’amélioration de notre positionnement SEO. Vous reporterez directement au Solution Director. Ce rôle englobe principalement les tâches suivantes : Supporter le projet de SEO éditorial, en veillant à l’animation et le suivi des activités des équipes locales (respect des engagements, remonté d’alertes, support a la résolution proactive des problèmes, …) Coordonner avec les équipes internationales la publication de contenus en environ une dizaine de langues, en respectant les guidelines SEO établies Contribuer à l'amélioration des modes opératoires et à l'optimisation des processus de publication pour une efficacité maximale Monitorer la position des mots-clés/pages optimisées et analyser le volume de trafic SEO pour garantir le succès des contenus publiés Supporter l’expérimentation de méthodes de productions de contenus s’appuyant sur l’utilisation de l’intelligence artificielle (génération, traductions / adaptation de contenues produit pour un marché local pour d’autres marchés, … PROFIL : Étudiant(e) en Marketing Digital ou Communication avec une appétence pour le SEO et la rédaction de contenu Une première expérience en SEO (stage ou alternance) est indispensable , avec une compréhension des bonnes pratiques d’optimisation et des outils du secteur. Autonomie, rigueur et capacité à organiser et prioriser les tâches efficacement Excellente maîtrise du français et de l'anglais , avec une appétence pour le travail dans un environnement international Familiarité avec SEMrush ou volonté d'apprendre et de maîtriser cet outil rapidement Esprit d'équipe et facilité d'adaptation aux process établis, avec un fort esprit d'initiative pour fluidifier et améliorer les pratiques existantes AUTRES INFORMATIONS : Country : FRANCE Contract : Contrat d’alternance (Apprentissage ou Professionnalisation) Location : Boulogne Billancourt / Siège Social Starting Date : ASAP Contract Duration : 1 ou 2 ans (idéalement) POURQUOI REJOINDRE ANTALIS ? Travailler dans un Groupe à dimension Internationale ou l'anglais est la langue de travail Evoluer dans une structure à taille humaine Bénéficier des avantages d'un grand Groupe (télétravail, cantine/Ticket Resto, CSE, Intéressement)",
-      "competences_detectees": [
-        "SEO",
-        "Content Marketing",
-        "E-commerce",
-        "UX/Design"
-      ],
-      "url_candidature": "https://www.jobteaser.com/fr/job-offers/df1f42fa-a754-489f-862f-95964fe3c621-antalis-apprenti-e-coordinateur-rice-seo?utm_campaign=partner_access&utm_source=la_bonne_alternance&utm_medium=www",
-      "type_contrat": "Apprentissage + Professionnalisation",
-      "duree_contrat": null,
-      "date_debut": "01/01/2026",
-      "date_creation": "27/01/2026",
-      "date_expiration": "27/03/2026",
-      "plateforme_source": "Jobteaser",
-      "ville_recherche": "Paris",
-      "priorite_ville": 3
     },
     {
       "id": "bankin_alternancegrowthmarketing_paris",
@@ -494,6 +441,32 @@
       "priorite_ville": 3
     },
     {
+      "id": "alternant(e)créationdecontenusvidéo-communicationinterne-fh_pwcfrance_92200",
+      "source": "LBA",
+      "status": "active",
+      "titre": "Alternant(e) Création de Contenus Vidéo - Communication Interne - F/H",
+      "entreprise": "PwC France",
+      "ville": "Neuilly-sur-Seine",
+      "code_postal": "92200",
+      "adresse_complete": "92200 Neuilly-sur-Seine",
+      "description": "PwC, cabinet pluridisciplinaire, rassemble 7 000 collaborateurs en France et au Maghreb, au sein d'un réseau mondial de plus de 364 000 personnes dans 136 pays. Chaque jour, nous exerçons des métiers...",
+      "description_complete": "PwC, cabinet pluridisciplinaire, rassemble 7 000 collaborateurs en France et au Maghreb, au sein d'un réseau mondial de plus de 364 000 personnes dans 136 pays. Chaque jour, nous exerçons des métiers d'excellence pour concrétiser notre ambition : être utiles à nos clients et accélérateurs de mouvement. Dans un monde en constante évolution, nous investissons dans le développement de nos équipes avec une proposition de valeur forte : Grow here. Go further. Un engagement mondial pour accompagner nos talents dans l'évolution de leurs compétences. Ce que nous recherchons ? Des expertises, bien sûr. Mais surtout, des personnalités curieuses, passionnées, prêtes à incarner les comportements du PwC Professional, notre référentiel commun qui guide notre manière de travailler ensemble. Reconnu Top Employer pour la 6ème année consécutive, PwC s'engage à offrir un environnement de travail inclusif et handi-accueillant, où chacun peut pleinement collaborer et avoir un impact. Si vous avez besoin d'un aménagement spécifique en vue de l'entretien de recrutement, n'hésitez pas à nous en faire part. Votre équipe Dans le cadre du développement de notre communication interne de la DSI de PwC France, nous souhaitons renforcer notre capacité à produire des contenus vidéo dynamiques et engageants. Ces vidéos, diffusées exclusivement en interne, sont de deux types : Informatives : diffusées pendant nos événements (plénière, business call, webcast firm ...) ou via SharePoint et Teams. Elles ont pour objectif de valoriser les initiatives, projets et événements de l'entreprise, tout en facilitant la transmission d'informations clés. Pédagogiques : partagées via une Knowledge Base à des fins de formation et de tutoriels pour expliquer les différentes nouvelles features déployées dans nos applications. Pour cela, nous recherchons un alternant créatif et polyvalent, capable de prendre en charge l'ensemble du processus de création : de la captation (image et son), au montage, en passant par l'intégration d'éléments de motion design pour illustrer des données clés (\"keyfacts\", \"keynumbers\"). Vos missions Participer à la conception des vidéos : brief, storyboard, choix des formats. Réaliser des captations vidéo et audio lors d'événements internes ou interviews. Assurer le montage des vidéos en respectant la charte graphique et les codes de l'entreprise. Intégrer des éléments de motion design pour illustrer des données clés ou renforcer l'impact visuel. Adapter les formats aux différents canaux de diffusion internes (SharePoint, Teams, événements). Proposer des idées créatives pour valoriser les contenus internes de manière engageante. Votre profil Un profil polyvalent, créatif et autonome, avec des compétences en : Prise de vue / son : cadrage, lumière, micro, tournage en environnement pro. Montage vidéo : Adobe Premiere Pro, DaVinci Resolve, Final Cut... Motion design : After Effects, Canva Pro, ou outils similaires. Sens de la narration : capacité à synthétiser des messages internes en formats engageants. Connaissance des outils de diffusion : SharePoint, Teams, etc. Connaissance des formats adaptés à la diffusion interne Intérêt pour la communication corporate ou RH. Capacité à travailler en autonomie avec des interlocuteurs internes variés. Vos avantages Un environnement technologique innovant : accès à des outils de pointe comme le Tech Lab, Copilot M365 et l'IA Factory pour façonner le monde de demain. Des possibilités d'apprentissage et de développement hors normes , grâce à notre plateforme de formation intelligente et notre culture du feedback continu. Un cycle de performance stimulant, aligné avec le référentiel PwC Professional, pour vous aider à atteindre vos objectifs et viser l'excellence jour après jour. Un cadre de travail positif et inclusif pour vous permettre d'être pleinement vous-même et de collaborer efficacement au service de nos clients (programmes de parentalité, d'équité femmes-hommes, de santé et bien-être Be Well, Work Well, d'inclusion LGBT+ et de maintien dans l'emploi des personnes en situation de handicap). Pour en savoir plus sur nos avantages, rendez-vous sur notre page dédiée. Notre processus de recrutement Pour vous permettre de vivre une expérience fluide et transparente, notre processus de recrutement se déroule en plusieurs étapes : 1. Évaluation en ligne avec un test de compétences et/ou un test d'anglais 2. Entretien RH 3. Rencontres avec les équipes opérationnelles (un ou plusieurs entretiens en physique) 4. Vérification des informations : avant l'embauche, un organisme spécialisé procédera à la vérification des éléments figurant sur votre CV",
+      "competences_detectees": [
+        "SEA/Paid Media",
+        "Content Marketing",
+        "UX/Design"
+      ],
+      "url_candidature": "https://www.jobteaser.com/fr/job-offers/c46d51a9-8ff3-4861-8384-fe4642177c62-pwc-france-alternant-e-creation-de-contenus-video-communication-interne-f-h?utm_campaign=partner_access&utm_source=la_bonne_alternance&utm_medium=www",
+      "type_contrat": "Apprentissage + Professionnalisation",
+      "duree_contrat": null,
+      "date_debut": null,
+      "date_creation": "08/02/2026",
+      "date_expiration": "08/04/2026",
+      "plateforme_source": "Jobteaser",
+      "ville_recherche": "Paris",
+      "priorite_ville": 3
+    },
+    {
       "id": "assistantmarketingetcommunication-alternance-hf_globegroupe_92200",
       "source": "LBA",
       "status": "active",
@@ -597,6 +570,33 @@
       "date_creation": "27/01/2026",
       "date_expiration": "27/03/2026",
       "plateforme_source": "Meteojob",
+      "ville_recherche": "Paris",
+      "priorite_ville": 3
+    },
+    {
+      "id": "apprenti(e)coordinateurriceseo_antalis_92100",
+      "source": "LBA",
+      "status": "active",
+      "titre": "Apprenti(e) Coordinateur/rice SEO",
+      "entreprise": "Antalis",
+      "ville": "Boulogne-Billancourt",
+      "code_postal": "92100",
+      "adresse_complete": "92100 Boulogne-Billancourt",
+      "description": "ENTREPRISE : Antalis est une des filiales majeures du groupe japonais Kokusai Pulp & Paper –KPP-, leader mondial de la distribution de papiers, d'emballages et de communication visuelle. Opérant...",
+      "description_complete": "ENTREPRISE : Antalis est une des filiales majeures du groupe japonais Kokusai Pulp & Paper –KPP-, leader mondial de la distribution de papiers, d'emballages et de communication visuelle. Opérant principalement en Europe et en Amérique latine, Antalis est le premier distributeur B2B de produits et de services dans les Papiers et Emballages industriels, et le numéro 2 de la distribution de supports de communication visuelle. Basé en région parisienne (Boulogne-Billancourt), Antalis est présent dans 31 pays. Grace à ses 4 000 employés Antalis assurent un service de qualité et de proximité auprès de plus de 110 000 clients et déploie des solutions de commerce électronique innovantes. Nos 103 centres de distribution axés sur l'éco-responsabilité, coordonnent plus de 11 000 livraisons quotidiennes MISSIONS : Dans le cadre du développement de notre stratégie digitale, nous sommes à la recherche d’un(e) Chef de Projet SEO Éditorial pour notre activité e-commerce, sous contrat d’apprentissage ou de professionnalisation. Intégré(e) au sein des équipes digitales du groupe, et travaillerez en collaboration avec les équipes e-business des différents marchés locaux à l’amélioration des contenus Web dans une optique d’amélioration de notre positionnement SEO. Vous reporterez directement au Solution Director. Ce rôle englobe principalement les tâches suivantes : Supporter le projet de SEO éditorial, en veillant à l’animation et le suivi des activités des équipes locales (respect des engagements, remonté d’alertes, support a la résolution proactive des problèmes, …) Coordonner avec les équipes internationales la publication de contenus en environ une dizaine de langues, en respectant les guidelines SEO établies Contribuer à l'amélioration des modes opératoires et à l'optimisation des processus de publication pour une efficacité maximale Monitorer la position des mots-clés/pages optimisées et analyser le volume de trafic SEO pour garantir le succès des contenus publiés Supporter l’expérimentation de méthodes de productions de contenus s’appuyant sur l’utilisation de l’intelligence artificielle (génération, traductions / adaptation de contenues produit pour un marché local pour d’autres marchés, … PROFIL : Étudiant(e) en Marketing Digital ou Communication avec une appétence pour le SEO et la rédaction de contenu Une première expérience en SEO (stage ou alternance) est indispensable , avec une compréhension des bonnes pratiques d’optimisation et des outils du secteur. Autonomie, rigueur et capacité à organiser et prioriser les tâches efficacement Excellente maîtrise du français et de l'anglais , avec une appétence pour le travail dans un environnement international Familiarité avec SEMrush ou volonté d'apprendre et de maîtriser cet outil rapidement Esprit d'équipe et facilité d'adaptation aux process établis, avec un fort esprit d'initiative pour fluidifier et améliorer les pratiques existantes AUTRES INFORMATIONS : Country : FRANCE Contract : Contrat d’alternance (Apprentissage ou Professionnalisation) Location : Boulogne Billancourt / Siège Social Starting Date : ASAP Contract Duration : 1 ou 2 ans (idéalement) POURQUOI REJOINDRE ANTALIS ? Travailler dans un Groupe à dimension Internationale ou l'anglais est la langue de travail Evoluer dans une structure à taille humaine Bénéficier des avantages d'un grand Groupe (télétravail, cantine/Ticket Resto, CSE, Intéressement)",
+      "competences_detectees": [
+        "SEO",
+        "Content Marketing",
+        "E-commerce",
+        "UX/Design"
+      ],
+      "url_candidature": "https://www.jobteaser.com/fr/job-offers/df1f42fa-a754-489f-862f-95964fe3c621-antalis-apprenti-e-coordinateur-rice-seo?utm_campaign=partner_access&utm_source=la_bonne_alternance&utm_medium=www",
+      "type_contrat": "Apprentissage + Professionnalisation",
+      "duree_contrat": null,
+      "date_debut": "01/01/2026",
+      "date_creation": "27/01/2026",
+      "date_expiration": "27/03/2026",
+      "plateforme_source": "Jobteaser",
       "ville_recherche": "Paris",
       "priorite_ville": 3
     },
