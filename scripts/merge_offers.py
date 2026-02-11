@@ -14,7 +14,7 @@ BASE_DIR = SCRIPT_DIR.parent
 DATA_DIR = BASE_DIR / "data"
 
 # Fichiers
-LBA_FILE = DATA_DIR / "offres_lba.json"
+LBA_FILE = DATA_DIR / "offres_lba_validated.json"
 PERPLEXITY_FILE = DATA_DIR / "offres_perplexity.json"
 HISTORIQUE_FILE = DATA_DIR / "offres_historique.json"
 OUTPUT_FILE = DATA_DIR / "offres_merged.json"
