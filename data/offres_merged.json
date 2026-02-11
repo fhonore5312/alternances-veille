@@ -1,13 +1,13 @@
 {
   "meta": {
-    "date_generation": "2026-02-10 20:46:09",
+    "date_generation": "2026-02-11 09:30:16",
     "sources": [
       "LBA",
       "Perplexity"
     ],
     "total_offres": 24,
-    "nouvelles": 24,
-    "actives": 0,
+    "nouvelles": 0,
+    "actives": 24,
     "source_lba": 24,
     "source_perplexity": 1
   },
@@ -15,7 +15,7 @@
     {
       "id": "chargé(e)demissioncommercemarketing(nantes,44)_manpowerrh_44000",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "Chargé(e) de Mission Commerce/Marketing (Nantes, 44)",
       "entreprise": "Manpower RH",
       "ville": "Nantes",
@@ -41,7 +41,7 @@
     {
       "id": "managermarketingautomation&amp;crm_maisonsdumonde_44300",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "Manager marketing Automation &amp; CRM",
       "entreprise": "Maisons du Monde",
       "ville": "Nantes",
@@ -68,7 +68,7 @@
     {
       "id": "managermarketingautomation&amp;crm_maisonsdumonde_44120",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "Manager marketing Automation &amp; CRM",
       "entreprise": "Maisons du Monde",
       "ville": "Vertou",
@@ -95,7 +95,7 @@
     {
       "id": "alternanceassistantmarketingproduit-parishf_jobmania_75001",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "Alternance Assistant Marketing Produit - Paris H/F",
       "entreprise": "Jobmania",
       "ville": "Paris",
@@ -120,7 +120,7 @@
     {
       "id": "useracquisition&amp;marketingmanagerhf_scalebay_75001",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "User Acquisition &amp; Marketing Manager H/F",
       "entreprise": "Scalebay",
       "ville": "Paris",
@@ -147,7 +147,7 @@
     {
       "id": "alternantassistanttrademarketingetkamhf_nestlé_75001",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "Alternant assistant Trade marketing et KAM H/F",
       "entreprise": "Nestlé",
       "ville": "Paris",
@@ -171,7 +171,7 @@
     {
       "id": "assistant(e)marketingalternance_valeo_75001",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "Assistant(e) Marketing Alternance",
       "entreprise": "Valeo",
       "ville": "Paris",
@@ -199,7 +199,7 @@
     {
       "id": "yumi🌶créateur.tricedecontenu(tiktok&instagram)actifcreditstandard_pepites(yumi/paf)_75001",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "YUMI 🌶 Créateur.trice de Contenu (TikTok & Instagram) Actif Credit Standard",
       "entreprise": "PEPITES ( YUMI / PAF)",
       "ville": "Paris",
@@ -226,7 +226,7 @@
     {
       "id": "alternance-assistant(e)deproductiondecontenus-octobreeditions(hf)_sézane_75001",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "Alternance - Assistant(e) de Production de Contenus - Octobre Editions (H/F)",
       "entreprise": "Sézane",
       "ville": "Paris",
@@ -253,7 +253,7 @@
     {
       "id": "assist.chargé(e)campagnesmarktdigital-altern(hf)_ccmperformance_75009",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "Assist. Chargé(e) campagnes markt digital - Altern (H/F)",
       "entreprise": "CCM Performance",
       "ville": "Paris 9e Arrondissement",
@@ -282,7 +282,7 @@
     {
       "id": "stageoualternanceattaché(e)relationpresseexperimental_experimentalgroup_75009",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "Stage ou alternance Attaché(e) Relation Presse / Experimental",
       "entreprise": "EXPERIMENTAL GROUP",
       "ville": "Paris 9e Arrondissement",
@@ -306,7 +306,7 @@
     {
       "id": "[alternance]assistantwebmarketingfh(hf)_financieredespaiementselectroniques_94220",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "[Alternance] Assistant Web Marketing F/H (H/F)",
       "entreprise": "FINANCIERE DES PAIEMENTS  ELECTRONIQUES",
       "ville": "Charenton-le-Pont",
@@ -333,7 +333,7 @@
     {
       "id": "apprentice-groupmarketingassistanthf_forvismazars_92300",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "Apprentice - Group Marketing Assistant H/F",
       "entreprise": "Forvis Mazars",
       "ville": "Levallois-Perret",
@@ -360,7 +360,7 @@
     {
       "id": "alternant(e)créationdecontenusvidéo-communicationinterne-fh_pwcfrance_92200",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "Alternant(e) Création de Contenus Vidéo - Communication Interne - F/H",
       "entreprise": "PwC France",
       "ville": "Neuilly-sur-Seine",
@@ -386,7 +386,7 @@
     {
       "id": "assistantmarketingetcommunication-alternance-hf_globegroupe_92200",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "ASSISTANT MARKETING ET COMMUNICATION- ALTERNANCE - H/F",
       "entreprise": "GLOBE GROUPE",
       "ville": "Neuilly-sur-Seine",
@@ -414,7 +414,7 @@
     {
       "id": "alternance-assistantpartenariatssportsfootballhf_canalplus_92130",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "Alternance - Assistant Partenariats Sports Football H/F",
       "entreprise": "Canal Plus",
       "ville": "Issy-les-Moulineaux",
@@ -442,7 +442,7 @@
     {
       "id": "customersuccessmanagerapprentice_catalinafrance_92100",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "Customer success manager Apprentice",
       "entreprise": "Catalina France",
       "ville": "Boulogne-Billancourt",
@@ -467,7 +467,7 @@
     {
       "id": "alternance-assistantmarketingdesventestourismehf_sodexolive_92100",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "ALTERNANCE - ASSISTANT MARKETING DES VENTES TOURISME H/F",
       "entreprise": "Sodexo Live",
       "ville": "Boulogne-Billancourt",
@@ -493,7 +493,7 @@
     {
       "id": "apprenti(e)coordinateurriceseo_antalis_92100",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "Apprenti(e) Coordinateur/rice SEO",
       "entreprise": "Antalis",
       "ville": "Boulogne-Billancourt",
@@ -520,7 +520,7 @@
     {
       "id": "alternance-assistantpartenariatsetpromotionshf_canalplus_92800",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "Alternance - Assistant Partenariats et Promotions H/F",
       "entreprise": "Canal Plus",
       "ville": "Puteaux",
@@ -546,7 +546,7 @@
     {
       "id": "alternantassistant(e)marketing(fh)-adeliamedical_adeliamedical_92230",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "Alternant Assistant(e) Marketing (F/H) - ADELIA MEDICAL",
       "entreprise": "ADELIA MEDICAL",
       "ville": "Gennevilliers",
@@ -572,7 +572,7 @@
     {
       "id": "assistantmarketingdel'offreproduitshf_krysgroup_92000",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "Assistant Marketing de l'Offre Produits H/F",
       "entreprise": "Krys Group",
       "ville": "Nanterre",
@@ -598,7 +598,7 @@
     {
       "id": "assistantchefdeprojetmarketingdigitalhf_krysgroup_92000",
       "source": "LBA",
-      "status": "new",
+      "status": "active",
       "titre": "Assistant Chef de Projet Marketing Digital H/F",
       "entreprise": "Krys Group",
       "ville": "Nanterre",
@@ -623,7 +623,7 @@
     {
       "id": "bankin_alternancegrowthmktg_paris",
       "source": "Perplexity",
-      "status": "new",
+      "status": "active",
       "titre": "Alternance / Growth Marketing - Paris (H/F/X)",
       "entreprise": "Bankin'",
       "ville": "Paris",

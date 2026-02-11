@@ -7,7 +7,7 @@
     "total_offres": 9,
     "nouvelles": 0,
     "actives": 9,
-    "validation_date": "2026-02-10 20:46:09",
+    "validation_date": "2026-02-11 09:30:16",
     "validated": 9,
     "expired": 7,
     "errors": 0,
@@ -41,7 +41,7 @@
       "priorite_ville": 2,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-10 20:45:02",
+        "checked_at": "2026-02-11 09:29:10",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -77,7 +77,7 @@
       "priorite_ville": 2,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-10 20:45:05",
+        "checked_at": "2026-02-11 09:29:13",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -113,7 +113,7 @@
       "priorite_ville": 2,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-10 20:45:08",
+        "checked_at": "2026-02-11 09:29:16",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -151,7 +151,7 @@
       "priorite_ville": 3,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-10 20:45:30",
+        "checked_at": "2026-02-11 09:29:37",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -184,7 +184,7 @@
       "priorite_ville": 3,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-10 20:45:33",
+        "checked_at": "2026-02-11 09:29:40",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -221,7 +221,7 @@
       "priorite_ville": 3,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-10 20:45:45",
+        "checked_at": "2026-02-11 09:29:52",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -255,7 +255,7 @@
       "priorite_ville": 3,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-10 20:45:51",
+        "checked_at": "2026-02-11 09:29:58",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -290,7 +290,7 @@
       "priorite_ville": 3,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-10 20:45:54",
+        "checked_at": "2026-02-11 09:30:01",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
@@ -325,7 +325,7 @@
       "priorite_ville": 3,
       "validation_status": "validated",
       "validation_details": {
-        "checked_at": "2026-02-10 20:46:03",
+        "checked_at": "2026-02-11 09:30:10",
         "status_code": 200,
         "is_expired": false,
         "has_apply_button": true,
