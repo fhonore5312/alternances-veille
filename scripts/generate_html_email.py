@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+"""
+Génération HTML et envoi d'email
+IMPORTANT: Workflow refactorisé - Ce script utilise data/offres_merged.json
+généré par: scraper_lba.py → validator.py → merge_offers.py → generate_html_email.py
+"""
+
 import json
 from datetime import datetime, timedelta
 import os
@@ -8,11 +14,12 @@ from dotenv import load_dotenv
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from email.mime.base import MIMEBase
-from email import encoders
+from email.mime.base import MIMEBase  # ← AJOUTÉ
+from email import encoders  # ← AJOUTÉ
 from pathlib import Path
 import subprocess
 import shutil
+
 
 # ===== CONFIGURATION =====
 SCRIPT_DIR = Path(__file__).parent
@@ -20,6 +27,10 @@ BASE_DIR = SCRIPT_DIR.parent
 DATA_DIR = BASE_DIR / "data"
 DOCS_DIR = BASE_DIR / "docs"
 ARCHIVES_DIR = DOCS_DIR / "archives"
+
+# Créer les dossiers s'ils n'existent pas
+DOCS_DIR.mkdir(parents=True, exist_ok=True)
+ARCHIVES_DIR.mkdir(parents=True, exist_ok=True)
 
 # Fichiers
 OFFRES_MERGED = DATA_DIR / "offres_merged.json"
@@ -31,6 +42,7 @@ load_dotenv()
 # Configuration Gmail
 GMAIL_USER = os.getenv('GMAIL_USER')
 GMAIL_PASSWORD = os.getenv('GMAIL_PASSWORD')
+RECIPIENT_EMAIL = os.getenv('RECIPIENT_EMAIL', GMAIL_USER)  # Destinataire (par défaut: soi-même)
 
 # Vérifie que les variables sont chargées
 if not GMAIL_USER or not GMAIL_PASSWORD:
@@ -39,12 +51,10 @@ if not GMAIL_USER or not GMAIL_PASSWORD:
 GITHUB_PAGES_URL = "https://fhonore5312.github.io/alternances-veille/"
 RETENTION_DAYS = 30  # Conserver 30 jours d'archives
 
-
 def load_offers():
     """Charge les offres depuis offres_merged.json"""
     with open(OFFRES_MERGED, 'r', encoding='utf-8') as f:
         return json.load(f)
-
 
 def group_by_city(offers):
     """Regroupe les offres par ville_recherche"""
@@ -56,9 +66,8 @@ def group_by_city(offers):
         grouped[ville].append(offer)
     return grouped
 
-
 def generate_html(data):
-    """Génère le HTML à partir du JSON fusionné"""
+    """Génère le HTML complet pour GitHub Pages"""
     offers = data['offres']
     meta = data['meta']
     
@@ -68,13 +77,19 @@ def generate_html(data):
     # Stats
     total_offers = meta['total_offres']
     new_count = meta['nouvelles']
+    
+    # Stats par ville
     stats_by_city = {
         'Rennes': len(offers_by_city.get('Rennes', [])),
         'Nantes': len(offers_by_city.get('Nantes', [])),
         'Paris': len(offers_by_city.get('Paris', []))
     }
     
-    # Header HTML
+    # Stats par source
+    lba_count = meta.get('source_lba', 0)
+    perplexity_count = meta.get('source_perplexity', 0)
+    
+    # Header HTML avec CSS complet
     html = f"""<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -89,7 +104,7 @@ def generate_html(data):
         }}
         
         body {{
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
@@ -98,46 +113,54 @@ def generate_html(data):
         .container {{
             max-width: 1400px;
             margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
         }}
         
-        /* Header */
         .header {{
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 40px;
+            text-align: center;
         }}
         
         .header h1 {{
-            color: #2c3e50;
-            font-size: 32px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-size: 42px;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }}
         
-        .header-subtitle {{
-            color: #7f8c8d;
-            font-size: 14px;
-            margin-bottom: 20px;
+        .header p {{
+            font-size: 18px;
+            opacity: 0.95;
+            margin-bottom: 5px;
         }}
         
-        /* Stats */
-        .stats {{
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
+        .stats-grid {{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            background: linear-gradient(to bottom, #f8f9fa 0%, #ffffff 100%);
         }}
         
         .stat-card {{
-            background: #f8f9fa;
-            padding: 15px 25px;
-            border-radius: 10px;
-            flex: 1;
-            min-width: 140px;
+            background: white;
+            padding: 25px 20px;
+            border-radius: 15px;
             text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid transparent;
+        }}
+        
+        .stat-card:hover {{
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
         }}
         
         .stat-card.highlight {{
@@ -145,357 +168,507 @@ def generate_html(data):
             color: white;
         }}
         
-        .stat-card.highlight .stat-number {{
-            color: white;
-        }}
-        
-        .stat-number {{
-            font-size: 36px;
-            font-weight: bold;
-            color: #667eea;
-            display: block;
-        }}
-        
-        .stat-label {{
+        .stat-card h3 {{
             font-size: 13px;
-            color: #7f8c8d;
-            margin-top: 5px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }}
         
-        .stat-card.highlight .stat-label {{
-            color: white;
-            opacity: 0.95;
+        .stat-card.highlight h3 {{
+            color: rgba(255,255,255,0.9);
         }}
         
-        /* City sections */
-        .city-section {{
+        .stat-card:not(.highlight) h3 {{
+            color: #6c757d;
+        }}
+        
+        .stat-card .number {{
+            font-size: 40px;
+            font-weight: 800;
+            line-height: 1;
+        }}
+        
+        .stat-card:not(.highlight) .number {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }}
+        
+        .archives-banner {{
             background: white;
-            border-radius: 15px;
-            margin-bottom: 25px;
-            overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-        }}
-        
-        .city-header {{
-            padding: 20px 30px;
-            color: white;
-            font-size: 22px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }}
-        
-        .city-header.rennes {{
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-        }}
-        
-        .city-header.nantes {{
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-        }}
-        
-        .city-header.paris {{
-            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
-        }}
-        
-        /* Offer cards */
-        .offer-card {{
-            border-bottom: 1px solid #ecf0f1;
-            padding: 25px 30px;
+            padding: 25px 40px;
+            margin: 0 40px 20px 40px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px dashed #667eea;
             transition: all 0.3s ease;
         }}
         
-        .offer-card:last-child {{
-            border-bottom: none;
+        .archives-banner:hover {{
+            background: #f8f9ff;
+            border-color: #764ba2;
+        }}
+        
+        .archives-banner h3 {{
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }}
+        
+        .archives-banner p {{
+            color: #6c757d;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }}
+        
+        .archives-banner a {{
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }}
+        
+        .archives-banner a:hover {{
+            color: #764ba2;
+        }}
+        
+        .content {{
+            padding: 30px 40px 50px 40px;
+        }}
+        
+        .city-section {{
+            margin-bottom: 50px;
+        }}
+        
+        .city-header {{
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            color: white;
+        }}
+        
+        .city-icon {{
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            font-size: 26px;
+            backdrop-filter: blur(10px);
+        }}
+        
+        .city-header h2 {{
+            font-size: 28px;
+            font-weight: 700;
+            flex: 1;
+        }}
+        
+        .city-header .count {{
+            background: rgba(255,255,255,0.25);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 700;
+            backdrop-filter: blur(10px);
+        }}
+        
+        .offers-grid {{
+            display: grid;
+            gap: 25px;
+        }}
+        
+        .offer-card {{
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 16px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }}
+        
+        .offer-card::before {{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }}
         
         .offer-card:hover {{
-            background: #f8f9fa;
-            transform: translateX(5px);
+            border-color: #667eea;
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.15);
+            transform: translateY(-3px);
+        }}
+        
+        .offer-card:hover::before {{
+            opacity: 1;
+        }}
+        
+        .offer-card.new {{
+            border-left: 5px solid #28a745;
+            background: linear-gradient(90deg, rgba(40, 167, 69, 0.03) 0%, white 100px);
+        }}
+        
+        .offer-card.new::before {{
+            background: #28a745;
+            opacity: 1;
         }}
         
         .offer-header {{
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 15px;
+            margin-bottom: 18px;
+            gap: 15px;
         }}
         
         .offer-title {{
-            font-size: 18px;
-            font-weight: bold;
+            flex: 1;
+        }}
+        
+        .offer-title h3 {{
+            font-size: 22px;
             color: #2c3e50;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
+            font-weight: 700;
+            line-height: 1.3;
         }}
         
         .offer-company {{
-            color: #7f8c8d;
-            font-size: 14px;
+            font-size: 17px;
+            color: #667eea;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }}
+        
+        .offer-location {{
+            font-size: 15px;
+            color: #6c757d;
             display: flex;
             align-items: center;
-            gap: 8px;
+            font-weight: 500;
         }}
         
-        .offer-badges {{
-            display: flex;
-            gap: 8px;
-            flex-shrink: 0;
+        .offer-location::before {{
+            content: "📍";
+            margin-right: 6px;
+            font-size: 16px;
         }}
         
-        .badge {{
-            padding: 5px 12px;
-            border-radius: 5px;
-            font-size: 11px;
-            font-weight: bold;
+        .new-badge {{
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 13px;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-        }}
-        
-        .badge.new {{
-            background: #e74c3c;
-            color: white;
-        }}
-        
-        .badge.active {{
-            background: #95a5a6;
-            color: white;
-        }}
-        
-        .badge.lba {{
-            background: #3498db;
-            color: white;
-        }}
-        
-        .badge.perplexity {{
-            background: #9b59b6;
-            color: white;
+            white-space: nowrap;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
         }}
         
         .offer-description {{
-            color: #555;
-            line-height: 1.6;
-            margin-bottom: 15px;
-            font-size: 14px;
+            color: #495057;
+            line-height: 1.7;
+            margin-bottom: 18px;
+            font-size: 15px;
         }}
         
-        .offer-skills {{
+        .skills-container {{
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 15px;
+            gap: 10px;
+            margin-bottom: 18px;
         }}
         
-        .skill-tag {{
-            background: #d4edda;
-            color: #155724;
-            padding: 5px 12px;
-            border-radius: 5px;
-            font-size: 12px;
-            font-weight: 600;
-        }}
-        
-        .offer-details {{
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 15px;
-        }}
-        
-        .detail-group {{
-            background: #f8f9fa;
-            padding: 12px;
-            border-radius: 8px;
-        }}
-        
-        .detail-title {{
-            font-weight: bold;
+        .skill-badge {{
+            background: linear-gradient(135deg, #e7f0ff 0%, #f0e7ff 100%);
             color: #667eea;
-            font-size: 12px;
-            text-transform: uppercase;
-            margin-bottom: 5px;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            transition: all 0.3s ease;
         }}
         
-        .detail-content {{
+        .skill-badge:hover {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }}
+        
+        .offer-metadata {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }}
+        
+        .meta-item {{
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #495057;
+            font-weight: 500;
+        }}
+        
+        .meta-item strong {{
             color: #2c3e50;
-            font-size: 13px;
+            margin-left: 5px;
         }}
         
         .offer-actions {{
             display: flex;
-            gap: 10px;
+            gap: 12px;
             align-items: center;
         }}
         
-        .btn-apply {{
+        .btn {{
+            padding: 14px 28px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }}
+        
+        .btn-primary {{
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 10px 25px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            display: inline-block;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }}
         
-        .btn-apply:hover {{
+        .btn-primary:hover {{
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
         }}
         
-        /* Footer */
-        .footer {{
-            text-align: center;
-            color: white;
-            padding: 30px;
-            font-size: 14px;
-        }}
-        
-        .footer-timestamp {{
+        .source-badge {{
+            padding: 6px 12px;
+            border-radius: 6px;
             font-size: 12px;
-            opacity: 0.9;
-            margin-top: 5px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }}
+        
+        .source-lba {{
+            background: #e3f2fd;
+            color: #1976d2;
+        }}
+        
+        .source-perplexity {{
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }}
+        
+        .footer {{
+            background: linear-gradient(to bottom, #f8f9fa 0%, #e9ecef 100%);
+            padding: 40px;
+            text-align: center;
+            border-top: 3px solid #667eea;
+        }}
+        
+        .footer p {{
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }}
+        
+        .footer a {{
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }}
+        
+        .footer a:hover {{
+            color: #764ba2;
+        }}
+        
+        @media (max-width: 768px) {{
+            .header h1 {{
+                font-size: 28px;
+            }}
+            
+            .stats-grid {{
+                grid-template-columns: repeat(2, 1fr);
+                padding: 20px;
+            }}
+            
+            .content {{
+                padding: 20px;
+            }}
+            
+            .offer-header {{
+                flex-direction: column;
+            }}
+            
+            .new-badge {{
+                align-self: flex-start;
+            }}
+            
+            .offer-metadata {{
+                flex-direction: column;
+                gap: 10px;
+            }}
         }}
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <div class="header">
             <h1>🎯 Veille Alternances Marketing Digital</h1>
-            <p class="header-subtitle">Bachelor 3 RSB · Début: Septembre 2026 · Durée: 12-24 mois</p>
-            
-            <div class="stats">
-                <div class="stat-card highlight">
-                    <span class="stat-number">🆕 {new_count}</span>
-                    <div class="stat-label">nouvelles</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">📊 {total_offers}</span>
-                    <div class="stat-label">offres actives total</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">LBA: {meta.get('source_lba', 0)}</span>
-                    <div class="stat-label">La Bonne Alternance</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">Perplexity: {meta.get('source_perplexity', 0)}</span>
-                    <div class="stat-label">Recherche complémentaire</div>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">📍 Rennes: {stats_by_city['Rennes']}</span>
-                    <div class="stat-label">· Nantes: {stats_by_city['Nantes']} · Paris: {stats_by_city['Paris']}</div>
-                </div>
+            <p>Bachelor 3 RSB · Début: Septembre 2026 · Durée: 12-24 mois</p>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card highlight">
+                <h3>🆕 Nouvelles</h3>
+                <div class="number">{new_count}</div>
+            </div>
+            <div class="stat-card">
+                <h3>📊 Total actives</h3>
+                <div class="number">{total_offers}</div>
+            </div>
+            <div class="stat-card">
+                <h3>📍 LBA: {lba_count}</h3>
+                <div class="number">{lba_count}</div>
+            </div>
+            <div class="stat-card">
+                <h3>🔍 Perplexity: {perplexity_count}</h3>
+                <div class="number">{perplexity_count}</div>
+            </div>
+            <div class="stat-card">
+                <h3>🏰 Rennes</h3>
+                <div class="number">{stats_by_city['Rennes']}</div>
+            </div>
+            <div class="stat-card">
+                <h3>⚓ Nantes</h3>
+                <div class="number">{stats_by_city['Nantes']}</div>
+            </div>
+            <div class="stat-card">
+                <h3>🗼 Paris</h3>
+                <div class="number">{stats_by_city['Paris']}</div>
             </div>
         </div>
+        
+        <div class="archives-banner">
+            <h3>📚 Consulter l'historique des veilles</h3>
+            <p>Accédez aux veilles des {RETENTION_DAYS} derniers jours</p>
+            <a href="archives/" target="_blank">→ Voir les archives</a>
+        </div>
+        
+        <div class="content">
 """
-    
-    # Ordre de priorité des villes
-    city_priority = ['Rennes', 'Nantes', 'Paris']
-    city_classes = {
-        'Rennes': 'rennes',
-        'Nantes': 'nantes',
-        'Paris': 'paris'
-    }
     
     # Générer les sections par ville
-    for city in city_priority:
-        if city not in offers_by_city:
-            continue
-        
-        city_offers = offers_by_city[city]
-        city_class = city_classes.get(city, '')
-        
-        html += f"""
-        <!-- {city} Section -->
-        <div class="city-section">
-            <div class="city-header {city_class}">
-                🎯 {city} Priorité #{city_priority.index(city) + 1} ({len(city_offers)} offres)
-            </div>
-"""
-        
-        for offer in city_offers:
-            # Extraction des données
-            status = offer.get('status', 'active')
-            source = offer.get('source', 'LBA')
-            titre = offer.get('titre', 'Sans titre')
-            entreprise = offer.get('entreprise', 'Non précisé')
-            ville = offer.get('ville', city)
-            description = offer.get('description', 'Pas de description disponible')
-            competences = offer.get('competences', [])
-            contrat = offer.get('type_contrat', 'Apprentissage')
-            duree = offer.get('duree_contrat', '12 mois')
-            debut = offer.get('debut', 'Septembre 2026')
-            date_creation = offer.get('date_creation', '—')
-            date_expiration = offer.get('date_expiration', '—')
-            via = offer.get('via', 'ISME')
-            url_candidature = offer.get('url_candidature', '#')
-            
-            # Badges
-            badge_status = f'<span class="badge new">🆕 NEW</span>' if status == 'new' else '<span class="badge active">Active</span>'
-            badge_source = f'<span class="badge {"lba" if source == "LBA" else "perplexity"}">{source}</span>'
-            
-            # Compétences
-            skills_html = ""
-            if competences:
-                skills_html = '<div class="offer-skills">'
-                for skill in competences:
-                    skills_html += f'<span class="skill-tag">{skill}</span>'
-                skills_html += '</div>'
-            
+    city_order = ['Rennes', 'Nantes', 'Paris']
+    city_icons = {'Rennes': '🏰', 'Nantes': '⚓', 'Paris': '🗼'}
+    
+    for city in city_order:
+        if city in offers_by_city and len(offers_by_city[city]) > 0:
+            city_offers = offers_by_city[city]
             html += f"""
-            <div class="offer-card">
-                <div class="offer-header">
-                    <div>
-                        <div class="offer-title">{titre}</div>
-                        <div class="offer-company">🏢 {entreprise} · 📍 {ville}</div>
-                    </div>
-                    <div class="offer-badges">
-                        {badge_status}
-                        {badge_source}
-                    </div>
+            <div class="city-section">
+                <div class="city-header">
+                    <div class="city-icon">{city_icons[city]}</div>
+                    <h2>{city} Priorité #{offers_by_city[city][0].get('priorite_ville', '?')}</h2>
+                    <span class="count">{len(city_offers)} offres</span>
                 </div>
                 
-                <div class="offer-description">
-                    {description}
-                </div>
+                <div class="offers-grid">
+"""
+            
+            for offer in city_offers:
+                is_new = offer.get('status') == 'new'
+                new_class = 'new' if is_new else ''
+                new_badge = '<span class="new-badge">🆕 Nouvelle</span>' if is_new else ''
                 
-                {skills_html}
+                source = offer.get('source', 'LBA')
+                source_class = 'source-lba' if source == 'LBA' else 'source-perplexity'
                 
-                <div class="offer-details">
-                    <div class="detail-group">
-                        <div class="detail-title">📋 ALTERNANCE</div>
-                        <div class="detail-content">
-                            Contrat: {contrat}<br>
-                            Durée: {duree}<br>
-                            Début: {debut}
+                # Skills
+                skills_html = ''
+                if offer.get('competences_detectees'):
+                    skills_html = '<div class="skills-container">'
+                    for skill in offer['competences_detectees']:
+                        skills_html += f'<span class="skill-badge">{skill}</span>'
+                    skills_html += '</div>'
+                
+                # Metadata
+                meta_items = []
+                if offer.get('type_contrat'):
+                    meta_items.append(f'<div class="meta-item">📋 <strong>{offer["type_contrat"]}</strong></div>')
+                if offer.get('duree_contrat'):
+                    meta_items.append(f'<div class="meta-item">⏱️ <strong>{offer["duree_contrat"]}</strong></div>')
+                if offer.get('date_debut'):
+                    meta_items.append(f'<div class="meta-item">📅 Début: <strong>{offer["date_debut"]}</strong></div>')
+                if offer.get('plateforme_source'):
+                    meta_items.append(f'<div class="meta-item">🔗 <strong>{offer["plateforme_source"]}</strong></div>')
+                
+                meta_html = '<div class="offer-metadata">' + ''.join(meta_items) + '</div>' if meta_items else ''
+                
+                html += f"""
+                    <div class="offer-card {new_class}">
+                        <div class="offer-header">
+                            <div class="offer-title">
+                                <h3>{offer['titre']}</h3>
+                                <div class="offer-company">{offer['entreprise']}</div>
+                                <div class="offer-location">{offer['ville']} ({offer['code_postal']})</div>
+                            </div>
+                            {new_badge}
+                        </div>
+                        <p class="offer-description">{offer.get('description', '')}</p>
+                        {skills_html}
+                        {meta_html}
+                        <div class="offer-actions">
+                            <a href="{offer.get('url_candidature', '#')}" class="btn btn-primary" target="_blank">
+                                👉 Postuler
+                            </a>
+                            <span class="source-badge {source_class}">{source}</span>
                         </div>
                     </div>
-                    <div class="detail-group">
-                        <div class="detail-title">🔍 SOURCE</div>
-                        <div class="detail-content">
-                            Créée: {date_creation}<br>
-                            Expire: {date_expiration}<br>
-                            Via: {via}
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="offer-actions">
-                    <a href="{url_candidature}" target="_blank" class="btn-apply">Postuler →</a>
+"""
+            
+            html += """
                 </div>
             </div>
-"""
-        
-        html += """
-        </div>
 """
     
     # Footer
     html += f"""
+        </div>
+        
         <div class="footer">
-            <div>📅 Mise à jour : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</div>
-            <div class="footer-timestamp">🤖 Scraper automatique LBA + Recherche Perplexity</div>
+            <p><strong>Généré automatiquement le {meta['date_generation']}</strong></p>
+            <p>Sources: {' + '.join(meta.get('sources', ['LBA']))}</p>
+            <p><a href="{GITHUB_PAGES_URL}" target="_blank">🔗 Lien permanent vers cette veille</a></p>
         </div>
     </div>
 </body>
@@ -504,6 +677,195 @@ def generate_html(data):
     
     return html
 
+def generate_email_html(data):
+    """Génère un email HTML simple avec lien vers GitHub Pages"""
+    meta = data['meta']
+    new_count = meta['nouvelles']
+    total_count = meta['total_offres']
+    
+    offers_by_city = group_by_city(data['offres'])
+    stats_by_city = {
+        'Rennes': len(offers_by_city.get('Rennes', [])),
+        'Nantes': len(offers_by_city.get('Nantes', [])),
+        'Paris': len(offers_by_city.get('Paris', []))
+    }
+    
+    lba_count = meta.get('source_lba', 0)
+    perplexity_count = meta.get('source_perplexity', 0)
+    
+    email_html = f"""<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {{
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }}
+        .email-container {{
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+        }}
+        .header {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }}
+        .header h1 {{
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }}
+        .header p {{
+            margin: 0;
+            opacity: 0.95;
+            font-size: 15px;
+        }}
+        .stats {{
+            display: flex;
+            justify-content: space-around;
+            padding: 30px 20px;
+            background: #f8f9fa;
+            text-align: center;
+        }}
+        .stat {{
+            flex: 1;
+        }}
+        .stat-number {{
+            font-size: 36px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }}
+        .stat-label {{
+            font-size: 13px;
+            color: #6c757d;
+            text-transform: uppercase;
+            font-weight: 600;
+        }}
+        .content {{
+            padding: 30px;
+        }}
+        .cta-box {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 10px;
+        }}
+        .cta-box p {{
+            color: white;
+            font-size: 16px;
+            margin: 0 0 20px 0;
+        }}
+        .cta-button {{
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+        }}
+        .info-box {{
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #667eea;
+        }}
+        .info-box p {{
+            margin: 5px 0;
+            color: #495057;
+            font-size: 14px;
+        }}
+        .footer {{
+            background: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+        }}
+        .footer a {{
+            color: #667eea;
+            text-decoration: none;
+        }}
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <div class="header">
+            <h1>🎯 Veille Alternances Marketing Digital</h1>
+            <p>Bachelor 3 RSB · Début: Septembre 2026</p>
+        </div>
+        
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number">{new_count}</div>
+                <div class="stat-label">Nouvelles</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">{total_count}</div>
+                <div class="stat-label">Total actives</div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="cta-box">
+                <p>📋 Consulter les offres détaillées</p>
+                <a href="{GITHUB_PAGES_URL}" class="cta-button">
+                    👉 Voir les dernières offres en ligne
+                </a>
+            </div>
+            
+            <div class="info-box">
+                <p><strong>💡 Conseil :</strong> Ou ouvre la <strong>pièce jointe HTML</strong> ci-dessous pour consulter hors ligne</p>
+            </div>
+            
+            <div class="info-box">
+                <p><strong>📊 Répartition par ville :</strong></p>
+                <p>🏰 Rennes: {stats_by_city['Rennes']} · ⚓ Nantes: {stats_by_city['Nantes']} · 🗼 Paris: {stats_by_city['Paris']}</p>
+            </div>
+            
+            <div class="info-box">
+                <p><strong>🔗 Sources :</strong></p>
+                <p>LBA: {lba_count} offres · Perplexity: {perplexity_count} offres</p>
+            </div>
+            
+            <div class="info-box">
+                <p><strong>📚 Consulter l'historique :</strong></p>
+                <p><a href="{GITHUB_PAGES_URL}archives/" style="color: #667eea; font-weight: bold;">→ Archives des {RETENTION_DAYS} derniers jours</a></p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Généré automatiquement le {meta['date_generation']}</p>
+            <p><a href="{GITHUB_PAGES_URL}">🔗 Lien permanent</a></p>
+        </div>
+    </div>
+</body>
+</html>
+"""
+    
+    return email_html
+
+def archive_old_html():
+    """Archive l'ancien index.html si existant"""
+    if OUTPUT_HTML_DOCS.exists():
+        timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+        archive_name = f"veille_{timestamp}.html"
+        archive_path = ARCHIVES_DIR / archive_name
+        
+        shutil.copy(OUTPUT_HTML_DOCS, archive_path)
+        print(f"📚 Archive créée: {archive_name}")
+    
+    # Nettoyer les archives > RETENTION_DAYS
+    cleanup_old_archives()
 
 def cleanup_old_archives():
     """Supprime les archives de plus de RETENTION_DAYS jours"""
@@ -513,459 +875,252 @@ def cleanup_old_archives():
     cutoff_date = datetime.now() - timedelta(days=RETENTION_DAYS)
     deleted_count = 0
     
-    for archive_file in ARCHIVES_DIR.glob("*.html"):
+    for archive_file in ARCHIVES_DIR.glob("veille_*.html"):
         try:
-            # Format attendu : YYYY-MM-DD.html
-            file_date_str = archive_file.stem
-            file_date = datetime.strptime(file_date_str, '%Y-%m-%d')
+            date_str = archive_file.stem.split('_')[1]
+            file_date = datetime.strptime(date_str, '%Y-%m-%d')
             
             if file_date < cutoff_date:
                 archive_file.unlink()
                 deleted_count += 1
-                print(f"  🗑️  Archive supprimée : {archive_file.name}")
-        except ValueError:
+                print(f"🗑️  Supprimé: {archive_file.name}")
+        except (IndexError, ValueError):
             continue
     
     if deleted_count > 0:
-        print(f"✅ {deleted_count} archive(s) supprimée(s) (> {RETENTION_DAYS} jours)")
+        print(f"✅ {deleted_count} anciennes archives supprimées")
 
-
-def generate_historique_page():
-    """Génère la page historique.html listant toutes les archives"""
-    archives = sorted(ARCHIVES_DIR.glob("*.html"), reverse=True)
+def generate_archives_index():
+    """Génère un index.html pour le dossier archives"""
+    if not ARCHIVES_DIR.exists():
+        return
+    
+    archives = sorted(ARCHIVES_DIR.glob("veille_*.html"), reverse=True)
     
     html = f"""<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historique - Veille Alternances</title>
+    <title>📚 Archives - Veille Alternances</title>
     <style>
         body {{
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             max-width: 900px;
-            margin: 40px auto;
+            margin: 50px auto;
             padding: 20px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
         }}
         .container {{
             background: white;
-            border-radius: 12px;
+            border-radius: 20px;
             padding: 40px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }}
         h1 {{
-            color: #667eea;
+            color: #2c3e50;
             margin-bottom: 10px;
+            font-size: 32px;
         }}
         .subtitle {{
-            color: #666;
+            color: #6c757d;
             margin-bottom: 30px;
-        }}
-        .archive-list {{
-            list-style: none;
-            padding: 0;
-        }}
-        .archive-item {{
-            padding: 15px;
-            margin-bottom: 10px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }}
-        .archive-item:hover {{
-            background: #f5f5f5;
-            border-color: #667eea;
-            transform: translateX(5px);
-        }}
-        .archive-item a {{
-            text-decoration: none;
-            color: #333;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }}
-        .date {{
-            font-weight: bold;
-            color: #667eea;
-        }}
-        .badge {{
-            background: #667eea;
-            color: white;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 12px;
+            font-size: 16px;
         }}
         .back-link {{
             display: inline-block;
-            margin-top: 30px;
+            margin-bottom: 30px;
             color: #667eea;
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 700;
+            font-size: 16px;
         }}
         .back-link:hover {{
-            text-decoration: underline;
+            color: #764ba2;
+        }}
+        .archive-list {{
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+        }}
+        .archive-item {{
+            padding: 20px;
+            background: white;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }}
+        .archive-item:hover {{
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+        }}
+        .archive-item a {{
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 16px;
+        }}
+        .archive-item a:hover {{
+            color: #764ba2;
+        }}
+        .archive-date {{
+            color: #6c757d;
+            font-size: 14px;
+            font-weight: 600;
         }}
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📚 Historique des veilles</h1>
-        <p class="subtitle">Consultez les veilles des {RETENTION_DAYS} derniers jours</p>
+        <a href="../" class="back-link">← Retour à la veille actuelle</a>
+        <h1>📚 Archives des veilles</h1>
+        <p class="subtitle">Historique des {RETENTION_DAYS} derniers jours</p>
         
-        <ul class="archive-list">
+        <div class="archive-list">
 """
     
-    for i, archive in enumerate(archives):
-        date_str = archive.stem  # YYYY-MM-DD
+    for archive in archives:
         try:
-            date_obj = datetime.strptime(date_str, '%Y-%m-%d')
-            date_formatted = date_obj.strftime('%d/%m/%Y')
+            parts = archive.stem.split('_')
+            date_str = parts[1]
+            time_str = parts[2].replace('-', ':')
             
-            badge = '<span class="badge">Aujourd\'hui</span>' if i == 0 else ''
+            date_obj = datetime.strptime(date_str, '%Y-%m-%d')
+            formatted_date = date_obj.strftime('%d/%m/%Y')
             
             html += f"""
-            <li class="archive-item">
-                <a href="archives/{archive.name}">
-                    <span class="date">{date_formatted}</span>
-                    {badge}
-                </a>
-            </li>
+            <div class="archive-item">
+                <a href="{archive.name}">📄 Veille du {formatted_date} à {time_str}</a>
+                <span class="archive-date">{date_str}</span>
+            </div>
 """
-        except ValueError:
+        except (IndexError, ValueError):
             continue
     
     html += """
-        </ul>
-        
-        <a href="index.html" class="back-link">← Retour à la dernière veille</a>
+        </div>
     </div>
 </body>
 </html>
 """
     
-    historique_path = DOCS_DIR / "historique.html"
-    historique_path.write_text(html, encoding='utf-8')
-    print(f"✅ Page historique générée : {historique_path}")
+    archives_index_path = ARCHIVES_DIR / "index.html"
+    with open(archives_index_path, 'w', encoding='utf-8') as f:
+        f.write(html)
+    
+    print(f"📚 Index archives généré: {archives_index_path}")
 
-
-def save_html_with_archives(html_content):
-    """Sauvegarde index.html + archive datée + génère historique"""
-    today = datetime.now().strftime('%Y-%m-%d')
+def send_email(email_html_content, full_html_path, data):
+    """Envoie l'email avec lien GitHub Pages + HTML en pièce jointe"""
+    meta = data['meta']
+    new_count = meta['nouvelles']
+    total_count = meta['total_offres']
     
-    # Créer le dossier archives
-    ARCHIVES_DIR.mkdir(parents=True, exist_ok=True)
-    
-    # 1. Sauvegarder l'archive datée
-    archive_path = ARCHIVES_DIR / f"{today}.html"
-    archive_path.write_text(html_content, encoding='utf-8')
-    print(f"✅ Archive sauvegardée : {archive_path}")
-    
-    # 2. Écraser index.html (dernière version)
-    index_path = DOCS_DIR / "index.html"
-    index_path.write_text(html_content, encoding='utf-8')
-    print(f"✅ Index mis à jour : {index_path}")
-    
-    # 3. Nettoyer les vieilles archives
-    cleanup_old_archives()
-    
-    # 4. Générer la page historique
-    generate_historique_page()
-    
-    return index_path
-
-
-def git_commit_and_push():
-    """Commit et push HTML sur GitHub (non bloquant)"""
-    if not shutil.which('git'):
-        print("⚠️  Git non disponible - Skip publication")
-        print("   (Normal en local Windows, OK dans GitHub Actions)")
-        return
-    
-    try:
-        subprocess.run(['git', 'add', 'docs/'], cwd=BASE_DIR, check=True, capture_output=True)
-        subprocess.run([
-            'git', 'commit', '-m', 
-            f'Update veille {datetime.now().strftime("%Y-%m-%d %H:%M")}'
-        ], cwd=BASE_DIR, check=True, capture_output=True)
-        subprocess.run(['git', 'push'], cwd=BASE_DIR, check=True, capture_output=True)
-        print("✅ Publié sur GitHub Pages")
-    except subprocess.CalledProcessError:
-        print("⚠️  Erreur Git (non bloquant)")
-
-
-def send_email(html_path, data):
-    """Envoie l'email avec lien amélioré + pièce jointe HTML"""
-    meta = data.get('meta', {})
-    nb_total = meta.get('total_offres', 0)
-    nb_new = meta.get('nouvelles', 0)
-    
-    # Configuration email
-    msg = MIMEMultipart('alternative')
-    msg['Subject'] = f"🎯 Veille Alternances : {nb_new} nouvelles offres ({nb_total} total)"
+    # Créer le message
+    msg = MIMEMultipart('mixed')
+    msg['Subject'] = f"🎯 Veille Alternances : {new_count} nouvelles offres ({total_count} total)"
     msg['From'] = GMAIL_USER
-    msg['To'] = GMAIL_USER
+    msg['To'] = RECIPIENT_EMAIL
     
-    # Corps HTML de l'email - AMÉLIORÉ avec lien plus visible
-    email_html = f"""<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <style>
-        body {{
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }}
-        .container {{
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }}
-        .header {{
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 12px;
-            text-align: center;
-            margin-bottom: 25px;
-        }}
-        .header h1 {{
-            margin: 0 0 10px 0;
-            font-size: 24px;
-        }}
-        .header p {{
-            margin: 0;
-            opacity: 0.95;
-            font-size: 14px;
-        }}
-        .stats {{
-            display: flex;
-            justify-content: space-around;
-            margin: 25px 0;
-            text-align: center;
-        }}
-        .stat {{
-            flex: 1;
-        }}
-        .stat-number {{
-            font-size: 32px;
-            font-weight: bold;
-            color: #667eea;
-            display: block;
-        }}
-        .stat-label {{
-            font-size: 13px;
-            color: #666;
-            margin-top: 5px;
-        }}
-        
-        /* LIENS AMÉLIORÉS - Plus visibles */
-        .links-section {{
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 25px;
-            margin: 25px 0;
-            text-align: center;
-        }}
-        .links-title {{
-            font-size: 16px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 20px;
-        }}
-        .btn {{
-            display: inline-block;
-            padding: 16px 32px;
-            margin: 8px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 15px;
-            transition: all 0.3s ease;
-        }}
-        .btn-primary {{
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white !important;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }}
-        .btn-primary:hover {{
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
-        }}
-        .btn-secondary {{
-            background: #95a5a6;
-            color: white !important;
-        }}
-        .btn-secondary:hover {{
-            background: #7f8c8d;
-        }}
-        
-        .attachment-note {{
-            font-size: 13px;
-            color: #666;
-            margin-top: 15px;
-            padding: 12px;
-            background: white;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-        }}
-        
-        .legend {{
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-            font-size: 13px;
-        }}
-        .legend-title {{
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }}
-        .legend ul {{
-            margin: 5px 0;
-            padding-left: 20px;
-        }}
-        .legend li {{
-            margin: 5px 0;
-        }}
-        .badge {{
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 3px;
-            font-size: 11px;
-            font-weight: bold;
-            color: white;
-        }}
-        .badge.new {{ background: #e74c3c; }}
-        .badge.lba {{ background: #3498db; }}
-        .badge.perplexity {{ background: #9b59b6; }}
-        
-        .footer {{
-            text-align: center;
-            color: #666;
-            font-size: 12px;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #e0e0e0;
-        }}
-    </style>
-</head>
-<body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <h1>🎯 Veille Alternances Marketing Digital</h1>
-            <p>Bachelor 3 RSB · Début: Septembre 2026</p>
-        </div>
-        
-        <!-- Stats -->
-        <div class="stats">
-            <div class="stat">
-                <span class="stat-number">{nb_new}</span>
-                <div class="stat-label">Nouvelles</div>
-            </div>
-            <div class="stat">
-                <span class="stat-number">{nb_total}</span>
-                <div class="stat-label">Total actives</div>
-            </div>
-        </div>
-        
-        <!-- Liens principaux - AMÉLIORÉS -->
-        <div class="links-section">
-            <div class="links-title">📋 Consulter les offres détaillées</div>
-            
-            <a href="{GITHUB_PAGES_URL}" class="btn btn-primary">
-                🌐 Voir les dernières offres en ligne
-            </a>
-            <br>
-            <a href="{GITHUB_PAGES_URL}historique.html" class="btn btn-secondary">
-                📁 Consulter l'historique des 30 jours
-            </a>
-            
-            <div class="attachment-note">
-                💡 <strong>Conseil :</strong> Ou ouvre la <strong>pièce jointe HTML</strong> ci-dessous pour consulter hors ligne
-            </div>
-        </div>
-        
-        <!-- Légende -->
-        <div class="legend">
-            <div class="legend-title">Légende des badges :</div>
-            <ul>
-                <li><span class="badge new">NEW</span> : Nouvelle offre détectée aujourd'hui</li>
-                <li><span class="badge">Active</span> : Offre toujours active (déjà connue)</li>
-                <li><span class="badge lba">LBA</span> : Source API La Bonne Alternance</li>
-                <li><span class="badge perplexity">Perplexity</span> : Recherche complémentaire</li>
-            </ul>
-        </div>
-        
-        <!-- Footer -->
-        <div class="footer">
-            📅 Mise à jour : {datetime.now().strftime('%d/%m/%Y %H:%M')}<br>
-            🤖 Scraper automatique quotidien LBA + Recherche Perplexity
-        </div>
-    </div>
-</body>
-</html>
+    # Version alternative (texte + HTML)
+    msg_alternative = MIMEMultipart('alternative')
+    
+    # Version texte (fallback)
+    text_content = f"""
+Veille Alternances Marketing Digital
+
+{new_count} nouvelles offres · {total_count} total
+
+Consultez les offres sur: {GITHUB_PAGES_URL}
 """
     
-    msg.attach(MIMEText(email_html, 'html'))
+    part_text = MIMEText(text_content, 'plain', 'utf-8')
+    part_html = MIMEText(email_html_content, 'html', 'utf-8')
     
-    # Pièce jointe HTML
-    with open(html_path, 'rb') as f:
-        attachment = MIMEBase('text', 'html')
-        attachment.set_payload(f.read())
-        encoders.encode_base64(attachment)
-        attachment.add_header(
-            'Content-Disposition',
-            f'attachment; filename="veille_alternances_{datetime.now().strftime("%Y-%m-%d")}.html"'
-        )
-        msg.attach(attachment)
+    msg_alternative.attach(part_text)
+    msg_alternative.attach(part_html)
+    msg.attach(msg_alternative)
     
-    # Envoi
+    # Attacher le fichier HTML complet
+    with open(full_html_path, 'rb') as f:
+        part = MIMEBase('text', 'html')
+        part.set_payload(f.read())
+        encoders.encode_base64(part)
+        part.add_header('Content-Disposition', f'attachment; filename="veille_alternances_{datetime.now().strftime("%Y-%m-%d")}.html"')
+        msg.attach(part)
+    
+    # Envoyer
     try:
+        print("\n📧 Envoi de l'email...")
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as server:
             server.login(GMAIL_USER, GMAIL_PASSWORD)
             server.send_message(msg)
-        print(f"✅ Email envoyé à : {GMAIL_USER}")
+        print(f"✅ Email envoyé à {RECIPIENT_EMAIL} avec succès!")
     except Exception as e:
-        print(f"❌ Erreur envoi email : {e}")
+        print(f"❌ Erreur lors de l'envoi de l'email: {e}")
 
+def commit_and_push():
+    """Commit et push sur GitHub"""
+    try:
+        print("\n🔄 Mise à jour GitHub Pages...")
+        subprocess.run(['git', 'add', 'docs/'], check=True, cwd=BASE_DIR)
+        subprocess.run(['git', 'commit', '-m', f'Update veille {datetime.now().strftime("%Y-%m-%d %H:%M")}'], check=True, cwd=BASE_DIR)
+        subprocess.run(['git', 'push'], check=True, cwd=BASE_DIR)
+        print("✅ GitHub Pages mis à jour!")
+    except subprocess.CalledProcessError as e:
+        print(f"⚠️  Erreur Git: {e}")
+        print("   → Commit/push manuel nécessaire")
 
 def main():
-    """Fonction principale avec gestion des archives"""
     print("=" * 70)
-    print("🚀 GÉNÉRATION HTML + ARCHIVES + ENVOI EMAIL")
+    print("📧 GÉNÉRATION HTML + EMAIL")
     print("=" * 70)
     
-    print("\n[1/5] Chargement des données...")
+    # Charger les offres
     data = load_offers()
-    print(f"✅ {len(data['offres'])} offres chargées")
+    print(f"📥 {data['meta']['total_offres']} offres chargées")
+    print(f"   🆕 {data['meta']['nouvelles']} nouvelles")
+    print(f"   ♻️  {data['meta']['actives']} actives")
     
-    print("\n[2/5] Génération du HTML...")
-    html_content = generate_html(data)
+    # Archiver l'ancien HTML
+    archive_old_html()
     
-    print("\n[3/5] Sauvegarde avec archives (30 jours)...")
-    html_path = save_html_with_archives(html_content)
+    # Générer le HTML complet (pour GitHub Pages)
+    print("\n🎨 Génération du HTML complet...")
+    full_html = generate_html(data)
     
-    print("\n[4/5] Publication GitHub...")
-    git_commit_and_push()
+    # Sauvegarder dans docs/
+    with open(OUTPUT_HTML_DOCS, 'w', encoding='utf-8') as f:
+        f.write(full_html)
+    print(f"✅ HTML complet généré: {OUTPUT_HTML_DOCS}")
     
-    print("\n[5/5] Envoi de l'email...")
-    send_email(html_path, data)
+    # Générer l'index des archives
+    generate_archives_index()
+    
+    # Générer l'email HTML (simple avec lien)
+    print("\n📧 Génération de l'email...")
+    email_html = generate_email_html(data)
+    
+    # Envoyer l'email (avec HTML complet en PJ)
+    if data['meta']['nouvelles'] > 0:
+        send_email(email_html, OUTPUT_HTML_DOCS, data)
+    else:
+        print("\nℹ️  Aucune nouvelle offre → Email non envoyé")
+    
+    # Git commit + push
+    commit_and_push()
     
     print("\n" + "=" * 70)
-    print("✅ PROCESSUS TERMINÉ")
-    print(f"📄 Index : {html_path}")
-    print(f"📧 Email envoyé à : {GMAIL_USER}")
-    print(f"🌐 URL en ligne : {GITHUB_PAGES_URL}")
-    print(f"📚 Historique : {GITHUB_PAGES_URL}historique.html")
+    print(f"✅ TERMINÉ")
+    print(f"🌐 GitHub Pages: {GITHUB_PAGES_URL}")
+    print(f"📧 Email: {'Envoyé' if data['meta']['nouvelles'] > 0 else 'Non envoyé (pas de nouvelles offres)'}")
     print("=" * 70)
 
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
