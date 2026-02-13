@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veille Alternances Marketing Digital</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            background: #f8f9fa;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card h3 {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-card p {
+            font-size: 32px;
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .city-section {
+            margin-bottom: 50px;
+        }
+        
+        .city-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .city-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 20px;
+        }
+        
+        .city-header h2 {
+            font-size: 24px;
+            color: #2c3e50;
+            font-weight: 700;
+        }
+        
+        .city-header .count {
+            margin-left: auto;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .offer {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .offer:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .offer.new {
+            border-left: 5px solid #28a745;
+            background: linear-gradient(90deg, rgba(40, 167, 69, 0.05) 0%, white 50px);
+        }
+        
+        .offer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+        
+        .offer-title {
+            flex: 1;
+        }
+        
+        .offer-title h3 {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .offer-company {
+            font-size: 16px;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .offer-location {
+            font-size: 14px;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+        }
+        
+        .offer-location::before {
+            content: "📍";
+            margin-right: 5px;
+        }
+        
+        .offer-badge {
+            background: #28a745;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-left: 15px;
+        }
+        
+        .offer-description {
+            color: #495057;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+        
+        .offer-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .skill-tag {
+            background: #e7f0ff;
+            color: #667eea;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .offer-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            font-size: 13px;
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+        
+        .meta-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .meta-item::before {
+            margin-right: 5px;
+        }
+        
+        .offer-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .archives-link {
+            background: white;
+            padding: 20px;
+            margin: 20px 40px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px dashed #667eea;
+        }
+        
+        .archives-link h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .archives-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .offer-header {
+                flex-direction: column;
+            }
+            
+            .offer-badge {
+                margin-left: 0;
+                margin-top: 10px;
+                align-self: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Veille Alternances Marketing Digital</h1>
+            <p>Bachelor 3 RSB · Début: Septembre 2026 · Durée: 12-24 mois</p>
+        </div>
+        
+        <div class="archives-link">
+            <h3>📚 Historique des veilles</h3>
+            <p>Consultez les veilles des 30 derniers jours</p>
+            <a href="archives/" target="_blank">→ Accéder aux archives</a>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Total Offres</h3>
+                <p>16</p>
+            </div>
+            <div class="stat-card">
+                <h3>🆕 Nouvelles</h3>
+                <p>16</p>
+            </div>
+            <div class="stat-card">
+                <h3>📍 Rennes</h3>
+                <p>0</p>
+            </div>
+            <div class="stat-card">
+                <h3>📍 Nantes</h3>
+                <p>1</p>
+            </div>
+            <div class="stat-card">
+                <h3>📍 Paris</h3>
+                <p>15</p>
+            </div>
+        </div>
+        
+        <div class="content">
+
+            <div class="city-section">
+                <div class="city-header">
+                    <div class="city-icon">⚓</div>
+                    <h2>Nantes</h2>
+                    <span class="count">1 offres</span>
+                </div>
+
+                <div class="offer new">
+                    <div class="offer-header">
+                        <div class="offer-title">
+                            <h3>Content Writer and Designer - Apprenticeship</h3>
+                            <div class="offer-company">Akeneo</div>
+                            <div class="offer-location">Nantes (44100)</div>
+                        </div>
+                        <span class="offer-badge">🆕 Nouvelle</span>
+                    </div>
+                    <p class="offer-description">Descriptif du poste : Akeneo is the Product Experience (PX) company and global leader in Product Information Management (PIM), creating a world where every product interaction is an experience that...</p>
+                    <div class="offer-skills"><span class="skill-tag">SEA/Paid Media</span><span class="skill-tag">Content Marketing</span><span class="skill-tag">Email Marketing</span><span class="skill-tag">Growth/Acquisition</span><span class="skill-tag">UX/Design</span></div>
+                    <div class="offer-meta"><span class="meta-item">📋 Apprentissage + Professionnalisation</span><span class="meta-item">🔗 RH Alternance</span></div>
+                    <div class="offer-actions">
+                        <a href="https://rhalternance.com/jobs/communication-et-marketing/nantes/content-writer-and-designer-apprenticeship-489427783" class="btn btn-primary" target="_blank">
+                            👉 Postuler
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="city-section">
+                <div class="city-header">
+                    <div class="city-icon">🗼</div>
+                    <h2>Paris</h2>
+                    <span class="count">15 offres</span>
+                </div>
+
+                <div class="offer new">
+                    <div class="offer-header">
+                        <div class="offer-title">
+                            <h3>JDE Peet's - Alternance (H/F) | Trade Marketing - L'OR, Senseo, Tassimo</h3>
+                            <div class="offer-company">JDE Peet's</div>
+                            <div class="offer-location">Paris (75001)</div>
+                        </div>
+                        <span class="offer-badge">🆕 Nouvelle</span>
+                    </div>
+                    <p class="offer-description">JDE Peet's, cela ne vous dit rien ? Et pourtant, la simple évocation de L'OR, Senseo, Tassimo, Grand-Mère, Jacques Vabre ou Maxwell House suffit à réveiller chez chacun d'entre nous un arôme...</p>
+                    <div class="offer-skills"><span class="skill-tag">SEO</span><span class="skill-tag">SEA/Paid Media</span><span class="skill-tag">Email Marketing</span><span class="skill-tag">UX/Design</span></div>
+                    <div class="offer-meta"><span class="meta-item">📋 Apprentissage + Professionnalisation</span><span class="meta-item">📅 Début: 01/09/2026</span><span class="meta-item">🔗 Jobteaser</span></div>
+                    <div class="offer-actions">
+                        <a href="https://www.jobteaser.com/fr/job-offers/8c3a1b9b-a6fe-40c6-8293-87594697b2db-jde-peet-s-jde-peet-s-alternance-h-f-trade-marketing-l-or-senseo-tassimo?utm_campaign=partner_access&utm_source=la_bonne_alternance&utm_medium=www" class="btn btn-primary" target="_blank">
+                            👉 Postuler
+                        </a>
+                    </div>
+                </div>
+
+                <div class="offer new">
+                    <div class="offer-header">
+                        <div class="offer-title">
+                            <h3>Alternant assistant Trade marketing et KAM H/F</h3>
+                            <div class="offer-company">Nestlé</div>
+                            <div class="offer-location">Paris (75001)</div>
+                        </div>
+                        <span class="offer-badge">🆕 Nouvelle</span>
+                    </div>
+                    <p class="offer-description">VOTRE QUOTIDIEN CHEZ NESPRESSO • Vous mettez en place des opérations Online : activation de nouveaux leviers digitaux (Social Ads, Retargeting,Display...), développement des supports créatifs, suivi...</p>
+                    <div class="offer-skills"><span class="skill-tag">UX/Design</span></div>
+                    <div class="offer-meta"><span class="meta-item">📋 Apprentissage + Professionnalisation</span><span class="meta-item">🔗 Jobteaser</span></div>
+                    <div class="offer-actions">
+                        <a href="https://www.jobteaser.com/fr/job-offers/02761d08-5920-4613-b849-cb4cc5228398-nestle-alternant-assistant-trade-marketing-et-kam-h-f?utm_campaign=partner_access&utm_source=la_bonne_alternance&utm_medium=www" class="btn btn-primary" target="_blank">
+                            👉 Postuler
+                        </a>
+                    </div>
+                </div>
+
+                <div class="offer new">
+                    <div class="offer-header">
+                        <div class="offer-title">
+                            <h3>Assistant(e) Marketing Alternance</h3>
+                            <div class="offer-company">Valeo</div>
+                            <div class="offer-location">Paris (75001)</div>
+                        </div>
+                        <span class="offer-badge">🆕 Nouvelle</span>
+                    </div>
+                    <p class="offer-description">Valeo is a tech global company, designing breakthrough solutions to reinvent the mobility. We are an automotive supplier partner to automakers and new mobility actors worldwide. Our vision? Invent a...</p>
+                    <div class="offer-skills"><span class="skill-tag">SEA/Paid Media</span><span class="skill-tag">Social Media</span><span class="skill-tag">Analytics</span><span class="skill-tag">Growth/Acquisition</span><span class="skill-tag">UX/Design</span></div>
+                    <div class="offer-meta"><span class="meta-item">📋 Apprentissage + Professionnalisation</span><span class="meta-item">🔗 Jobteaser</span></div>
+                    <div class="offer-actions">
+                        <a href="https://www.jobteaser.com/fr/job-offers/120d1330-52b3-4470-af0a-f3d323f0c8a4-valeo-assistant-e-marketing-alternance?utm_campaign=partner_access&utm_source=la_bonne_alternance&utm_medium=www" class="btn btn-primary" target="_blank">
+                            👉 Postuler
+                        </a>
+                    </div>
+                </div>
+
+                <div class="offer new">
+                    <div class="offer-header">
+                        <div class="offer-title">
+                            <h3>YUMI 🌶 Créateur.trice de Contenu (TikTok & Instagram) Actif Credit Standard</h3>
+                            <div class="offer-company">PEPITES ( YUMI / PAF)</div>
+                            <div class="offer-location">Paris (75001)</div>
+                        </div>
+                        <span class="offer-badge">🆕 Nouvelle</span>
+                    </div>
+                    <p class="offer-description">Chez Yumi, on ne fait pas les choses à moitié : nos shots réveillent les papilles, et nos contenus doivent réveiller les réseaux. On cherche donc un(e) créateur(rice) de contenu prêt(e) à secouer...</p>
+                    <div class="offer-skills"><span class="skill-tag">SEA/Paid Media</span><span class="skill-tag">Social Media</span><span class="skill-tag">Content Marketing</span><span class="skill-tag">UX/Design</span></div>
+                    <div class="offer-meta"><span class="meta-item">📋 Apprentissage + Professionnalisation</span><span class="meta-item">📅 Début: 01/01/2026</span><span class="meta-item">🔗 Jobteaser</span></div>
+                    <div class="offer-actions">
+                        <a href="https://www.jobteaser.com/fr/job-offers/4bd4976f-ca32-4e8d-bfa3-370a2b496907-pepites-yumi-paf-yumi-createur-trice-de-contenu-tiktok-instagram-actif-credit-standard?utm_campaign=partner_access&utm_source=la_bonne_alternance&utm_medium=www" class="btn btn-primary" target="_blank">
+                            👉 Postuler
+                        </a>
+                    </div>
+                </div>
+
+                <div class="offer new">
+                    <div class="offer-header">
+                        <div class="offer-title">
+                            <h3>Alternance - Assistant(e) de Production de Contenus - Octobre Editions (H/F)</h3>
+                            <div class="offer-company">Sézane</div>
+                            <div class="offer-location">Paris (75001)</div>
+                        </div>
+                        <span class="offer-badge">🆕 Nouvelle</span>
+                    </div>
+                    <p class="offer-description">Il y a plus de dix ans, j’ai osé imaginer la première marque de mode française née en ligne... elle s’appelait Les Composantes, elle s’appelle Sézane aujourd’hui. En 2016, la famille s'est agrandie...</p>
+                    <div class="offer-skills"><span class="skill-tag">SEA/Paid Media</span><span class="skill-tag">Social Media</span><span class="skill-tag">Content Marketing</span><span class="skill-tag">UX/Design</span></div>
+                    <div class="offer-meta"><span class="meta-item">📋 Apprentissage + Professionnalisation</span><span class="meta-item">📅 Début: 01/09/2026</span><span class="meta-item">🔗 Jobteaser</span></div>
+                    <div class="offer-actions">
+                        <a href="https://www.jobteaser.com/fr/job-offers/b3567e98-1ded-44b6-b339-e5f7c1922949-sezane-alternance-assistant-e-de-production-de-contenus-octobre-editions-h-f?utm_campaign=partner_access&utm_source=la_bonne_alternance" class="btn btn-primary" target="_blank">
+                            👉 Postuler
+                        </a>
+                    </div>
+                </div>
+
+                <div class="offer new">
+                    <div class="offer-header">
+                        <div class="offer-title">
+                            <h3>[Alternance] Assistant Web Marketing F/H (H/F)</h3>
+                            <div class="offer-company">FINANCIERE DES PAIEMENTS  ELECTRONIQUES</div>
+                            <div class="offer-location">Charenton-le-Pont (94220)</div>
+                        </div>
+                        <span class="offer-badge">🆕 Nouvelle</span>
+                    </div>
+                    <p class="offer-description">Vous rejoindrez la Tribe Customer Acquisition, au sein de l'équipe de Thomas constituée de 5 personnes, et en charge de la partie relative au parcours d'Onboarding de nos clients. Vous travaillerez...</p>
+                    <div class="offer-skills"><span class="skill-tag">SEO</span><span class="skill-tag">Content Marketing</span><span class="skill-tag">Growth/Acquisition</span><span class="skill-tag">UX/Design</span></div>
+                    <div class="offer-meta"><span class="meta-item">📋 Apprentissage</span><span class="meta-item">⏱️ 24 mois</span><span class="meta-item">🔗 France Travail</span></div>
+                    <div class="offer-actions">
+                        <a href="https://www.aplitrak.com/?adid=bHVjYXMuYm91c3NhdWQuNzcxNjguNjcwNkBuaWNrZWwuYXBsaXRyYWsuY29t" class="btn btn-primary" target="_blank">
+                            👉 Postuler
+                        </a>
+                    </div>
+                </div>
+
+                <div class="offer new">
+                    <div class="offer-header">
+                        <div class="offer-title">
+                            <h3>Alternant(e) Création de Contenus Vidéo - Communication Interne - F/H</h3>
+                            <div class="offer-company">PwC France</div>
+                            <div class="offer-location">Neuilly-sur-Seine (92200)</div>
+                        </div>
+                        <span class="offer-badge">🆕 Nouvelle</span>
+                    </div>
+                    <p class="offer-description">PwC, cabinet pluridisciplinaire, rassemble 7 000 collaborateurs en France et au Maghreb, au sein d'un réseau mondial de plus de 364 000 personnes dans 136 pays. Chaque jour, nous exerçons des métiers...</p>
+                    <div class="offer-skills"><span class="skill-tag">SEA/Paid Media</span><span class="skill-tag">Content Marketing</span><span class="skill-tag">UX/Design</span></div>
+                    <div class="offer-meta"><span class="meta-item">📋 Apprentissage + Professionnalisation</span><span class="meta-item">🔗 Jobteaser</span></div>
+                    <div class="offer-actions">
+                        <a href="https://www.jobteaser.com/fr/job-offers/c46d51a9-8ff3-4861-8384-fe4642177c62-pwc-france-alternant-e-creation-de-contenus-video-communication-interne-f-h?utm_campaign=partner_access&utm_source=la_bonne_alternance&utm_medium=www" class="btn btn-primary" target="_blank">
+                            👉 Postuler
+                        </a>
+                    </div>
+                </div>
+
+                <div class="offer new">
+                    <div class="offer-header">
+                        <div class="offer-title">
+                            <h3>ASSISTANT MARKETING ET COMMUNICATION- ALTERNANCE - H/F</h3>
+                            <div class="offer-company">GLOBE GROUPE</div>
+                            <div class="offer-location">Neuilly-sur-Seine (92200)</div>
+                        </div>
+                        <span class="offer-badge">🆕 Nouvelle</span>
+                    </div>
+                    <p class="offer-description">Description : Nous accompagnons les marques leaders dans leur industrie, notamment dans les secteurs Luxe et Beauté, High Tech et FMCG. Notre équipe est composée de passionnés de marketing, de...</p>
+                    <div class="offer-skills"><span class="skill-tag">SEA/Paid Media</span><span class="skill-tag">Social Media</span><span class="skill-tag">Content Marketing</span><span class="skill-tag">Email Marketing</span><span class="skill-tag">UX/Design</span></div>
+                    <div class="offer-meta"><span class="meta-item">📋 Apprentissage</span><span class="meta-item">⏱️ 12 mois</span><span class="meta-item">🔗 France Travail</span></div>
+                    <div class="offer-actions">
+                        <a href="https://techsell.softy.pro/offre/190656?idt=5&h=1906560" class="btn btn-primary" target="_blank">
+                            👉 Postuler
+                        </a>
+                    </div>
+                </div>
+
+                <div class="offer new">
+                    <div class="offer-header">
+                        <div class="offer-title">
+                            <h3>ALTERNANCE - ASSISTANT MARKETING DES VENTES TOURISME H/F</h3>
+                            <div class="offer-company">Sodexo Live</div>
+                            <div class="offer-location">Boulogne-Billancourt (92100)</div>
+                        </div>
+                        <span class="offer-badge">🆕 Nouvelle</span>
+                    </div>
+                    <p class="offer-description">Sodexo Live ! est la marque mondiale du groupe Sodexo spécialisée dans la restauration et l'hospitalité dans les univers du sport, des loisirs et de l'événementiel. Rattaché au Responsable Marketing...</p>
+                    <div class="offer-skills"><span class="skill-tag">Content Marketing</span><span class="skill-tag">Email Marketing</span><span class="skill-tag">UX/Design</span></div>
+                    <div class="offer-meta"><span class="meta-item">📋 Apprentissage + Professionnalisation</span><span class="meta-item">🔗 Meteojob</span></div>
+                    <div class="offer-actions">
+                        <a href="https://www.meteojob.com/jobs/51407725?utm_source=labonnealternance&utm_medium=aggregator-free&utm_campaign=alternance" class="btn btn-primary" target="_blank">
+                            👉 Postuler
+                        </a>
+                    </div>
+                </div>
+
+                <div class="offer new">
+                    <div class="offer-header">
+                        <div class="offer-title">
+                            <h3>Apprenti(e) Coordinateur/rice SEO</h3>
+                            <div class="offer-company">Antalis</div>
+                            <div class="offer-location">Boulogne-Billancourt (92100)</div>
+                        </div>
+                        <span class="offer-badge">🆕 Nouvelle</span>
+                    </div>
+                    <p class="offer-description">ENTREPRISE : Antalis est une des filiales majeures du groupe japonais Kokusai Pulp & Paper –KPP-, leader mondial de la distribution de papiers, d'emballages et de communication visuelle. Opérant...</p>
+                    <div class="offer-skills"><span class="skill-tag">SEO</span><span class="skill-tag">Content Marketing</span><span class="skill-tag">E-commerce</span><span class="skill-tag">UX/Design</span></div>
+                    <div class="offer-meta"><span class="meta-item">📋 Apprentissage + Professionnalisation</span><span class="meta-item">📅 Début: 01/01/2026</span><span class="meta-item">🔗 Jobteaser</span></div>
+                    <div class="offer-actions">
+                        <a href="https://www.jobteaser.com/fr/job-offers/df1f42fa-a754-489f-862f-95964fe3c621-antalis-apprenti-e-coordinateur-rice-seo?utm_campaign=partner_access&utm_source=la_bonne_alternance&utm_medium=www" class="btn btn-primary" target="_blank">
+                            👉 Postuler
+                        </a>
+                    </div>
+                </div>
+
+                <div class="offer new">
+                    <div class="offer-header">
+                        <div class="offer-title">
+                            <h3>Alternant Assistant(e) Marketing (F/H) - ADELIA MEDICAL</h3>
+                            <div class="offer-company">ADELIA MEDICAL</div>
+                            <div class="offer-location">Gennevilliers (92230)</div>
+                        </div>
+                        <span class="offer-badge">🆕 Nouvelle</span>
+                    </div>
+                    <p class="offer-description">Poste Alternant Marketing Agence de Gennevilliers Fonction : - La personne fera le lien entre les équipes opérationnelles et le graphiste pour la mise en oeuvre des plaquettes et outils marketing, -...</p>
+                    <div class="offer-skills"><span class="skill-tag">SEA/Paid Media</span><span class="skill-tag">Social Media</span><span class="skill-tag">UX/Design</span></div>
+                    <div class="offer-meta"><span class="meta-item">📋 Professionnalisation</span><span class="meta-item">⏱️ 12 mois</span><span class="meta-item">🔗 France Travail</span></div>
+                    <div class="offer-actions">
+                        <a href="https://careers.werecruit.io/fr/adelia-medical/offres/alternant-assistante-marketing-fh-90565c?utm_source=francetravail&utm_medium=job-board" class="btn btn-primary" target="_blank">
+                            👉 Postuler
+                        </a>
+                    </div>
+                </div>
+
+                <div class="offer new">
+                    <div class="offer-header">
+                        <div class="offer-title">
+                            <h3>Apprenti Marketing F/H - Les Etangs de Corot</h3>
+                            <div class="offer-company">Les Etangs de Corot</div>
+                            <div class="offer-location">Ville-d'Avray (92410)</div>
+                        </div>
+                        <span class="offer-badge">🆕 Nouvelle</span>
+                    </div>
+                    <p class="offer-description">Votre mission : Au sein de notre hôtel 4★, vous accompagnerez l’équipe dans le développement de la visibilité de l’établissement et la valorisation de son image haut de gamme. En lien direct avec la...</p>
+                    <div class="offer-skills"><span class="skill-tag">SEA/Paid Media</span><span class="skill-tag">Social Media</span><span class="skill-tag">Content Marketing</span><span class="skill-tag">Email Marketing</span><span class="skill-tag">UX/Design</span></div>
+                    <div class="offer-meta"><span class="meta-item">📋 Professionnalisation</span><span class="meta-item">⏱️ 12 mois</span><span class="meta-item">🔗 France Travail</span></div>
+                    <div class="offer-actions">
+                        <a href="https://careers.werecruit.io/fr/beautiful-life-hotels/offres/apprenti-marketing-2dbc0c?utm_source=francetravail&utm_medium=job-board" class="btn btn-primary" target="_blank">
+                            👉 Postuler
+                        </a>
+                    </div>
+                </div>
+
+                <div class="offer new">
+                    <div class="offer-header">
+                        <div class="offer-title">
+                            <h3>Alternance - Marketing Digital & Acquisition (x/f/m)</h3>
+                            <div class="offer-company">Doctolib</div>
+                            <div class="offer-location">Paris (92300)</div>
+                        </div>
+                        <span class="offer-badge">🆕 Nouvelle</span>
+                    </div>
+                    <p class="offer-description">Paid Media Specialist en alternance au sein de l'équipe Paid Marketing Performance. Gestion de campagnes d'acquisition multicanales (France, Allemagne, Italie) pour recruter de nouveaux professionnels de santé. Missions : implémentation et suivi de campagnes SEA, Social Ads, analyse de performance, optimisation ROAS.</p>
+                    <div class="offer-skills"><span class="skill-tag">SEA/Paid Media</span><span class="skill-tag">Social Media</span><span class="skill-tag">Analytics</span><span class="skill-tag">Growth/Acquisition</span></div>
+                    <div class="offer-meta"><span class="meta-item">📋 Apprentissage + Professionnalisation</span><span class="meta-item">⏱️ 12 mois minimum</span><span class="meta-item">📅 Début: Septembre 2026</span><span class="meta-item">🔗 Welcome to the Jungle</span></div>
+                    <div class="offer-actions">
+                        <a href="https://www.welcometothejungle.com/fr/companies/doctolib/jobs/alternance-marketing-digital-acquisition-x-f-m-septembre-2026_paris" class="btn btn-primary" target="_blank">
+                            👉 Postuler
+                        </a>
+                    </div>
+                </div>
+
+                <div class="offer new">
+                    <div class="offer-header">
+                        <div class="offer-title">
+                            <h3>Alternance / Growth Marketing - Paris (H/F/X)</h3>
+                            <div class="offer-company">Bankin'</div>
+                            <div class="offer-location">Paris (75011)</div>
+                        </div>
+                        <span class="offer-badge">🆕 Nouvelle</span>
+                    </div>
+                    <p class="offer-description">Growth Marketing au sein d'une App leader sur les stores. Gestion complète de campagnes d'acquisition online (Meta, TikTok, Google Ads, Snapchat). Analyse de performance, optimisation ROAS, création de dashboards, appropriation des KPIs de croissance, amélioration des process.</p>
+                    <div class="offer-skills"><span class="skill-tag">SEA/Paid Media</span><span class="skill-tag">Social Media</span><span class="skill-tag">Analytics</span><span class="skill-tag">Growth/Acquisition</span></div>
+                    <div class="offer-meta"><span class="meta-item">📋 Apprentissage + Professionnalisation</span><span class="meta-item">⏱️ 12 mois minimum</span><span class="meta-item">📅 Début: Septembre 2026</span><span class="meta-item">🔗 Emploi Paris</span></div>
+                    <div class="offer-actions">
+                        <a href="https://emploi.paris.fr/offre/i_0a821f064eae086ee3a17236ba8ca2d5" class="btn btn-primary" target="_blank">
+                            👉 Postuler
+                        </a>
+                    </div>
+                </div>
+
+                <div class="offer new">
+                    <div class="offer-header">
+                        <div class="offer-title">
+                            <h3>Alternant(e) Marketing / Content (H/F) - SEO</h3>
+                            <div class="offer-company">Botanik (agence SEO)</div>
+                            <div class="offer-location">Paris (75000)</div>
+                        </div>
+                        <span class="offer-badge">🆕 Nouvelle</span>
+                    </div>
+                    <p class="offer-description">Alternance Marketing & Content au sein d'une agence SEO spécialisée. Pilier de la stratégie de visibilité : création de contenus SEO (blog, LinkedIn, ebooks), gestion du site web, coordination de campagnes multicanales (Google Ads, LinkedIn Ads, SEO), suivi des performances et KPIs.</p>
+                    <div class="offer-skills"><span class="skill-tag">SEO</span><span class="skill-tag">SEA/Paid Media</span><span class="skill-tag">Content Marketing</span><span class="skill-tag">Social Media</span><span class="skill-tag">Analytics</span></div>
+                    <div class="offer-meta"><span class="meta-item">📋 Apprentissage + Professionnalisation</span><span class="meta-item">⏱️ 12-24 mois</span><span class="meta-item">📅 Début: Septembre 2026</span><span class="meta-item">🔗 Welcome to the Jungle</span></div>
+                    <div class="offer-actions">
+                        <a href="https://www.welcometothejungle.com/fr/companies/junto/jobs/botanik-alternant-marketing-content-h-f-seo_paris" class="btn btn-primary" target="_blank">
+                            👉 Postuler
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        
+        <div class="footer">
+            <p>Généré automatiquement le 2026-02-13 20:17:33</p>
+            <p>Sources: LBA, Perplexity</p>
+            <p><a href="https://fhonore5312.github.io/alternances-veille/" target="_blank">🔗 Voir sur GitHub Pages</a></p>
+        </div>
+    </div>
+</body>
+</html>
