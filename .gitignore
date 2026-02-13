@@ -13,3 +13,5 @@ token.txt
 Thumbs.db
 snapshot_lba_*.json
 Alternances_Marketing_Digital_*.html
+"docs/" 
+"!docs/.gitkeep" 
