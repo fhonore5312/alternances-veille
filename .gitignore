@@ -15,3 +15,8 @@ snapshot_lba_*.json
 Alternances_Marketing_Digital_*.html
 "docs/" 
 "!docs/.gitkeep" 
+"" 
+"# Fichiers g‚n‚r‚s automatiquement" 
+"data/*.json" 
+"docs/" 
+"!data/.gitkeep" 
