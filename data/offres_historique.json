@@ -1,7 +1,7 @@
 {
   "meta": {
-    "date_mise_a_jour": "2026-02-11 21:36:23",
-    "total_offres": 20
+    "date_mise_a_jour": "2026-02-14 08:59:26",
+    "total_offres": 22
   },
   "offres": [
     {
@@ -694,6 +694,79 @@
       "priorite_ville": 3,
       "first_seen": "2026-02-10",
       "last_seen": "2026-02-10"
+    },
+    {
+      "id": "doctolib_alternancemarketingdigitalacquisition_paris",
+      "source": "Perplexity",
+      "status": "new",
+      "titre": "Alternance - Marketing Digital & Acquisition (x/f/m)",
+      "entreprise": "Doctolib",
+      "ville": "Paris",
+      "code_postal": "92300",
+      "adresse_complete": "Levallois-Perret, 92300 Paris",
+      "description": "Paid Media Specialist en alternance au sein de l'équipe Paid Marketing Performance. Gestion de campagnes d'acquisition multicanales (France, Allemagne, Italie) pour recruter de nouveaux professionnels de santé. Missions : implémentation et suivi de campagnes SEA, Social Ads, analyse de performance, optimisation ROAS.",
+      "description_complete": "Au sein de l'équipe marketing de Doctolib, scale-up leader de la e-santé, vous participerez à l'implémentation et au suivi des campagnes d'acquisition sur tous les canaux digitaux en France, Allemagne et Italie. L'objectif principal est de recruter de nouveaux professionnels de santé sur la plateforme Doctolib utilisée par des dizaines de millions de patients chaque mois. Vous travaillerez sur la gestion de campagnes Google Ads, Meta Ads et autres leviers paid media, avec un focus fort sur l'analyse de performance et l'optimisation des KPIs d'acquisition. Environnement scale-up dynamique avec programme d'onboarding complet (Doctolib Academy), formations continues, abonnement sport Urban Sports Club, télétravail 2 jours/semaine.",
+      "competences_detectees": [
+        "SEA/Paid Media",
+        "Social Media",
+        "Analytics",
+        "Growth/Acquisition"
+      ],
+      "url_candidature": "https://www.welcometothejungle.com/fr/companies/doctolib/jobs/alternance-marketing-digital-acquisition-x-f-m-septembre-2026_paris",
+      "type_contrat": "Apprentissage + Professionnalisation",
+      "duree_contrat": "12 mois minimum",
+      "date_debut": "Septembre 2026",
+      "date_creation": "09/02/2026",
+      "date_expiration": null,
+      "plateforme_source": "Welcome to the Jungle",
+      "ville_recherche": "Paris",
+      "priorite_ville": 3,
+      "first_seen": "2026-02-13",
+      "last_seen": "2026-02-13",
+      "validation_status": "validated",
+      "validation_details": {
+        "checked_at": "2026-02-13 20:16:05",
+        "errors": null,
+        "warnings": null,
+        "source": "structure_validation"
+      }
+    },
+    {
+      "id": "botanik_alternantseocontentmarketing_paris",
+      "source": "Perplexity",
+      "status": "new",
+      "titre": "Alternant(e) Marketing / Content (H/F) - SEO",
+      "entreprise": "Botanik (agence SEO)",
+      "ville": "Paris",
+      "code_postal": "75000",
+      "adresse_complete": "Paris",
+      "description": "Alternance Marketing & Content au sein d'une agence SEO spécialisée. Pilier de la stratégie de visibilité : création de contenus SEO (blog, LinkedIn, ebooks), gestion du site web, coordination de campagnes multicanales (Google Ads, LinkedIn Ads, SEO), suivi des performances et KPIs.",
+      "description_complete": "Au sein de Botanik, agence SEO dynamique et ambitieuse, vous serez un pilier de la stratégie de visibilité de l'agence spécialisée en référencement naturel et GEO. Collaboration directe avec les fondateurs pour produire des contenus à forte valeur ajoutée, piloter les campagnes d'acquisition et structurer la stratégie de contenu interne. Missions : rédiger des articles de blog orientés SEO, créer des posts LinkedIn, concevoir des ebooks/guides/newsletters/cas clients ; gérer la publication sur site, LinkedIn et email avec calendrier éditorial ; mettre à jour le site web (landing pages, cas clients) ; coordonner les campagnes marketing multicanales (Google Ads, LinkedIn Ads, SEO, événements) ; analyser les KPIs (trafic, engagement, leads) et proposer des recommandations. Formation Bac+3 à Bac+5 en marketing digital, communication ou rédaction.",
+      "competences_detectees": [
+        "SEO",
+        "SEA/Paid Media",
+        "Content Marketing",
+        "Social Media",
+        "Analytics"
+      ],
+      "url_candidature": "https://www.welcometothejungle.com/fr/companies/junto/jobs/botanik-alternant-marketing-content-h-f-seo_paris",
+      "type_contrat": "Apprentissage + Professionnalisation",
+      "duree_contrat": "12-24 mois",
+      "date_debut": "Septembre 2026",
+      "date_creation": "05/02/2026",
+      "date_expiration": null,
+      "plateforme_source": "Welcome to the Jungle",
+      "ville_recherche": "Paris",
+      "priorite_ville": 3,
+      "first_seen": "2026-02-13",
+      "last_seen": "2026-02-13",
+      "validation_status": "validated",
+      "validation_details": {
+        "checked_at": "2026-02-13 20:16:05",
+        "errors": null,
+        "warnings": null,
+        "source": "structure_validation"
+      }
     }
   ]
 }
