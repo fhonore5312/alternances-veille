@@ -1,0 +1,67 @@
+tracks:
+  digital_marketing:
+    label: "Digital Marketing"
+    rome_codes: ["M1705", "E1103", "E1104"]
+    filter_keywords:
+      - "digital"
+      - "web"
+      - "seo"
+      - "sea"
+      - "social"
+      - "content"
+      - "email"
+      - "analytics"
+      - "crm"
+      - "ecommerce"
+      - "growth"
+      - "ads"
+      - "online"
+    skills_keywords:
+      SEO:
+        - "seo"
+        - "référencement naturel"
+        - "référencement organique"
+      SEA/Paid Media:
+        - "sea"
+        - "google ads"
+        - "facebook ads"
+        - "meta ads"
+        - "paid media"
+      Social Media:
+        - "social media"
+        - "réseaux sociaux"
+        - "community management"
+      Content Marketing:
+        - "content"
+        - "contenu"
+        - "rédaction web"
+        - "copywriting"
+      Analytics:
+        - "analytics"
+        - "google analytics"
+        - "data"
+        - "tracking"
+      Email Marketing:
+        - "email marketing"
+        - "emailing"
+        - "newsletter"
+      CRM/Automation:
+        - "crm"
+        - "marketing automation"
+        - "hubspot"
+        - "salesforce"
+      E-commerce:
+        - "e-commerce"
+        - "ecommerce"
+        - "marketplace"
+        - "conversion"
+      Growth/Acquisition:
+        - "growth"
+        - "acquisition"
+        - "lead generation"
+      UX/Design:
+        - "ux"
+        - "ui"
+        - "expérience utilisateur"
+        - "design"
+    color_hex: "#4F81BD"
