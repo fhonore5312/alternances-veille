@@ -1,6 +1,8 @@
 tracks:
+
   digital_marketing:
     label: "Digital Marketing"
+    color_hex: "#4F81BD"
     rome_codes: ["M1705", "E1103", "E1104"]
     filter_keywords:
       - "digital"
@@ -64,4 +66,146 @@ tracks:
         - "ui"
         - "expérience utilisateur"
         - "design"
-    color_hex: "#4F81BD"
+
+  finance:
+    label: "Finance, Audit & Contrôle"
+    color_hex: "#27AE60"
+    rome_codes: ["M1205", "M1203", "M1202"]  # Audit, management financier, compta
+    filter_keywords:
+      - "finance"
+      - "financial"
+      - "comptabilité"
+      - "comptable"
+      - "contrôle de gestion"
+      - "controle de gestion"
+      - "audit"
+      - "reporting"
+      - "trésorerie"
+      - "tresorerie"
+      - "analyse financière"
+      - "consolidation"
+    skills_keywords:
+      Comptabilité:
+        - "comptabilité"
+        - "comptable"
+        - "bilan"
+        - "compte de résultat"
+        - "écritures"
+      Contrôle de gestion:
+        - "contrôle de gestion"
+        - "controle de gestion"
+        - "budget"
+        - "forecast"
+        - "reporting"
+        - "tableaux de bord"
+      Audit:
+        - "audit"
+        - "audit financier"
+        - "audit interne"
+        - "audit externe"
+      Finance d'entreprise:
+        - "finance d'entreprise"
+        - "corporate finance"
+        - "trésorerie"
+        - "cash flow"
+        - "investissement"
+      Analyse financière:
+        - "analyse financière"
+        - "modélisation financière"
+        - "valorisation"
+        - "ratios financiers"
+      Gestion des risques:
+        - "risque de crédit"
+        - "risque de marché"
+        - "risk management"
+
+  supply_chain:
+    label: "Supply Chain & Achats"
+    color_hex: "#E67E22"
+    rome_codes: ["M1301", "N1303"]  # Direction logistique, achats
+    filter_keywords:
+      - "supply chain"
+      - "logistique"
+      - "achat"
+      - "achats"
+      - "approvisionnement"
+      - "stock"
+      - "planification"
+      - "transport"
+      - "flux"
+      - "ordonnancement"
+    skills_keywords:
+      Logistique:
+        - "logistique"
+        - "gestion des flux"
+        - "magasin"
+        - "entrepôt"
+        - "warehouse"
+      Supply Chain:
+        - "supply chain"
+        - "planification"
+        - "planification de la demande"
+        - "sales & operations planning"
+        - "s&op"
+      Achats:
+        - "achats"
+        - "acheteur"
+        - "négociation fournisseurs"
+        - "sourcing"
+        - "appel d'offres"
+      Transport:
+        - "transport"
+        - "expédition"
+        - "shipping"
+        - "incoterms"
+      Amélioration continue:
+        - "lean"
+        - "six sigma"
+        - "kaizen"
+        - "optimisation des processus"
+
+  business_dev:
+    label: "Business Development & Vente"
+    color_hex: "#9B59B6"
+    rome_codes: ["M1707", "D1403"]  # Dév commercial, relation client
+    filter_keywords:
+      - "business developer"
+      - "développement commercial"
+      - "developpement commercial"
+      - "vente"
+      - "commercial"
+      - "account manager"
+      - "kAM"
+      - "chargé d'affaires"
+      - "relation client"
+      - "prospection"
+      - "négociation"
+      - "business development"
+      - "retail"
+    skills_keywords:
+      Négociation:
+        - "négociation"
+        - "negociation"
+        - "closing"
+        - "rendez-vous clients"
+      Développement commercial:
+        - "développement commercial"
+        - "business development"
+        - "prospection"
+        - "chasse"
+        - "fidélisation"
+      Gestion de compte:
+        - "account manager"
+        - "gestion de portefeuille"
+        - "grand compte"
+        - "key account"
+      Retail:
+        - "retail"
+        - "point de vente"
+        - "merchandising"
+        - "animation commerciale"
+      CRM / Pipe:
+        - "crm"
+        - "pipeline"
+        - "suivi des leads"
+        - "salesforce"
