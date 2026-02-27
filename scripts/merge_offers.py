@@ -21,7 +21,7 @@ BASE_DIR = SCRIPT_DIR.parent
 DATA_DIR = BASE_DIR / "data"
 
 LBA_FILE        = DATA_DIR / "offres_lba_validated.json"
-PERPLEXITY_FILE = DATA_DIR / "offres_perplexity_validated.json"
+LLM_FILE = DATA_DIR / "offres_llm_validated.json"
 HISTORIQUE_FILE = DATA_DIR / "offres_historique.json"
 OUTPUT_FILE     = DATA_DIR / "offres_merged.json"
 
@@ -62,15 +62,15 @@ def merge_offers():
     print(f"   → {len(lba_offers)} retenues (validées/incertaines)")
 
     # 2. Charger Perplexity (optionnel)
-    perplexity_data = load_json(PERPLEXITY_FILE)
-    perplexity_offers = []
-    if perplexity_data and perplexity_data.get("offres"):
-        perplexity_offers = [
-            o for o in perplexity_data.get("offres", [])
+    llm_data = load_json(LLM_FILE)
+    llm_offers = []
+    if llm_data and llm_data.get("offres"):
+        llm_offers = [
+            o for o in llm_data.get("offres", [])
             if o.get("validation_status") == "validated"
         ]
-        print(f"📥 Perplexity  : {len(perplexity_data.get('offres', []))} offres chargées")
-        print(f"   → {len(perplexity_offers)} retenues (validées)")
+        print(f"📥 Perplexity  : {len(llm_data.get('offres', []))} offres chargées")
+        print(f"   → {len(llm_offers)} retenues (validées)")
     else:
         print("ℹ️  Perplexity  : Aucun fichier (recherche manuelle non faite)")
 
@@ -86,7 +86,7 @@ def merge_offers():
         historique_urls = set()
 
     # 4. Patch rétrocompatibilité : garantir le champ track
-    for offer in lba_offers + perplexity_offers:
+    for offer in lba_offers + llm_offers:
         if not offer.get("track"):
             offer["track"] = "digital_marketing"
 
@@ -100,14 +100,14 @@ def merge_offers():
     seen_urls = {get_url_key(o) for o in lba_offers if get_url_key(o)}
 
     all_offers = list(lba_offers)
-    duplicates_perplexity = 0
+    duplicates_llm = 0
 
-    for offer in perplexity_offers:
+    for offer in llm_offers:
         url_key  = get_url_key(offer)
         offer_id = generate_offer_id(offer)
 
         if (url_key and url_key in seen_urls) or offer_id in seen_ids:
-            duplicates_perplexity += 1
+            duplicates_llm += 1
             print(f"  ⚠️ Doublon Perplexity ignoré : {offer['titre'][:45]} - {offer['entreprise']}")
         else:
             all_offers.append(offer)
@@ -138,8 +138,8 @@ def merge_offers():
             print(f"  🆕 NOUVELLE : {offer['titre'][:45]} - {offer['entreprise']}")
 
     print(f"\n📊 Résultat fusion :")
-    print(f"   ✅ {len(perplexity_offers) - duplicates_perplexity} offres Perplexity ajoutées")
-    print(f"   ⚠️ {duplicates_perplexity} doublons Perplexity ignorés")
+    print(f"   ✅ {len(llm_offers) - duplicates_llm} offres Perplexity ajoutées")
+    print(f"   ⚠️ {duplicates_llm} doublons Perplexity ignorés")
     print(f"   🆕 {nouvelles} nouvelles offres")
     print(f"   ♻️  {actives} offres déjà connues")
 
@@ -185,12 +185,12 @@ def merge_offers():
     output = {
         "meta": {
             "date_generation": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "sources": ["LBA"] if not perplexity_offers else ["LBA", "Perplexity"],
+            "sources": ["LBA"] if not llm_offers else ["LBA", "Perplexity"],
             "total_offres": len(all_offers),
             "nouvelles": nouvelles,
             "actives": actives,
             "source_lba": len(lba_offers),
-            "source_perplexity": len(perplexity_offers) - duplicates_perplexity,
+            "source_llm": len(llm_offers) - duplicates_llm,
             "stats_by_track": stats_by_track,
         },
         "offres": all_offers,

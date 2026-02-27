@@ -5,9 +5,9 @@ validator.py - Validation complète LBA + Perplexity
 
 Ce script :
 1. Charge et valide data/offres_lba.json (validation métier + HTTP)
-2. Charge et valide data/offres_perplexity.json (validation structure JSON)
+2. Charge et valide data/offres_llm.json (validation structure JSON)
 3. Génère data/offres_lba_validated.json
-4. Génère data/offres_perplexity_validated.json
+4. Génère data/offres_llm_validated.json
 
 Usage:
   python -m scripts.validator
@@ -29,9 +29,9 @@ BASE_DIR = SCRIPT_DIR.parent
 DATA_DIR = BASE_DIR / "data"
 
 LBA_INPUT_FILE = DATA_DIR / "offres_lba.json"
-PERPLEXITY_INPUT_FILE = DATA_DIR / "offres_perplexity.json"
+LLM_INPUT_FILE = DATA_DIR / "offres_llm.json"
 LBA_OUTPUT_FILE = DATA_DIR / "offres_lba_validated.json"
-PERPLEXITY_OUTPUT_FILE = DATA_DIR / "offres_perplexity_validated.json"
+LLM_OUTPUT_FILE = DATA_DIR / "offres_llm_validated.json"
 
 # ===== CONFIGURATION VALIDATION =====
 
@@ -81,7 +81,7 @@ SENIOR_JOB_TITLES = [
 
 # ===== SCHÉMA PERPLEXITY =====
 
-REQUIRED_PERPLEXITY_FIELDS = {
+REQUIRED_LLM_FIELDS = {
     "id": str,
     "source": str,
     "status": str,
@@ -94,7 +94,7 @@ REQUIRED_PERPLEXITY_FIELDS = {
     "priorite_ville": int,
 }
 
-OPTIONAL_PERPLEXITY_FIELDS = {
+OPTIONAL_LLM_FIELDS = {
     "description": str,
     "description_complete": str,
     "competences_detectees": list,
@@ -397,13 +397,13 @@ def validate_lba_offers(quick_mode=False):
     return data
 
 
-# ===== VALIDATION PERPLEXITY =====
+# ===== VALIDATION LLM =====
 
-def validate_perplexity_offer(offer, index):
+def validate_llm_offer(offer, index):
     errors = []
     warnings = []
 
-    for field, expected_type in REQUIRED_PERPLEXITY_FIELDS.items():
+    for field, expected_type in REQUIRED_LLM_FIELDS.items():
         if field not in offer:
             errors.append(f"Champ obligatoire manquant : {field}")
         elif not isinstance(offer[field], expected_type):
@@ -411,8 +411,8 @@ def validate_perplexity_offer(offer, index):
         elif expected_type == str and not offer[field].strip():
             errors.append(f"Champ vide : {field}")
 
-    if offer.get("source") != "Perplexity":
-        warnings.append(f"Source devrait être 'Perplexity', trouvé : {offer.get('source')}")
+    if offer.get("source") != "LLM":
+        warnings.append(f"Source devrait être 'LLM', trouvé : {offer.get('source')}")
     if offer.get("status") not in ["new", "active"]:
         warnings.append(f"Status inhabituel : {offer.get('status')}")
     if offer.get("priorite_ville") not in [1, 2, 3]:
@@ -451,21 +451,21 @@ def validate_perplexity_offer(offer, index):
     return offer, is_valid
 
 
-def validate_perplexity_offers():
+def validate_llm_offers():
     print("\n" + "=" * 80)
-    print("🔍 VALIDATION PERPLEXITY")
+    print("🔍 VALIDATION LLM")
     print("=" * 80)
-    print(f"📂 Entrée : {PERPLEXITY_INPUT_FILE}")
-    print(f"💾 Sortie : {PERPLEXITY_OUTPUT_FILE}")
+    print(f"📂 Entrée : {LLM_INPUT_FILE}")
+    print(f"💾 Sortie : {LLM_OUTPUT_FILE}")
     print()
 
-    if not PERPLEXITY_INPUT_FILE.exists():
+    if not LLM_INPUT_FILE.exists():
         print(f"ℹ️ Fichier introuvable → aucune offre Perplexity à valider")
         print("=" * 80)
         return None
 
     try:
-        with open(PERPLEXITY_INPUT_FILE, "r", encoding="utf-8") as f:
+        with open(LLM_INPUT_FILE, "r", encoding="utf-8") as f:
             data = json.load(f)
     except json.JSONDecodeError as e:
         print(f"❌ Erreur JSON : {e}")
@@ -487,7 +487,7 @@ def validate_perplexity_offers():
 
     for i, offer in enumerate(offers, 1):
         print(f"[{i}/{len(offers)}] {offer.get('entreprise', 'N/A')} - {offer.get('ville', 'N/A')}")
-        validated_offer, is_valid = validate_perplexity_offer(offer, i)
+        validated_offer, is_valid = validate_llm_offer(offer, i)
         validated_offers.append(validated_offer)
 
         if is_valid:
@@ -509,17 +509,17 @@ def validate_perplexity_offers():
     })
     data["offres"] = validated_offers
 
-    with open(PERPLEXITY_OUTPUT_FILE, "w", encoding="utf-8") as f:
+    with open(LLM_OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
 
     print()
     print("=" * 80)
-    print("✅ VALIDATION PERPLEXITY TERMINÉE")
+    print("✅ VALIDATION LLM TERMINÉE")
     print("=" * 80)
     print(f"✅ Valides             : {valid_count}")
     print(f"⚠️  Avec avertissements : {warning_count}")
     print(f"❌ Invalides           : {invalid_count}")
-    print(f"\n💾 {len(validated_offers)} offres → {PERPLEXITY_OUTPUT_FILE}")
+    print(f"\n💾 {len(validated_offers)} offres → {LLM_OUTPUT_FILE}")
     print("=" * 80)
 
     return data
@@ -538,7 +538,7 @@ def main():
     print()
 
     lba_result = validate_lba_offers(quick_mode=args.quick)
-    perplexity_result = validate_perplexity_offers()
+    perplexity_result = validate_llm_offers()
 
     print("\n" + "=" * 80)
     print("📊 RÉSUMÉ GLOBAL")
