@@ -1,22 +1,49 @@
+# Python
 __pycache__/
 *.py[cod]
 .Python
 env/
 venv/
+
+# Env & credentials
 .env
 *.env
 credentials.json
 token.txt
-*.log
-*.tmp
+
+# OS
 .DS_Store
 Thumbs.db
+
+# Logs
+*.log
+
+# Fichiers temporaires
+*.tmp
+listing.txt
+
+# Context dumps (régénérés à la demande)
+CONTEXT_DUMP_*.txt
+
+# Données générées automatiquement (non versionnées)
+data/offres_lba.json
+data/offres_lba_validated.json
+data/offres_llm.json
+data/offres_llm_validated.json
+data/offres_merged.json
+data/offres_agent_*.json
+
+# Données sensibles (contacts RH)
+data/hr_contacts.json
+data/hr_contacts_history.json
+
+# GitHub Pages — versionner uniquement index.html + archives récentes
+# (décommenter pour ignorer toutes les archives)
+# docs/archives/
+
+# Anciens formats
 snapshot_lba_*.json
 Alternances_Marketing_Digital_*.html
-"docs/" 
-"!docs/.gitkeep" 
-"" 
-"# Fichiers g‚n‚r‚s automatiquement" 
-"data/*.json" 
-"docs/" 
-"!data/.gitkeep" 
+
+# NE PAS ignorer :
+# data/offres_historique.json  ? mémoire persistante du pipeline

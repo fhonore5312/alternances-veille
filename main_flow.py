@@ -2,12 +2,17 @@
 # -*- coding: utf-8 -*-
 """
 main_flow.py - Orchestrateur principal du robot alternances
+
+Usage:
+    python main_flow.py              # flow complet, validator standard
+    python main_flow.py --quick      # validator skip les offres validées < 7 jours
 """
 
 import os
 import sys
 import json
 import logging
+import argparse
 import subprocess
 from datetime import datetime
 from pathlib import Path
@@ -18,8 +23,12 @@ if sys.stdout.encoding != "utf-8":
 if sys.stderr.encoding != "utf-8":
     sys.stderr.reconfigure(encoding="utf-8")
 
+# Tracks LLM : clés au format test_search_agent (sans underscore)
 TRACKS_LLM = ["digitalmarketing", "finance"]
-TRACKS_LBA = ["digitalmarketing", "finance", "rh", "communication"]
+
+# Tracks LBA : tous les tracks (--all-tracks lit tracks.yml directement)
+# Listés ici pour le résumé de fin de flow uniquement
+TRACKS_LBA = ["digital_marketing", "finance", "supply_chain", "business_dev"]
 
 DATA_DIR   = Path("data")
 CONFIG_DIR = Path("config")
@@ -30,7 +39,7 @@ LLM_MODEL = "anthropic/claude-haiku-4-5-20251001"
 LOG_DIR.mkdir(exist_ok=True)
 DATA_DIR.mkdir(exist_ok=True)
 
-file_handler = logging.FileHandler(
+file_handler    = logging.FileHandler(
     LOG_DIR / ("flow_" + datetime.now().strftime("%Y%m%d_%H%M%S") + ".log"),
     encoding="utf-8"
 )
@@ -50,11 +59,13 @@ def _env():
     return env
 
 
+# ===== ÉTAPE 1 : Scraper LBA =====
+
 def run_lba_scraper():
     log.info("=== ETAPE 1 : Scraper La Bonne Alternance ===")
     try:
         result = subprocess.run(
-            [sys.executable, "-m", "scripts.scraper_lba"],
+            [sys.executable, "-m", "scripts.scraper_lba", "--all-tracks"],
             capture_output=True, text=True, encoding="utf-8", timeout=300, env=_env()
         )
         if result.returncode == 0:
@@ -66,6 +77,8 @@ def run_lba_scraper():
     except Exception as e:
         log.error("LBA scraper exception : %s", e)
 
+
+# ===== ÉTAPE 2 : LLM Search Agents =====
 
 def run_llm_agent(track):
     log.info("--- LLM agent : %s ---", track)
@@ -107,6 +120,8 @@ def run_all_llm_agents():
     return results
 
 
+# ===== ÉTAPE 3 : Fusion fichiers LLM =====
+
 def run_merge_llm_tracks():
     log.info("=== ETAPE 3 : Fusion fichiers LLM par track ===")
     try:
@@ -125,12 +140,16 @@ def run_merge_llm_tracks():
         return False
 
 
-def run_validator():
-    log.info("=== ETAPE 4 : Validation des offres ===")
+# ===== ÉTAPE 4 : Validation =====
+
+def run_validator(quick_mode=False):
+    log.info("=== ETAPE 4 : Validation des offres%s ===", " (quick)" if quick_mode else "")
+    cmd = [sys.executable, "-m", "scripts.validator"]
+    if quick_mode:
+        cmd.append("--quick")
     try:
         result = subprocess.run(
-            [sys.executable, "-m", "scripts.validator"],
-            capture_output=True, text=True, encoding="utf-8", timeout=600, env=_env()
+            cmd, capture_output=True, text=True, encoding="utf-8", timeout=4800, env=_env()
         )
         if result.returncode == 0:
             log.info("Validation OK")
@@ -138,10 +157,15 @@ def run_validator():
         else:
             log.warning("Validation erreur :\n%s", result.stderr[:500])
             return False
+    except subprocess.TimeoutExpired:
+        log.error("Validation timeout (>80min)")
+        return False
     except Exception as e:
         log.error("Validation exception : %s", e)
         return False
 
+
+# ===== ÉTAPE 5 : Merge & déduplication =====
 
 def run_merge():
     log.info("=== ETAPE 5 : Merge & deduplication ===")
@@ -165,6 +189,8 @@ def run_merge():
         return False
 
 
+# ===== ÉTAPE 6 : Génération HTML + email =====
+
 def run_html_email():
     log.info("=== ETAPE 6 : Generation email HTML ===")
     merged_file = DATA_DIR / "offres_merged.json"
@@ -187,6 +213,8 @@ def run_html_email():
         return False
 
 
+# ===== RÉSUMÉ =====
+
 def print_summary(agent_results, start):
     log.info("=== RESUME DU FLOW ===")
     merged_file = DATA_DIR / "offres_merged.json"
@@ -196,7 +224,7 @@ def print_summary(agent_results, start):
         meta = data.get("meta", {})
         log.info("Total offres mergees : %s", meta.get("total_offres", "?"))
         log.info("  nouvelles : %s", meta.get("nouvelles", "?"))
-        log.info("  actives   : %s", meta.get("actives", "?"))
+        log.info("  actives   : %s", meta.get("actives",   "?"))
         for track, stats in meta.get("stats_by_track", {}).items():
             log.info("  %-25s : %d offres (%d nouvelles)", track, stats["total"], stats["nouvelles"])
     else:
@@ -207,14 +235,24 @@ def print_summary(agent_results, start):
     log.info("Duree totale : %ds (%dmin %ds)", elapsed, elapsed // 60, elapsed % 60)
 
 
+# ===== MAIN =====
+
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Orchestrateur principal du robot alternances")
+    parser.add_argument(
+        "--quick", action="store_true",
+        help="Mode rapide : validator skip les offres deja validees < 7 jours"
+    )
+    args = parser.parse_args()
+
     start = datetime.now()
     log.info("Flow demarre -- %s", start.strftime("%Y-%m-%d %H:%M:%S"))
+    log.info("Mode : %s", "quick" if args.quick else "complet")
 
-    run_lba_scraper()                      # Etape 1 : LBA
-    agent_results = run_all_llm_agents()   # Etape 2 : LLM agents
-    run_merge_llm_tracks()                 # Etape 3 : fusion -> offres_llm.json
-    run_validator()                        # Etape 4 : validation LBA + LLM
-    run_merge()                            # Etape 5 : merge + dedup + historique
-    run_html_email()                       # Etape 6 : HTML + email
+    run_lba_scraper()                            # Etape 1 : LBA → offres_lba.json
+    agent_results = run_all_llm_agents()         # Etape 2 : LLM → offres_agent_*.json
+    run_merge_llm_tracks()                       # Etape 3 : fusion → offres_llm.json
+    run_validator(quick_mode=args.quick)         # Etape 4 : validation → *_validated.json
+    run_merge()                                  # Etape 5 : merge → offres_merged.json
+    run_html_email()                             # Etape 6 : HTML + email
     print_summary(agent_results, start)

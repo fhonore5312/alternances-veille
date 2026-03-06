@@ -5,6 +5,7 @@ tracks:
     color_hex: "#4F81BD"
     rome_codes: ["M1705", "E1103", "E1104"]
     filter_keywords:
+      - "marketing"
       - "digital"
       - "web"
       - "seo"

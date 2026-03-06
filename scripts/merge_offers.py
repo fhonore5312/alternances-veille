@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Fusion des offres LBA + Perplexity + Gestion historique
+Fusion des offres LBA + LLM + Gestion historique
 IMPORTANT: Ce script utilise les fichiers _validated.json
 générés par validator.py
 
@@ -21,9 +21,16 @@ BASE_DIR = SCRIPT_DIR.parent
 DATA_DIR = BASE_DIR / "data"
 
 LBA_FILE        = DATA_DIR / "offres_lba_validated.json"
-LLM_FILE = DATA_DIR / "offres_llm_validated.json"
+LLM_FILE        = DATA_DIR / "offres_llm_validated.json"
 HISTORIQUE_FILE = DATA_DIR / "offres_historique.json"
 OUTPUT_FILE     = DATA_DIR / "offres_merged.json"
+
+# ===== DOMAINES NON VÉRIFIABLES (HTTP 403 systématique) =====
+# Ces plateformes bloquent le crawling — les offres "uncertain" qu'elles génèrent
+# ne peuvent pas être validées et sont exclues du merge pour éviter les liens morts.
+BLOCKED_DOMAINS_UNCERTAIN = [
+    "directemploi.com",
+]
 
 
 # ===== UTILITAIRES =====
@@ -40,11 +47,23 @@ def save_json(filepath, data):
         json.dump(data, f, ensure_ascii=False, indent=2)
 
 
+def is_blocked_uncertain(offer):
+    """Retourne True si l'offre est uncertain ET provient d'un domaine non vérifiable."""
+    if offer.get("validation_status") != "uncertain":
+        return False
+    url = offer.get("url_candidature", "")
+    status_code = offer.get("validation_details", {}).get("status_code")
+    return (
+        status_code == 403
+        and any(domain in url for domain in BLOCKED_DOMAINS_UNCERTAIN)
+    )
+
+
 # ===== MERGE PRINCIPAL =====
 
 def merge_offers():
     print("=" * 70)
-    print("🔄 FUSION DES OFFRES LBA + PERPLEXITY + HISTORIQUE")
+    print("🔄 FUSION DES OFFRES LBA + LLM + HISTORIQUE")
     print("=" * 70)
 
     # 1. Charger LBA (obligatoire)
@@ -54,14 +73,22 @@ def merge_offers():
         print("  → Exécutez d'abord : python -m scripts.validator")
         return
 
-    lba_offers = [
+    lba_offers_raw = [
         o for o in lba_data.get("offres", [])
         if o.get("validation_status") in ["validated", "uncertain", "error"]
     ]
-    print(f"📥 LBA         : {lba_data['meta']['total_offres']} offres chargées")
-    print(f"   → {len(lba_offers)} retenues (validées/incertaines)")
 
-    # 2. Charger Perplexity (optionnel)
+    # Exclure les offres uncertain de domaines non vérifiables (403 systématique)
+    lba_offers = [o for o in lba_offers_raw if not is_blocked_uncertain(o)]
+    blocked_count = len(lba_offers_raw) - len(lba_offers)
+
+    print(f"📥 LBA         : {lba_data['meta']['total_offres']} offres chargées")
+    print(f"   → {len(lba_offers_raw)} retenues (validées/incertaines)")
+    if blocked_count:
+        print(f"   → {blocked_count} exclues (uncertain + domaine 403 non vérifiable)")
+    print(f"   → {len(lba_offers)} offres conservées")
+
+    # 2. Charger LLM (optionnel)
     llm_data = load_json(LLM_FILE)
     llm_offers = []
     if llm_data and llm_data.get("offres"):
@@ -69,10 +96,10 @@ def merge_offers():
             o for o in llm_data.get("offres", [])
             if o.get("validation_status") == "validated"
         ]
-        print(f"📥 Perplexity  : {len(llm_data.get('offres', []))} offres chargées")
+        print(f"📥 LLM         : {len(llm_data.get('offres', []))} offres chargées")
         print(f"   → {len(llm_offers)} retenues (validées)")
     else:
-        print("ℹ️  Perplexity  : Aucun fichier (recherche manuelle non faite)")
+        print("ℹ️  LLM : Aucun fichier (agents non exécutés)")
 
     # 3. Charger l'historique
     historique_data = load_json(HISTORIQUE_FILE)
@@ -81,7 +108,7 @@ def merge_offers():
         historique_ids  = {generate_offer_id(o): o for o in historique_data.get("offres", [])}
         historique_urls = {get_url_key(o) for o in historique_data.get("offres", []) if get_url_key(o)}
     else:
-        print("ℹ️  Historique  : Aucun (première exécution)")
+        print("ℹ️  Historique : Aucun (première exécution)")
         historique_ids  = {}
         historique_urls = set()
 
@@ -93,13 +120,13 @@ def merge_offers():
     # 5. Déduplication interne LBA (au cas où)
     lba_offers, lba_dups = deduplicate_offers(lba_offers)
     if lba_dups:
-        print(f"   🔁 {lba_dups} doublons internes LBA supprimés")
+        print(f"  🔁 {lba_dups} doublons internes LBA supprimés")
 
-    # 6. Fusion LBA + Perplexity sans doublons cross-source
+    # 6. Fusion LBA + LLM sans doublons cross-source
     seen_ids  = {generate_offer_id(o) for o in lba_offers}
     seen_urls = {get_url_key(o) for o in lba_offers if get_url_key(o)}
 
-    all_offers = list(lba_offers)
+    all_offers    = list(lba_offers)
     duplicates_llm = 0
 
     for offer in llm_offers:
@@ -108,13 +135,13 @@ def merge_offers():
 
         if (url_key and url_key in seen_urls) or offer_id in seen_ids:
             duplicates_llm += 1
-            print(f"  ⚠️ Doublon Perplexity ignoré : {offer['titre'][:45]} - {offer['entreprise']}")
+            print(f"  ⚠️  Doublon LLM ignoré : {offer['titre'][:45]} - {offer['entreprise']}")
         else:
             all_offers.append(offer)
             seen_ids.add(offer_id)
             if url_key:
                 seen_urls.add(url_key)
-            print(f"  ✅ Perplexity ajoutée : {offer['titre'][:45]} - {offer['entreprise']}")
+            print(f"  ✅ LLM ajoutée        : {offer['titre'][:45]} - {offer['entreprise']}")
 
     # 7. Marquer new / active vs historique
     nouvelles = 0
@@ -138,10 +165,11 @@ def merge_offers():
             print(f"  🆕 NOUVELLE : {offer['titre'][:45]} - {offer['entreprise']}")
 
     print(f"\n📊 Résultat fusion :")
-    print(f"   ✅ {len(llm_offers) - duplicates_llm} offres Perplexity ajoutées")
-    print(f"   ⚠️ {duplicates_llm} doublons Perplexity ignorés")
-    print(f"   🆕 {nouvelles} nouvelles offres")
-    print(f"   ♻️  {actives} offres déjà connues")
+    print(f"  ✅ {len(llm_offers) - duplicates_llm} offres LLM ajoutées")
+    if duplicates_llm:
+        print(f"  ⚠️  {duplicates_llm} doublons LLM ignorés")
+    print(f"  🆕 {nouvelles} nouvelles offres")
+    print(f"  ♻️  {actives} offres déjà connues")
 
     # 8. Trier : par track, puis priorité ville, puis new en premier
     all_offers.sort(key=lambda x: (
@@ -175,7 +203,7 @@ def merge_offers():
     tracks_present = sorted(set(o.get("track", "digital_marketing") for o in all_offers))
     stats_by_track = {
         track: {
-            "total": len([o for o in all_offers if o.get("track") == track]),
+            "total":    len([o for o in all_offers if o.get("track") == track]),
             "nouvelles": len([o for o in all_offers if o.get("track") == track and o.get("status") == "new"]),
         }
         for track in tracks_present
@@ -185,12 +213,12 @@ def merge_offers():
     output = {
         "meta": {
             "date_generation": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "sources": ["LBA"] if not llm_offers else ["LBA", "Perplexity"],
+            "sources": ["LBA"] if not llm_offers else ["LBA", "LLM"],
             "total_offres": len(all_offers),
-            "nouvelles": nouvelles,
-            "actives": actives,
-            "source_lba": len(lba_offers),
-            "source_llm": len(llm_offers) - duplicates_llm,
+            "nouvelles":    nouvelles,
+            "actives":      actives,
+            "source_lba":   len(lba_offers),
+            "source_llm":   len(llm_offers) - duplicates_llm,
             "stats_by_track": stats_by_track,
         },
         "offres": all_offers,
@@ -200,12 +228,12 @@ def merge_offers():
 
     print(f"\n💾 Fichier fusionné : {OUTPUT_FILE}")
     print(f"📊 Total : {len(all_offers)} offres")
-    print(f"   🆕 {nouvelles} nouvelles  |  ♻️  {actives} déjà connues")
+    print(f"   🆕 {nouvelles} nouvelles | ♻️  {actives} déjà connues")
     print()
     for track, stats in stats_by_track.items():
-        print(f"   🎯 {track:<25} : {stats['total']} offres ({stats['nouvelles']} nouvelles)")
+        print(f"  🎯 {track:<25} : {stats['total']} offres ({stats['nouvelles']} nouvelles)")
 
-    print("\n➡️ PROCHAINE ÉTAPE : python -m scripts.generate_html_email")
+    print("\n➡️  PROCHAINE ÉTAPE : python -m scripts.generate_html_email")
     print("=" * 70)
 
 

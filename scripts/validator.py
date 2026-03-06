@@ -10,8 +10,8 @@ Ce script :
 4. Génère data/offres_llm_validated.json
 
 Usage:
-  python -m scripts.validator
-  python -m scripts.validator --quick
+python -m scripts.validator
+python -m scripts.validator --quick
 """
 
 import requests
@@ -28,8 +28,8 @@ SCRIPT_DIR = Path(__file__).parent
 BASE_DIR = SCRIPT_DIR.parent
 DATA_DIR = BASE_DIR / "data"
 
-LBA_INPUT_FILE = DATA_DIR / "offres_lba.json"
-LLM_INPUT_FILE = DATA_DIR / "offres_llm.json"
+LBA_INPUT_FILE  = DATA_DIR / "offres_lba.json"
+LLM_INPUT_FILE  = DATA_DIR / "offres_llm.json"
 LBA_OUTPUT_FILE = DATA_DIR / "offres_lba_validated.json"
 LLM_OUTPUT_FILE = DATA_DIR / "offres_llm_validated.json"
 
@@ -79,35 +79,35 @@ SENIOR_JOB_TITLES = [
     "lead",
 ]
 
-# ===== SCHÉMA PERPLEXITY =====
+# ===== SCHÉMA LLM =====
 
 REQUIRED_LLM_FIELDS = {
-    "id": str,
-    "source": str,
-    "status": str,
-    "titre": str,
-    "entreprise": str,
-    "ville": str,
-    "code_postal": str,
-    "url_candidature": str,
-    "date_creation": str,
-    "priorite_ville": int,
+    "id":               str,
+    "source":           str,
+    "status":           str,
+    "titre":            str,
+    "entreprise":       str,
+    "ville":            str,
+    "code_postal":      str,
+    "url_candidature":  str,
+    "date_creation":    (str, type(None)),  # FIX : nullable pour offres LLM
+    "priorite_ville":   int,
 }
 
 OPTIONAL_LLM_FIELDS = {
-    "description": str,
-    "description_complete": str,
+    "description":           str,
+    "description_complete":  str,
     "competences_detectees": list,
-    "type_contrat": str,
-    "duree_contrat": str,
-    "date_debut": str,
-    "date_expiration": (str, type(None)),
-    "plateforme_source": str,
-    "ville_recherche": str,
-    "adresse_complete": str,
-    "first_seen": str,
-    "last_seen": str,
-    "track": str,
+    "type_contrat":          str,
+    "duree_contrat":         str,
+    "date_debut":            str,
+    "date_expiration":       (str, type(None)),
+    "plateforme_source":     str,
+    "ville_recherche":       str,
+    "adresse_complete":      str,
+    "first_seen":            str,
+    "last_seen":             str,
+    "track":                 str,
 }
 
 # ===== UTILITAIRES =====
@@ -207,13 +207,14 @@ def validate_lba_offer(offer, quick_mode=False):
         }
         return offer
 
+    # FIX --quick : validation_status est maintenant pré-injecté depuis offres_lba_validated.json
     if quick_mode and offer.get("validation_status") == "validated":
         validation_date = offer.get("validation_details", {}).get("checked_at")
         if validation_date:
             try:
                 last_check = datetime.strptime(validation_date, "%Y-%m-%d %H:%M:%S")
                 if (datetime.now() - last_check).days < 7:
-                    print(f"  ⏭️ Skip (validé récemment)")
+                    print(f"  ⏭️  Skip (validé récemment le {validation_date[:10]})")
                     return offer
             except Exception:
                 pass
@@ -251,7 +252,7 @@ def validate_lba_offer(offer, quick_mode=False):
             print(f"  ✅ Active ({status['confidence']})")
         else:
             offer["validation_status"] = "uncertain"
-            print(f"  ⚠️ Incertain ({status['confidence']})")
+            print(f"  ⚠️  Incertain ({status['confidence']})")
         offer["validation_details"] = {
             "checked_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "status_code": status_code,
@@ -269,7 +270,7 @@ def validate_lba_offer(offer, quick_mode=False):
             "is_expired": None,
             "confidence": "low",
         }
-        print(f"  ⚠️ Status HTTP : {status_code}")
+        print(f"  ⚠️  Status HTTP : {status_code}")
 
     return offer
 
@@ -293,19 +294,34 @@ def validate_lba_offers(quick_mode=False):
         data = json.load(f)
 
     offers = data.get("offres", [])
-    print(f"📦 {len(offers)} offres chargées\n")
+    print(f"📦 {len(offers)} offres chargées")
 
     if not offers:
-        print("⚠️ Aucune offre à valider")
+        print("⚠️  Aucune offre à valider")
         return None
 
-    validated_count = 0
-    expired_count = 0
-    error_count = 0
-    uncertain_count = 0
+    # FIX --quick : charger les statuts précédents depuis offres_lba_validated.json
+    previous_statuses = {}
+    if quick_mode and LBA_OUTPUT_FILE.exists():
+        try:
+            with open(LBA_OUTPUT_FILE, encoding="utf-8") as f:
+                prev = json.load(f)
+            for o in prev.get("offres", []):
+                if o.get("id"):
+                    previous_statuses[o["id"]] = o
+            print(f"⚡ Quick mode : {len(previous_statuses)} statuts précédents chargés")
+        except Exception as e:
+            print(f"⚠️  Impossible de charger les statuts précédents : {e}")
+    print()
+
+    validated_count    = 0
+    expired_count      = 0
+    error_count        = 0
+    uncertain_count    = 0
     rejected_data_count = 0
     kept_despite_issues = 0
-    validated_offers = []
+    skipped_count      = 0
+    validated_offers   = []
 
     for i, offer in enumerate(offers, 1):
         print(f"[{i}/{len(offers)}] {offer.get('entreprise','?')} - {offer.get('ville','?')}")
@@ -323,7 +339,13 @@ def validate_lba_offers(quick_mode=False):
             rejected_data_count += 1
             continue
 
-        # Validation HTTP
+        # FIX --quick : injecter le statut précédent avant validate_lba_offer()
+        if quick_mode and offer.get("id") in previous_statuses:
+            prev = previous_statuses[offer["id"]]
+            offer["validation_status"] = prev.get("validation_status")
+            offer["validation_details"] = prev.get("validation_details")
+
+        # Validation HTTP (skippée si quick + déjà validé récemment)
         offer = validate_lba_offer(offer, quick_mode=quick_mode)
         status = offer.get("validation_status")
         confidence = offer.get("validation_details", {}).get("confidence", "low")
@@ -336,15 +358,14 @@ def validate_lba_offers(quick_mode=False):
             uncertain_count += 1
             validated_offers.append(offer)
             kept_despite_issues += 1
-            print(f"  ℹ️ Gardée (incertitude)")
+            print(f"  ℹ️  Gardée (incertitude)")
 
         elif status == "expired":
             expired_count += 1
-            # ✅ CORRECTIF : on exclut si confidence medium ou high
             if confidence == "low":
                 validated_offers.append(offer)
                 kept_despite_issues += 1
-                print(f"  ℹ️ Gardée (expiration incertaine, confidence: low)")
+                print(f"  ℹ️  Gardée (expiration incertaine, confidence: low)")
             else:
                 print(f"  💀 Exclue définitivement (confidence: {confidence})")
 
@@ -356,7 +377,7 @@ def validate_lba_offers(quick_mode=False):
             error_count += 1
             validated_offers.append(offer)
             kept_despite_issues += 1
-            print(f"  ℹ️ Gardée (erreur réseau transitoire)")
+            print(f"  ℹ️  Gardée (erreur réseau transitoire)")
 
         else:
             uncertain_count += 1
@@ -366,15 +387,15 @@ def validate_lba_offers(quick_mode=False):
 
     data["offres"] = validated_offers
     data["meta"].update({
-        "validation_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "total_offres": len(validated_offers),
-        "nouvelles": len([o for o in validated_offers if o.get("status") == "new"]),
-        "actives": len([o for o in validated_offers if o.get("status") == "active"]),
-        "validated": validated_count,
-        "expired": expired_count,
-        "errors": error_count,
-        "uncertain": uncertain_count,
-        "rejected_business": rejected_data_count,
+        "validation_date":    datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "total_offres":       len(validated_offers),
+        "nouvelles":          len([o for o in validated_offers if o.get("status") == "new"]),
+        "actives":            len([o for o in validated_offers if o.get("status") == "active"]),
+        "validated":          validated_count,
+        "expired":            expired_count,
+        "errors":             error_count,
+        "uncertain":          uncertain_count,
+        "rejected_business":  rejected_data_count,
         "kept_despite_issues": kept_despite_issues,
     })
 
@@ -385,12 +406,12 @@ def validate_lba_offers(quick_mode=False):
     print("=" * 80)
     print("✅ VALIDATION LBA TERMINÉE")
     print("=" * 80)
-    print(f"🚫 Rejetées (métier)       : {rejected_data_count}")
-    print(f"✅ Validées (actives)       : {validated_count}")
-    print(f"⚠️  Incertaines (gardées)   : {uncertain_count}")
-    print(f"ℹ️  Gardées malgré problème : {kept_despite_issues}")
-    print(f"💀 Expirées exclues         : {expired_count - kept_despite_issues}")
-    print(f"❌ Erreurs réseau           : {error_count}")
+    print(f"🚫 Rejetées (métier)      : {rejected_data_count}")
+    print(f"✅ Validées (actives)      : {validated_count}")
+    print(f"⚠️  Incertaines (gardées)  : {uncertain_count}")
+    print(f"ℹ️  Gardées malgré problème: {kept_despite_issues}")
+    print(f"💀 Expirées exclues        : {expired_count - kept_despite_issues}")
+    print(f"❌ Erreurs réseau          : {error_count}")
     print(f"\n💾 {len(validated_offers)} offres → {LBA_OUTPUT_FILE}")
     print("=" * 80)
 
@@ -400,15 +421,22 @@ def validate_lba_offers(quick_mode=False):
 # ===== VALIDATION LLM =====
 
 def validate_llm_offer(offer, index):
-    errors = []
+    errors   = []
     warnings = []
 
     for field, expected_type in REQUIRED_LLM_FIELDS.items():
         if field not in offer:
             errors.append(f"Champ obligatoire manquant : {field}")
         elif not isinstance(offer[field], expected_type):
-            errors.append(f"Type incorrect pour {field} : attendu {expected_type.__name__}, reçu {type(offer[field]).__name__}")
-        elif expected_type == str and not offer[field].strip():
+            # expected_type peut être un tuple (str, NoneType) — affichage propre
+            type_name = (
+                expected_type.__name__
+                if isinstance(expected_type, type)
+                else " | ".join(t.__name__ for t in expected_type)
+            )
+            errors.append(f"Type incorrect pour {field} : attendu {type_name}, reçu {type(offer[field]).__name__}")
+        # FIX : guard isinstance avant .strip() — expected_type peut être un tuple
+        elif isinstance(offer[field], str) and not offer[field].strip():
             errors.append(f"Champ vide : {field}")
 
     if offer.get("source") != "LLM":
@@ -422,8 +450,8 @@ def validate_llm_offer(offer, index):
     if url and not url.startswith("http"):
         errors.append(f"URL invalide : {url}")
 
-    date_creation = offer.get("date_creation", "")
-    if date_creation:
+    date_creation = offer.get("date_creation")
+    if date_creation:  # None est maintenant accepté → on ne valide que si présent
         try:
             datetime.strptime(date_creation, "%d/%m/%Y")
         except ValueError:
@@ -433,16 +461,16 @@ def validate_llm_offer(offer, index):
     offer["validation_status"] = "validated" if is_valid else "invalid"
     offer["validation_details"] = {
         "checked_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "errors": errors if errors else None,
+        "errors":   errors   if errors   else None,
         "warnings": warnings if warnings else None,
-        "source": "structure_validation",
+        "source":   "structure_validation",
     }
 
     if is_valid:
         suffix = " (avec avertissements)" if warnings else ""
         print(f"  ✅ {offer['titre']} - {offer['entreprise']}{suffix}")
         for w in warnings:
-            print(f"     ⚠️ {w}")
+            print(f"     ⚠️  {w}")
     else:
         print(f"  ❌ {offer['titre']} - {offer['entreprise']}")
         for e in errors:
@@ -460,7 +488,7 @@ def validate_llm_offers():
     print()
 
     if not LLM_INPUT_FILE.exists():
-        print(f"ℹ️ Fichier introuvable → aucune offre Perplexity à valider")
+        print(f"ℹ️  Fichier introuvable → aucune offre LLM à valider")
         print("=" * 80)
         return None
 
@@ -476,13 +504,13 @@ def validate_llm_offers():
     print(f"📦 {len(offers)} offres chargées\n")
 
     if not offers:
-        print("⚠️ Aucune offre à valider")
+        print("⚠️  Aucune offre à valider")
         print("=" * 80)
         return None
 
-    valid_count = 0
-    invalid_count = 0
-    warning_count = 0
+    valid_count    = 0
+    invalid_count  = 0
+    warning_count  = 0
     validated_offers = []
 
     for i, offer in enumerate(offers, 1):
@@ -502,10 +530,10 @@ def validate_llm_offers():
 
     data["meta"].update({
         "validation_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "total_offres": len(offers),
-        "valid_offres": valid_count,
-        "invalid_offres": invalid_count,
-        "warnings": warning_count,
+        "total_offres":    len(offers),
+        "valid_offres":    valid_count,
+        "invalid_offres":  invalid_count,
+        "warnings":        warning_count,
     })
     data["offres"] = validated_offers
 
@@ -516,9 +544,9 @@ def validate_llm_offers():
     print("=" * 80)
     print("✅ VALIDATION LLM TERMINÉE")
     print("=" * 80)
-    print(f"✅ Valides             : {valid_count}")
-    print(f"⚠️  Avec avertissements : {warning_count}")
-    print(f"❌ Invalides           : {invalid_count}")
+    print(f"✅ Valides                  : {valid_count}")
+    print(f"⚠️  Avec avertissements     : {warning_count}")
+    print(f"❌ Invalides                : {invalid_count}")
     print(f"\n💾 {len(validated_offers)} offres → {LLM_OUTPUT_FILE}")
     print("=" * 80)
 
@@ -528,16 +556,16 @@ def validate_llm_offers():
 # ===== MAIN =====
 
 def main():
-    parser = argparse.ArgumentParser(description="Valide les offres LBA et Perplexity")
+    parser = argparse.ArgumentParser(description="Valide les offres LBA et LLM")
     parser.add_argument("--quick", action="store_true", help="Skip les offres déjà validées < 7 jours")
     args = parser.parse_args()
 
     print("=" * 80)
-    print("🚀 VALIDATOR - LBA + PERPLEXITY")
+    print("🚀 VALIDATOR - LBA + LLM")
     print("=" * 80)
     print()
 
-    lba_result = validate_lba_offers(quick_mode=args.quick)
+    lba_result        = validate_lba_offers(quick_mode=args.quick)
     perplexity_result = validate_llm_offers()
 
     print("\n" + "=" * 80)
@@ -545,17 +573,17 @@ def main():
     print("=" * 80)
 
     if lba_result:
-        print(f"✅ LBA        : {lba_result['meta']['validated']} validées / {lba_result['meta']['total_offres']} retenues")
+        print(f"✅ LBA : {lba_result['meta']['validated']} validées / {lba_result['meta']['total_offres']} retenues")
     else:
-        print("⚠️ LBA        : Aucune offre")
+        print("⚠️  LBA : Aucune offre")
 
     if perplexity_result:
-        print(f"✅ Perplexity : {perplexity_result['meta']['valid_offres']} validées")
+        print(f"✅ LLM : {perplexity_result['meta']['valid_offres']} validées")
     else:
-        print("ℹ️ Perplexity : Aucune offre")
+        print("ℹ️  LLM : Aucune offre")
 
     print()
-    print("➡️ PROCHAINE ÉTAPE : python -m scripts.merge_offers")
+    print("➡️  PROCHAINE ÉTAPE : python -m scripts.merge_offers")
     print("=" * 80)
 
 
