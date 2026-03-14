@@ -12,7 +12,8 @@
 - **Recherche** : Alternance multi-domaines — début **Septembre 2026** (flexible dès Juin 2026)
 - **Durée contrat** : 12-24 mois (critère secondaire à aborder en entretien)
 - **Villes** : Rennes = Paris (même priorité), puis Nantes — Rennes affiché en premier
-- **GitHub Pages** : https://fhonore5312.github.io/alternances-veille/
+- **GitHub Pages V1** : https://fhonore5312.github.io/alternances-veille/
+- **GitHub Pages V2** : https://fhonore5312.github.io/alternances-veille/v2/
 
 ---
 
@@ -45,13 +46,13 @@ Configurés dans `config/tracks.yml`, `config/agents.yaml`, `config/tasks.yaml`.
 
 Orchestré par `src/alternances_veille/flow.py` (CrewAI Flow), point d'entrée `main.py`.
 
-Étape 1 — tools/lba_scraper.py → Scrape l'API La Bonne Alternance (4 tracks)
-Étape 2 — tools/llm_search_agent.py → Agent LLM CrewAI par track (digitalmarketing + finance)
-Étape 3 — tools/merge_offers.py → Merge + déduplication + historique → offres_merged.json
-Étape 4 — tools/validator.py → Valide les offres → offres_*_validated.json
-Étape 5 — tools/html_email.py → HTML email + GitHub Pages + envoi Gmail
-
-text
+```
+Étape 1 — tools/lba_scraper.py      → Scrape l'API La Bonne Alternance (4 tracks)
+Étape 2 — tools/llm_search_agent.py → Agent LLM CrewAI par track (digital_marketing + finance)
+Étape 3 — tools/merge_offers.py     → Merge + déduplication + historique → offres_merged.json
+Étape 4 — tools/validator.py        → Valide les offres → offres_*_validated.json
+Étape 5 — tools/html_email.py       → HTML email + GitHub Pages docs/v2/ + envoi Gmail
+```
 
 ### Tracks configurés
 
@@ -87,41 +88,48 @@ text
 
 ## 📁 Structure des fichiers clés
 
+```
 alternances-veille-v2/
-├── main.py ← point d'entrée racine
+├── main.py                          ← point d'entrée racine
 ├── dump_context.py
 ├── list_structure.py
 ├── CONTEXT.md
-├── config/ ← config CrewAI (source de vérité)
-│ ├── agents.yaml
-│ ├── tasks.yaml
-│ ├── tracks.yml
-│ ├── agent_backstory_digitalmarketing.md
-│ ├── agent_backstory_finance.md
-│ ├── prompt_llm_search_digitalmarketing.md
-│ └── prompt_llm_search_finance.md
+├── config/                          ← config CrewAI (source de vérité)
+│   ├── agents.yaml
+│   ├── tasks.yaml
+│   ├── tracks.yml
+│   ├── agent_backstory_digitalmarketing.md
+│   ├── agent_backstory_finance.md
+│   ├── prompt_llm_search_digitalmarketing.md
+│   └── prompt_llm_search_finance.md
+├── data/
+│   ├── offres_merged.json           ← input de html_email.py
+│   ├── offres_historique.json       ← historique déduplication
+│   └── hr_contacts.json             ← contacts RH (futur)
+├── docs/
+│   ├── index.html                   ← ⚠️ PAGE V1 — NE PAS MODIFIER dans V2
+│   └── v2/
+│       ├── index.html               ← page riche V2 (générée par html_email.py)
+│       └── archives/                ← archives horodatées (30 jours)
 └── src/
-└── alternances_veille/
-├── init.py
-├── main.py ← point d'entrée package
-├── flow.py ← CrewAI Flow orchestration
-├── config/
-│ └── init.py
-├── crews/
-│ └── init.py
-└── tools/
-├── init.py
-├── llm_search_agent.py ← VeilleSearchCrew (@CrewBase) + CLI --track --test
-├── lba_scraper.py
-├── merge_offers.py
-├── validator.py
-└── html_email.py
+    └── alternances_veille/
+        ├── __init__.py
+        ├── main.py                  ← point d'entrée package
+        ├── flow.py                  ← CrewAI Flow orchestration
+        ├── crews/
+        │   └── __init__.py
+        └── tools/
+            ├── __init__.py
+            ├── llm_search_agent.py  ← VeilleSearchCrew (@CrewBase) + CLI --track --test
+            ├── lba_scraper.py
+            ├── merge_offers.py
+            ├── validator.py
+            └── html_email.py        ← CSS pixel-perfect V1, groupement par ville
+```
 
-text
-
-> ⚠️ Les fichiers `src/alternances_veille/config/agent_backstory_digitalmarketing.md`
-> et `prompt_llm_search_digitalmarketing.md` sont des doublons de `config/`.
-> La source de vérité est `config/` (racine).
+> ⚠️ **RÈGLE GIT** : `docs/index.html` appartient à la V1 et ne doit JAMAIS être modifié
+> par des commits V2. `html_email.py` n'écrit que dans `docs/v2/` et pousse uniquement
+> `docs/v2/` vers `origin/main`.
 
 ---
 
@@ -131,16 +139,22 @@ text
 Le design de `tools/html_email.py` est validé et satisfaisant.
 Toute modification doit être explicitement demandée par l'utilisateur.
 
-### Caractéristiques du format actuel (à préserver)
-- Offres groupées par **track** avec couleur propre à chaque track
-- Dans chaque track, offres triées par **date décroissante** (`date_creation` DD/MM/YYYY ou `first_seen` YYYY-MM-DD)
-- Badge **NEW** sur les offres à status "new"
-- Label **source** visible : LBA ou LLM
-- Stats globales en header : total offres, nouvelles, répartition par ville
-- Bouton **Postuler →** avec lien direct
-- Compétences affichées en badges
-- Rendu optimisé Gmail (CSS inline)
-- Publié sur **GitHub Pages** + envoyé en pièce jointe `.html` par Gmail
+### Caractéristiques du format actuel V2 (à préserver)
+- CSS identique à la V1 (pixel-perfect) — `max-width: 940px`, gradient `#2c3e50 → #3498db`
+- Offres groupées par **track** (avec couleur) puis par **ville** (`city-group`)
+- Dans chaque ville, offres triées par **date décroissante**
+- Offres affichées comme liste avec `border-bottom: 1px solid #f0f0f0` (pas de card)
+- Badges : `badge-new` (vert), `badge-lba` (texte vert clair), `badge-llm` (texte violet clair)
+- Contact RH : bloc `hr-contact` avec `border-left: 3px solid #3498db` — affiché **uniquement si contact trouvé**
+- Stats globales : boxes individuelles (`flex:1`) — total, nouvelles, LBA, LLM, par ville
+- Filtres JS : track / ville / statut avec `filter-chip` (border-radius: 14px)
+- Bouton Postuler → couleur du track
+- Publié sur **GitHub Pages** `docs/v2/` + archive horodatée + envoi Gmail
+
+### Email minimal (compatible Gmail)
+- Même stats/structure en CSS inline
+- Tableau par track (total + nouvelles)
+- CTA → lien GitHub Pages V2
 
 ---
 
@@ -152,33 +166,34 @@ Toute modification doit être explicitement demandée par l'utilisateur.
 - **Email** : Gmail SMTP (`GMAIL_USER`, `GMAIL_PASSWORD`, `RECIPIENT_EMAIL`)
 - **Encoding** : UTF-8 forcé partout (`PYTHONUTF8=1`)
 - **Variables** : `.env` (ne jamais committer — voir `.env.example`)
+- **Git push docs/v2/** : toujours vers `origin/main` (GitHub Pages)
 
 ---
 
-## 🚧 État au 13/03/2026
+## 🚧 État au 14/03/2026
 
 ### ✅ Fonctionnel
-- Agent LLM CrewAI (@CrewBase) opérationnel — track `digitalmarketing`
-- 5 offres / run obtenues en mode test (`--test`)
-- `data/offres_agent_digitalmarketing_test.json` généré correctement
-- Crew Execution Completed sans échec après corrections `tasks.yaml`
-- Scraper LBA opérationnel (`tools/lba_scraper.py`)
+- Pipeline complet V2 opérationnel — run du 14/03/2026 à 16:09 : **82 offres actives, 28 nouvelles**
+- Scraper LBA : 73 offres / 4 tracks
+- Agent LLM CrewAI : 9 offres / 2 tracks (digital_marketing + finance)
+- merge_offers.py : déduplication + historique `offres_historique.json`
+- validator.py : validation par track
+- html_email.py V2 : page pixel-perfect V1 + groupement par ville + email Gmail envoyé ✅
+- GitHub Pages V2 live : https://fhonore5312.github.io/alternances-veille/v2/
+- Email reçu avec design mail V1 (stats + tableau tracks + CTA)
 
-### 🐛 Bugs corrigés
-- `{code_postal}` et autres variables dans `expected_output` → `Template variable not found` :
-  **fix** : supprimer tous les `{...}` sauf `{date_today}` dans `tasks.yaml`
-- Agent scrapait des pages catégorie WTTJ (`/pages/`) → overflow contexte → `Invalid response from LLM` :
-  **fix** : règle explicite dans `tasks.yaml` — scraper uniquement les URLs `/jobs/` individuelles, max 4 scrapes
-- `Invalid response from LLM call - None or empty` mid-run (Haiku sous charge) :
-  comportement normal géré par CrewAI (retry interne), non bloquant
+### 🐛 Bugs corrigés (14/03/2026)
+- `docs/index.html` conflit Git récurrent entre V1 et V2 :
+  **fix** : `html_email.py` ne git-add que `docs/v2/`, pousse vers `origin/main`
+- V2 CSS divergeait de V1 (cards, badges blancs, container 1100px) :
+  **fix** : réécriture complète avec CSS V1 pixel-perfect + groupement par ville
 
-### 🔄 À faire
-- Tester et valider le track `finance` (agent + output JSON)
-- Implémenter `flow.py` (CrewAI Flow) pour orchestrer le pipeline complet
-- Connecter tous les `tools/` dans le flow
-- Réactiver GitHub Actions workflow
+### 🔄 À faire (prochain thread)
+- Réactiver GitHub Actions workflow (`.github/workflows/veille-alternance.yml`)
+- Tester pipeline complet en GitHub Actions (Ubuntu)
+- Développer scraper contacts RH (`data/hr_contacts.json`)
 - Nettoyer les doublons dans `src/alternances_veille/config/`
-- Configurer agent LLM pour tracks `supply_chain` et `business_dev`
+- Configurer agent LLM pour tracks `supply_chain` et `business_dev` si besoin
 
 ---
 
@@ -192,3 +207,4 @@ Toute modification doit être explicitement demandée par l'utilisateur.
 6. Dans `tasks.yaml` : **seul `{date_today}` est un placeholder valide** — tout autre `{...}` cause une erreur CrewAI
 7. Le module s'exécute via `python -m alternances_veille.tools.llm_search_agent` depuis `src/`
 8. La config CrewAI est dans `config/` (racine), pas dans `src/alternances_veille/config/`
+9. **RÈGLE GIT** : ne jamais git-add `docs/index.html` dans les commits V2 — uniquement `docs/v2/`

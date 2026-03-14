@@ -3,12 +3,12 @@
 dump_context.py — Génère un snapshot du projet pour contexte LLM
 
 Usage:
-  python dump_context.py                           → dump complet
-  python dump_context.py --groups crewai config    → groupes prédéfinis
+  python dump_context.py                          → dump complet
+  python dump_context.py --groups crewai config   → groupes prédéfinis
   python dump_context.py --files src/alternances_veille/tools/validator.py
   python dump_context.py --since HEAD~1
-  python dump_context.py --since 2026-03-13
-  python dump_context.py --groups crewai --output session_agent.txt
+  python dump_context.py --since 2026-03-14
+  python dump_context.py --groups tools html --output session_html.txt
 """
 
 import argparse
@@ -43,6 +43,9 @@ GROUPS = {
         "src/alternances_veille/tools/validator.py",
         "src/alternances_veille/tools/html_email.py",
     ],
+    "html": [
+        "src/alternances_veille/tools/html_email.py",
+    ],
     "ci": [
         ".env.example",
         ".github/workflows/veille-alternance.yml",
@@ -54,33 +57,34 @@ ALL_FILES = list(dict.fromkeys(f for group in GROUPS.values() for f in group))
 
 def get_files_modified_since(since: str) -> list[str]:
     """Retourne les fichiers trackés par git modifiés depuis `since` (ref ou date ISO)."""
+    files = []
     try:
-        result = subprocess.run(
+        r1 = subprocess.run(
             ["git", "diff", "--name-only", since],
-            capture_output=True, text=True, check=True
+            capture_output=True, text=True, check=True,
         )
-        files = [f.strip() for f in result.stdout.splitlines() if f.strip()]
-        result2 = subprocess.run(
+        files += [f.strip() for f in r1.stdout.splitlines() if f.strip()]
+        r2 = subprocess.run(
             ["git", "diff", "--name-only"],
-            capture_output=True, text=True, check=True
+            capture_output=True, text=True, check=True,
         )
-        files += [f.strip() for f in result2.stdout.splitlines() if f.strip()]
+        files += [f.strip() for f in r2.stdout.splitlines() if f.strip()]
     except subprocess.CalledProcessError:
         try:
-            result = subprocess.run(
+            r3 = subprocess.run(
                 ["git", "log", f"--since={since}", "--name-only", "--pretty=format:"],
-                capture_output=True, text=True, check=True
+                capture_output=True, text=True, check=True,
             )
-            files = [f.strip() for f in result.stdout.splitlines() if f.strip()]
+            files = [f.strip() for f in r3.stdout.splitlines() if f.strip()]
         except subprocess.CalledProcessError as e:
-            print(f"❌ Erreur git : {e}")
+            print(f"Erreur git : {e}")
             return []
 
     known = set(ALL_FILES)
     return sorted(set(f for f in files if f in known and Path(f).exists()))
 
 
-def dump_files(file_list: list[str], output_path: Path):
+def dump_files(file_list: list[str], output_path: Path) -> None:
     lines = [f"# CONTEXT DUMP — {datetime.now().strftime('%Y-%m-%d %H:%M')}\n"]
     found, missing = 0, 0
 
@@ -93,33 +97,35 @@ def dump_files(file_list: list[str], output_path: Path):
             lines.append(p.read_text(encoding="utf-8"))
             found += 1
         else:
-            lines.append(f"⚠️ FICHIER INTROUVABLE : {filepath}")
+            lines.append(f"FICHIER INTROUVABLE : {filepath}")
             missing += 1
 
     output_path.write_text("\n".join(lines), encoding="utf-8")
-    print(f"✅ {output_path} généré — {found} fichiers / {missing} manquants")
+    print(f"OK {output_path} — {found} fichiers / {missing} manquants")
     if missing:
-        print(f"⚠️ Manquants : {[f for f in file_list if not Path(f).exists()]}")
+        print(f"Manquants : {[f for f in file_list if not Path(f).exists()]}")
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="Dump contexte projet V2 pour LLM")
     parser.add_argument("--files", nargs="+", metavar="FILE")
     parser.add_argument(
         "--groups", nargs="+", choices=list(GROUPS.keys()), metavar="GROUP",
-        help=f"Groupes : {', '.join(GROUPS.keys())}"
+        help=f"Groupes disponibles : {', '.join(GROUPS.keys())}",
     )
-    parser.add_argument("--since", metavar="REF_OR_DATE")
-    parser.add_argument("--output", default=None)
+    parser.add_argument("--since", metavar="REF_OR_DATE",
+                        help="ex: HEAD~1, 2026-03-14")
+    parser.add_argument("--output", default=None,
+                        help="Nom du fichier de sortie (défaut: CONTEXT_DUMP_<label>.txt)")
     args = parser.parse_args()
 
     if args.since:
         file_list = get_files_modified_since(args.since)
         label = f"since_{args.since.replace('/', '-').replace(' ', '_')}"
         if not file_list:
-            print(f"⚠️ Aucun fichier modifié détecté depuis '{args.since}'")
+            print(f"Aucun fichier modifie detecte depuis '{args.since}'")
             return
-        print(f"📋 Fichiers détectés ({len(file_list)}) : {file_list}")
+        print(f"Fichiers detectes ({len(file_list)}) : {file_list}")
     elif args.files:
         file_list = args.files
         label = "custom"
