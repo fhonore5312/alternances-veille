@@ -1,0 +1,153 @@
+# ============================================================
+# TASKS — VeilleSearchCrew
+# Architecture CrewAI officielle (@CrewBase)
+# IMPORTANT : seul {date_today} est un placeholder valide.
+# Tous les autres {…} ont été supprimés pour éviter
+# l'erreur "Template variable not found in inputs dictionary"
+# ============================================================
+
+search_task_digitalmarketing:
+  description: >
+    Date d'aujourd'hui : {date_today}
+
+    Objectif : Trouver 5 à 10 offres d'alternance Marketing Digital actives
+    pour une étudiante Bachelor 3 (Bac+3), démarrage Septembre 2026
+    (flexible dès Juin 2026), dans les villes suivantes par ordre de priorité :
+    Rennes (priorité 1), Nantes (priorité 2), Paris (priorité 3).
+
+    ÉTAPES DE RECHERCHE :
+
+    1. Lance 4 recherches Serper en ciblant les job boards fiables :
+       - site:welcometothejungle.com alternance "marketing digital" 2026
+       - site:welcometothejungle.com alternance SEO SEA apprentissage 2026 Paris Rennes Nantes
+       - site:cadremploi.fr alternance "marketing digital" 2026 Rennes Nantes Paris
+       - alternance "chargé marketing digital" OR "content manager" Rennes Nantes Paris 2026 -mydigitalschool -studi -iscod -alticome
+
+    2. Pour chaque résultat Serper prometteur :
+       - Vérifie l'URL (pas d'école) — si interdite, passer au suivant
+       - Si le snippet contient déjà titre, entreprise, ville et date de début clairs   → utiliser directement le snippet SANS scraper la page
+       - Scraper uniquement si : description absente du snippet, ou doute sur le type de contrat
+       - Ne JAMAIS scraper linkedin.com
+
+    3. Si moins de 5 offres valides trouvées, lancer 1 à 2 recherches supplémentaires :
+       - site:indeed.fr alternance "marketing digital" Rennes OR Nantes OR Paris 2026
+
+    EXCLUSIONS ABSOLUES :
+    - Sites interdits : mydigitalschool.com, studi.fr, iscod.fr, alticome.fr, sup-de-pub.com, openclassrooms.com, bringme.fr, alticom.com
+    - Entreprises interdites : toute école, CFA, organisme de formation
+    - Contrats interdits : CDI, CDD, Stage, Freelance
+    - Hors périmètre : Community Manager pur sans dimension stratégique, offres sans entreprise identifiable
+    - Dates : début avant Juin 2026 → EXCLURE ; publication > 6 semaines → EXCLURE
+
+  expected_output: >
+    Un objet JSON STRICTEMENT valide.
+    AUCUN texte avant ou après le JSON.
+    AUCUNE balise markdown json.
+    Exactement deux clés racines : "meta" et "offres".
+
+    Structure de "meta" :
+      track           : "digital_marketing"
+      date_generation : valeur de {date_today}
+      nb_offres       : nombre entier égal à la taille de la liste offres
+
+    Structure de chaque objet dans "offres" (5 à 10 objets) :
+      id                   : string construit à partir du titre normalisé, du nom entreprise normalisé et du code postal, séparés par des underscores, tout en minuscules sans accents
+      source               : "LLM"
+      status               : "new"
+      titre                : titre exact de l'offre tel qu'affiché sur le site
+      entreprise           : nom exact de l'entreprise recrutante, jamais une école ou un CFA
+      ville                : ville réelle du lieu de travail
+      code_postal          : code postal à 5 chiffres sous forme de string, exemple "35000"
+      adresse_complete     : adresse complète ou chaîne vide
+      description          : résumé de 200 caractères maximum
+      description_complete : description complète du poste
+      competences_detectees: liste de strings parmi SEO, SEA, Social Media, Analytics, Content, CRM, E-commerce, Growth, Paid Media, UX
+      url_candidature      : URL complète vérifiée commençant par https://, jamais inventée
+      plateforme_source    : une valeur parmi "welcometothejungle", "cadremploi", "indeed", "site_carriere"
+      date_creation        : date au format DD/MM/YYYY si visible sur la page, sinon null
+      date_debut           : date au format DD/MM/YYYY si mentionnée, sinon null
+      type_contrat         : "Alternance"
+      duree_contrat        : string exemple "12 mois" ou "24 mois", sinon null
+      priorite_ville       : 1 si Rennes, 2 si Nantes, 3 si Paris
+      track                : "digital_marketing"
+      ville_recherche      : "Rennes" ou "Nantes" ou "Paris"
+      first_seen           : valeur de {date_today}
+      last_seen            : valeur de {date_today}
+  agent: search_agent_digitalmarketing
+
+search_task_finance:
+  description: >
+    Date d'aujourd'hui : {date_today}
+
+    Objectif : Trouver 5 à 10 offres d'alternance Finance / Audit / Contrôle de gestion
+    actives pour une étudiante Bachelor 3 (Bac+3), démarrage Septembre 2026
+    (flexible dès Juin 2026), dans les villes suivantes par ordre de priorité :
+    Rennes (priorité 1), Nantes (priorité 2), Paris (priorité 3).
+
+    ÉTAPES DE RECHERCHE :
+
+    1. Lance 4 recherches Serper en ciblant les job boards fiables :
+       - site:welcometothejungle.com alternance "contrôle de gestion" OR "audit" OR "finance" 2026
+       - site:welcometothejungle.com alternance "comptable" OR "analyste financier" 2026 Rennes Nantes Paris
+       - site:cadremploi.fr alternance "contrôle de gestion" OR "audit" 2026 Rennes Nantes Paris
+       - alternance "contrôle de gestion" OR "audit interne" OR "analyste financier" Rennes Nantes Paris 2026 bachelor bac+3 -mydigitalschool -studi -alticome
+
+    2. Pour chaque résultat Serper prometteur :
+       - Vérifie l'URL (pas d'école) — si interdite, passer au suivant
+       - RÈGLE CRITIQUE : Ne JAMAIS scraper une page de liste ou de catégorie.
+         URLs interdites au scrape : toute URL contenant /pages/, liste_offres,
+         /q-, /Emplois-, /emploi/liste, ou qui ressemble à une page de recherche.
+         Ces pages sont inutilisables et saturent le contexte.
+       - Scraper UNIQUEMENT les URLs pointant vers une offre individuelle :
+         URLs contenant /jobs/, /offre/, /view/ ou un slug d'entreprise spécifique.
+       - Si le snippet contient titre + entreprise + ville + date de début clairs
+         → utiliser directement le snippet SANS scraper
+       - Maximum 4 scrapes individuels au total pour toute la tâche
+       - Ne JAMAIS scraper linkedin.com, indeed.fr, glassdoor.fr
+
+    3. Si moins de 5 offres valides trouvées, lancer 1 à 2 recherches supplémentaires :
+       - site:indeed.fr alternance "trésorerie" OR "reporting" OR "consolidation" Rennes OR Nantes OR Paris 2026
+
+    EXCLUSIONS ABSOLUES :
+    - Sites interdits : mydigitalschool.com, studi.fr, iscod.fr, alticome.fr, bringme.fr, alticom.com, neogest.com, igf-formation.fr
+    - Entreprises interdites : toute école, CFA, organisme de formation
+    - Niveaux exclus : BTS/DUT/Bac+2 ciblé sans mention niveau supérieur possible
+    - Niveaux exclus : Master 2 / Bac+5 requis sans dérogation Bac+3 explicite
+    - Contrats interdits : CDI, CDD, Stage, Freelance
+    - Dates : début avant Juin 2026 → EXCLURE ; publication > 6 semaines → EXCLURE
+
+  expected_output: >
+    Un objet JSON STRICTEMENT valide.
+    AUCUN texte avant ou après le JSON.
+    AUCUNE balise markdown json.
+    Exactement deux clés racines : "meta" et "offres".
+
+    Structure de "meta" :
+      track           : "finance"
+      date_generation : valeur de {date_today}
+      nb_offres       : nombre entier égal à la taille de la liste offres
+
+    Structure de chaque objet dans "offres" (5 à 10 objets) :
+      id                   : string construit à partir du titre normalisé, du nom entreprise normalisé et du code postal, séparés par des underscores, tout en minuscules sans accents
+      source               : "LLM"
+      status               : "new" ou "incertain" si niveau requis ambigu Master 1
+      titre                : titre exact de l'offre tel qu'affiché sur le site
+      entreprise           : nom exact de l'entreprise recrutante, jamais une école ou un CFA
+      ville                : ville réelle du lieu de travail
+      code_postal          : code postal à 5 chiffres sous forme de string, exemple "35000"
+      adresse_complete     : adresse complète ou chaîne vide
+      description          : résumé de 200 caractères maximum
+      description_complete : description complète du poste
+      competences_detectees: liste de strings parmi Comptabilité, Audit, Analyse financière, Trésorerie, Reporting, Consolidation, Contrôle de gestion, SAP, Excel
+      url_candidature      : URL complète vérifiée commençant par https://, jamais inventée
+      plateforme_source    : une valeur parmi "welcometothejungle", "cadremploi", "indeed", "site_carriere"
+      date_creation        : date au format DD/MM/YYYY si visible sur la page, sinon null
+      date_debut           : date au format DD/MM/YYYY si mentionnée, sinon null
+      type_contrat         : "Alternance"
+      duree_contrat        : string exemple "12 mois" ou "24 mois", sinon null
+      priorite_ville       : 1 si Rennes, 2 si Nantes, 3 si Paris
+      track                : "finance"
+      ville_recherche      : "Rennes" ou "Nantes" ou "Paris"
+      first_seen           : valeur de {date_today}
+      last_seen            : valeur de {date_today}
+  agent: search_agent_finance

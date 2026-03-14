@@ -1,4 +1,19 @@
+# === Core ===
+crewai>=0.108.0
+crewai-tools>=0.38.0
+pydantic>=2.0.0
+
+# === HTTP / Scraping ===
 requests>=2.31.0
-python-dotenv>=1.0.0
 beautifulsoup4>=4.12.0
 lxml>=4.9.0
+
+# === Config / Env ===
+python-dotenv>=1.0.0
+pyyaml>=6.0.1
+
+# === Email ===
+# smtplib est dans la stdlib Python — pas de dépendance externe
+
+# === Géolocalisation (futur — Indeed) ===
+# geopy>=2.4.0
