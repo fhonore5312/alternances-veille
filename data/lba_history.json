@@ -1,0 +1,917 @@
+{
+  "last_update": "2026-03-15 19:01:20",
+  "offers": {
+    "harmoniemutuelle-chargéchargéedeprojetmarketing(hf)_harmoniemutuelle_35000": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Harmonie Mutuelle - Chargé / Chargée de projet marketing (H/F)",
+      "entreprise": "Harmonie Mutuelle"
+    },
+    "alternancechargédemarketing(hf)_docksmateriauxdelouest_35000": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Chargé de Marketing (H/F)",
+      "entreprise": "DOCKS MATERIAUX DE L OUEST"
+    },
+    "marketing(hf)__35230": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Marketing (H/F)",
+      "entreprise": ""
+    },
+    "assistantmarketinginnovationh-f(alternance)(hf)_savenciasa_35220": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Assistant Marketing Innovation H-F (Alternance) (H/F)",
+      "entreprise": "Savencia SA"
+    },
+    "alternantmarketingopérationnel&amp;trademarketing(hf)-12à24moisbourgbarré(35)_groupelactalis_35230": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternant Marketing Opérationnel &amp; Trade Marketing (H/F) - 12 à 24 mois Bourgbarré (35)",
+      "entreprise": "Groupe Lactalis"
+    },
+    "alternantchargéd’offresmarketing(hf)_défirh_44700": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternant Chargé d’Offres Marketing (H/F)",
+      "entreprise": "Défi RH"
+    },
+    "assistantmarketingenalternance(hf)_societedv_44120": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Assistant Marketing en alternance (H/F)",
+      "entreprise": "SOCIETE D V"
+    },
+    "assistant(e)marketing_societedesconceptsalimentaires_91140": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Assistant(e) Marketing ",
+      "entreprise": "SOCIETE DES CONCEPTS ALIMENTAIRES"
+    },
+    "alternanceassistantmarketinghf-paris(fh)__75001": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Assistant Marketing H/F - Paris (F/H)",
+      "entreprise": ""
+    },
+    "alternancechargé(e)decommunicationetréseauxsociaux-paris(fh)(hf)__75001": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Chargé(e) de Communication et Réseaux Sociaux - Paris (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "alternanceassistant(e)trademarketing-paris(fh)(hf)__75001": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Assistant(e) Trade Marketing - Paris (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "alternanceassistant(e)marketing-paris(fh)(hf)__75001": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Assistant(e) Marketing - Paris (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "alternancechargé.edecommunicationetmarketing-paris(fh)(hf)__75001": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Chargé.e de communication et marketing - Paris (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "alternancechargédecommunicationmarketing-paris(fh)(hf)__75001": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Chargé de communication/marketing - Paris (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "alternancechargé(e)demarketingetcommunication-paris(fh)(hf)__75001": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Chargé(e) de Marketing et Communication - Paris (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "alternanceassistantmarketingopérationnel-paris(fh)(hf)__75001": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Assistant Marketing Opérationnel - Paris (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "alternanceassistanttrademarketingetkamhf-paris(fh)__75001": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Assistant Trade marketing et KAM H/F - Paris (F/H)",
+      "entreprise": ""
+    },
+    "alternancebusinessdevelopermarketing-paris(fh)(hf)__75001": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Business Developer Marketing - Paris (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "alternance-assistantsuividesventesmarketing(hf)_basffrancesas_75002": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance - Assistant suivi des ventes/ marketing (H/F)",
+      "entreprise": "BASF FRANCE SAS"
+    },
+    "assistantassistantemarketing(hf)__75009": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Assistant / Assistante marketing (H/F)",
+      "entreprise": ""
+    },
+    "assist.chargé(e)campagnesmarktdigital-altern(hf)_ccmperformance_75009": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Assist. Chargé(e) campagnes markt digital - Altern (H/F)",
+      "entreprise": "CCM Performance"
+    },
+    "chef(fe)deproduitmarketingdevinstitutesthederm(hf)_naos_75014": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Chef(fe) de Produit Marketing Dev Institut Esthederm  (H/F)",
+      "entreprise": "Naos"
+    },
+    "alternantassistantmarketingetcommunication(hf)_défirh_94110": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternant Assistant Marketing et Communication (H/F)",
+      "entreprise": "Défi RH"
+    },
+    "alternancechargédemarketingclientsjunior(hf)_groupeatlanticsynergy-sociétéennomcollectif_94110": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Chargé de marketing clients junior (H/F)",
+      "entreprise": "GROUPE ATLANTIC SYNERGY - Société en Nom Collectif"
+    },
+    "apprenti(e)assistant(e)marketinghfn(hf)_robertboschfrance_93400": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Apprenti(e) Assistant(e) Marketing H/F/N (H/F)",
+      "entreprise": "ROBERT BOSCH FRANCE"
+    },
+    "apprenti(e)trademarketinghfn(hf)_robertboschfrance_93400": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Apprenti(e) Trade Marketing H/F/N (H/F)",
+      "entreprise": "ROBERT BOSCH FRANCE"
+    },
+    "apprentiassistantmarketingpowertools(hf)_robertboschfrance_93400": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Apprenti Assistant Marketing Power Tools (H/F)",
+      "entreprise": "ROBERT BOSCH FRANCE"
+    },
+    "alternanceassistantcommercialetmarketing-villejuif(fh)(hf)__94800": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Assistant commercial et marketing - Villejuif (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "stage-chargé(e)demarketingdigitalhf_stage_92130": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Stage - Chargé(e) de Marketing Digital H/F",
+      "entreprise": "Stage"
+    },
+    "assistantchefdeprojetmarketinghf(hf)_distributionsanitairechauffage_92400": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Assistant chef de projet marketing H/F (H/F)",
+      "entreprise": "DISTRIBUTION SANITAIRE CHAUFFAGE"
+    },
+    "animationcommerciale&amp;marketinghf(hf)_distributionsanitairechauffage_92400": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Animation commerciale &amp; marketing H/F (H/F)",
+      "entreprise": "DISTRIBUTION SANITAIRE CHAUFFAGE"
+    },
+    "alternanceassistantmarketingopérationnelhf(hf)_giekaufmanetbroad_92400": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Assistant Marketing Opérationnel H/F (H/F)",
+      "entreprise": "GIE KAUFMAN ET BROAD"
+    },
+    "alternantassistant(e)marketing(fh)-adeliamedical_adeliamedical_92230": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternant Assistant(e) Marketing (F/H) - ADELIA MEDICAL",
+      "entreprise": "ADELIA MEDICAL"
+    },
+    "alternanceassistantmarketingetcommunication-joinville-le-pont(fh)(hf)__94340": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Assistant Marketing et Communication - Joinville-le-Pont (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "alternancechargé(e)demarketingetdesign(hf)-suresnes(fh)__92150": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Chargé(e) de Marketing et Design (H/F) - Suresnes (F/H)",
+      "entreprise": ""
+    },
+    "alternancechargédemarketingetcommunication-colombes(fh)(hf)__92700": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Chargé de marketing et communication - Colombes (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "assistantmarketingenalternance(hf)_saslatradition_93140": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Assistant marketing en alternance (H/F)",
+      "entreprise": "SAS LA TRADITION"
+    },
+    "alternancechargedecommunicationdigitale-choisy-le-roi(fh)(hf)__94600": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Charge de communication digitale - Choisy-le-Roi (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "alternanceglobaldigitalmarketingprojectassistant-hf_mayoly_92500": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "ALTERNANCE GLOBAL DIGITAL MARKETING PROJECT ASSISTANT - H/F",
+      "entreprise": "MAYOLY"
+    },
+    "assistant(e)marketing-alternance(hf)__95870": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Assistant(e) Marketing - Alternance (H/F)",
+      "entreprise": ""
+    },
+    "alternanceassistantcommercialetmarketing-aulnay-sous-bois(fh)(hf)__93600": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Assistant commercial et marketing - Aulnay-sous-Bois (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "alternanceassistant(e)marketingetcommunication-gonesse(fh)(hf)__95500": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Assistant(e) Marketing et Communication - Gonesse (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "alternancecoordinateur(trice)marketingevénementieletmédia-roissy-en-france(fh)(hf)__95700": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Coordinateur(trice) Marketing Evénementiel et Média - Roissy-en-France (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "apprenti.emarketingopérationneletévènementielfh-rajafrance_rajafrance_93290": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Apprenti.e Marketing opérationnel et évènementiel F/H - Raja France",
+      "entreprise": "Raja France"
+    },
+    "apprenti.eassistantsocialmediafh-rajafrance_rajafrance_93290": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Apprenti.e Assistant Social Media F/H - Raja France",
+      "entreprise": "Raja France"
+    },
+    "charge(e)deprojetsmarketing-alternancehf__78280": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "CHARGE(E) DE PROJETS MARKETING - ALTERNANCE H/F",
+      "entreprise": ""
+    },
+    "alternanceassistantcommercialetmarketing-montlhéry(fh)(hf)__91310": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Assistant commercial et marketing - Montlhéry (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "alternancechargédecommunicationdigitale-éragny(fh)(hf)__95610": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Chargé de communication digitale - Éragny (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "chargé(e)decommunicationdigitale_servicedel'actionadministrativeetdesmoyens_75007": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Chargé(e) de communication digitale",
+      "entreprise": "Service de l'action administrative et des moyens"
+    },
+    "aide-comptable_espacedeco_95300": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Aide-comptable ",
+      "entreprise": "ESPACE DECO"
+    },
+    "alternantcomptablegénéraliste(hf)_défirh_75001": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternant Comptable Généraliste (H/F)",
+      "entreprise": "Défi RH"
+    },
+    "alternantcomptableactivitésbancaires(hf)_défirh_75001": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternant Comptable activités bancaires (H/F)",
+      "entreprise": "Défi RH"
+    },
+    "alternanceapprenticomptabilité-paris(fh)(hf)__75001": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Apprenti comptabilité - Paris (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "alternance-auditeurinternejunior-hf_compagniedesalpes_75009": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "ALTERNANCE - AUDITEUR INTERNE JUNIOR - H/F",
+      "entreprise": "COMPAGNIE DES ALPES"
+    },
+    "stage6mois-assistantcomptabilitéclienthf_fondationa.derothschild_75019": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Stage 6 mois - Assistant Comptabilité Client H/F",
+      "entreprise": "Fondation A. de Rothschild"
+    },
+    "alternance-assistantaudit-paris(hf)_exponensconseiletexpertise_75017": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance - Assistant Audit - Paris (H/F)",
+      "entreprise": "EXPONENS CONSEIL ET EXPERTISE"
+    },
+    "alternancecomptablefh-issy-les-moulineaux(fh)(hf)__92130": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Comptable F/H - Issy-les-Moulineaux (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "comptablesynthèseetrecouvrementcomptabilitéclientsfh(hf)_societenationalesncf_93200": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Comptable synthèse et recouvrement Comptabilité Clients F/H (H/F)",
+      "entreprise": "SOCIETE NATIONALE SNCF"
+    },
+    "alternanceassistantcomptablefournisseurs-boulogne-billancourt(fh)(hf)__92100": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Assistant comptable fournisseurs - Boulogne-Billancourt (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "auditeur.riceinterne-alternance(hf)_auditeur.riceinterne_92800": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Auditeur.rice Interne - Alternance (H/F)",
+      "entreprise": "Auditeur.rice Interne"
+    },
+    "alternance-auditeurhf_tolbiacfinancement2_75013": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance - Auditeur H/F",
+      "entreprise": "TOLBIAC FINANCEMENT 2"
+    },
+    "alternance-comptablegénéralistehf_tolbiacfinancement2_75013": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "ALTERNANCE - Comptable généraliste H/F",
+      "entreprise": "TOLBIAC FINANCEMENT 2"
+    },
+    "alternancecomptabilité(hf)_pernodricard_75008": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Comptabilité (H/F)",
+      "entreprise": "PERNOD RICARD"
+    },
+    "alternance-assistant(e)comptabilitégestiondesachatshf_mc2i_75008": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance - Assistant(e) Comptabilité /  Gestion des Achats  H/F",
+      "entreprise": "MC2I"
+    },
+    "alternance–auditeuretcontrôleurinternehf_coviviodeveloppement_75008": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance – Auditeur et Contrôleur interne H/F",
+      "entreprise": "COVIVIO DEVELOPPEMENT"
+    },
+    "alternancebac+45-comptablesynthèseetrecouvrementcomptabilitéclientsfh_sncf_93200": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "ALTERNANCE BAC+4/5 - Comptable synthèse et recouvrement Comptabilité Clients F/H",
+      "entreprise": "SNCF"
+    },
+    "apprentiassistantauditjuniorteamfh_kpmgfiduciairedefrance_92400": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Apprenti Assistant Audit Junior Team F/H",
+      "entreprise": "KPMG FIDUCIAIRE DE FRANCE"
+    },
+    "assistantassistanted'exploitationlogistique(hf)_lahayelocation_35770": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Assistant / Assistante d'exploitation logistique (H/F)",
+      "entreprise": "LAHAYE LOCATION"
+    },
+    "alternanceassistantadministratifetlogistique-paris(fh)(hf)__75001": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Assistant Administratif et logistique - Paris (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "alternanceassistantlogistique(hf)-clichy(fh)__92110": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Assistant logistique (H/F) - Clichy (F/H)",
+      "entreprise": ""
+    },
+    "alternantcoordinateurtransporte-commercemagasin-massy(hf)__91300": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternant Coordinateur Transport E - Commerce Magasin - MASSY (H/F)",
+      "entreprise": ""
+    },
+    "alternanceassistantlogistiqueetplanification-gonesse(fh)(hf)__95500": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Assistant logistique et planification - Gonesse (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "alternance-assistantmanagerlogistique(hf)_basffrancesas_77290": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance - Assistant Manager Logistique (H/F)",
+      "entreprise": "BASF FRANCE SAS"
+    },
+    "alternantanalysteapprovisionnementfh_groupetalentshandicap_94100": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternant Analyste Approvisionnement F/H",
+      "entreprise": "Groupe Talents Handicap"
+    },
+    "alternanceresponsabledel'actioncommercialefh(hf)_filialesservicecourriercolis_35000": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H (H/F)",
+      "entreprise": "FILIALES SERVICE COURRIER COLIS"
+    },
+    "alternanceresponsabledel'actioncommercialefh(hf)_filialesservicecourriercolis_35170": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H (H/F)",
+      "entreprise": "FILIALES SERVICE COURRIER COLIS"
+    },
+    "alternanceresponsabledel'actioncommercialefh_laposte_35000": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H",
+      "entreprise": "La Poste"
+    },
+    "alternanceresponsabledel'actioncommercialefh_laposte_35170": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H",
+      "entreprise": "La Poste"
+    },
+    "attachécommercialparticuliers(hf)_bpce_35580": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Attaché Commercial Particuliers (H/F)",
+      "entreprise": "BPCE"
+    },
+    "alternanceresponsabledel'actioncommercialefh_laposte_35360": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H",
+      "entreprise": "La Poste"
+    },
+    "assistant(e)businessdevelopmentbtob_rocketschoollyon_69100": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Assistant(e) Business Development BtoB",
+      "entreprise": "ROCKET SCHOOL LYON"
+    },
+    "manpowerfrance-responsabledéveloppementbusinessdeveloper(hf)__44000": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Manpower France - Responsable développement / Business Developer (H/F)",
+      "entreprise": ""
+    },
+    "alternanceresponsabledel'actioncommercialefh(hf)_filialesservicecourriercolis_44000": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H (H/F)",
+      "entreprise": "FILIALES SERVICE COURRIER COLIS"
+    },
+    "conseillervente(hf)__44000": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Conseiller Vente (H/F)",
+      "entreprise": ""
+    },
+    "responsabledéveloppementbusinessdeveloper(hf)__44000": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Responsable développement / Business Developer (H/F)",
+      "entreprise": ""
+    },
+    "responsablecommercialcommerciale(hf)__44400": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Responsable commercial / commerciale (H/F)",
+      "entreprise": ""
+    },
+    "alternanceresponsabledel'actioncommercialefh(hf)_filialesservicecourriercolis_44840": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H (H/F)",
+      "entreprise": "FILIALES SERVICE COURRIER COLIS"
+    },
+    "conseillervente(hf)__44850": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Conseiller Vente (H/F)",
+      "entreprise": ""
+    },
+    "alternanceresponsabledel'actioncommercialefh(hf)_filialesservicecourriercolis_44390": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H (H/F)",
+      "entreprise": "FILIALES SERVICE COURRIER COLIS"
+    },
+    "alternanceresponsabledel'actioncommercialefh_laposte_44000": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H",
+      "entreprise": "La Poste"
+    },
+    "alternanceresponsabledel'actioncommercialefh_laposte_44390": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H",
+      "entreprise": "La Poste"
+    },
+    "conseillerdeventeenalternancechezfinsbury_ifcvapprentissage_": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Conseiller de vente en alternance chez FINSBURY",
+      "entreprise": "IFCV APPRENTISSAGE"
+    },
+    "conseillercommercialconseillèrecommercialeenmode_mokhtar&julie_75001": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Conseiller commercial / Conseillère commerciale en mode",
+      "entreprise": "MOKHTAR & JULIE"
+    },
+    "businessdeveloper(sdrbdr)_aivoni_75001": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Business Developer (SDR / BDR)",
+      "entreprise": "AIVONI"
+    },
+    "conseillerdeventeenalternancechezlvmhmétiersd'ecxellence_ifcvapprentissage_": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Conseiller de vente en alternance chez LVMH MÉTIERS D'ECXELLENCE",
+      "entreprise": "IFCV APPRENTISSAGE"
+    },
+    "conseillercommercialenalternancechezcréditagricole_ifcvapprentissage_": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Conseiller Commercial en Alternance chez Crédit Agricole",
+      "entreprise": "IFCV APPRENTISSAGE"
+    },
+    "responsabledéveloppementcommercial–hôtelfélicien–apprenant(e)tprpms_institutfrancaisdeformationprofessionnellea&a_92400": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Responsable Développement Commercial – Hôtel Félicien – Apprenant(e) TP RPMS",
+      "entreprise": "INSTITUT FRANCAIS DE FORMATION PROFESSIONNELLE A&A"
+    },
+    "conseillertechniquedeventeenalternancechezlaplateformedubatiment_ifcvapprentissage_": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Conseiller Technique de vente en alternance chez la plateforme du batiment ",
+      "entreprise": "IFCV APPRENTISSAGE"
+    },
+    "conseillerdeventeenalternancechezizac_ifcvapprentissage_": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Conseiller de vente en alternance chez IZAC",
+      "entreprise": "IFCV APPRENTISSAGE"
+    },
+    "alternant(e)enstratégiecommercialeetgestiond’entreprise(fh)_associationimcalternance_93210": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternant(e) en Stratégie Commerciale et Gestion d’Entreprise (F/H)",
+      "entreprise": "ASSOCIATION IMC ALTERNANCE"
+    },
+    "responsabledelastratégiecommerciale_associationimcalternance_93210": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Responsable de la stratégie commerciale",
+      "entreprise": "ASSOCIATION IMC ALTERNANCE"
+    },
+    "stratégiecommercialeetdéveloppementretailenalternance!(fh)_associationimcalternance_93210": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "  Stratégie Commerciale et Développement Retail en alternance ! (F/H) ",
+      "entreprise": "ASSOCIATION IMC ALTERNANCE"
+    },
+    "talentcommercialenalternance(hf)_associationimcalternance_93210": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Talent Commercial en Alternance (H/F)",
+      "entreprise": "ASSOCIATION IMC ALTERNANCE"
+    },
+    "commercialterrainenalternancebac+3_sports&etudesconcept_75015": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Commercial terrain en alternance BAC+3",
+      "entreprise": "SPORTS & ETUDES CONCEPT"
+    },
+    "btsmanagementcommercialopérationnel_nuevoentreprise_93360": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "BTS management commercial opérationnel",
+      "entreprise": "NUEVO ENTREPRISE"
+    },
+    "managercommercial(hf)_rhmania_75001": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Manager Commercial (H/F)",
+      "entreprise": "RH MANIA"
+    },
+    "alternancebusinessdeveloper-paris(fh)(hf)__75001": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Business Developer - Paris (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "chargédedéveloppementcommercial(hf)__75009": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Chargé de développement commercial (H/F)",
+      "entreprise": ""
+    },
+    "(hf)-businessdeveloper-stage_businessdeveloper-stage_75013": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "(H/F) - BUSINESS DEVELOPER - STAGE",
+      "entreprise": "BUSINESS DEVELOPER - STAGE"
+    },
+    "alternanceresponsabledel'actioncommercialefh(hf)_bscc_75008": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H (H/F)",
+      "entreprise": "BSCC"
+    },
+    "alternanceresponsabledel'actioncommercialefh(hf)_bscc_75014": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H (H/F)",
+      "entreprise": "BSCC"
+    },
+    "alternanceresponsabledel'actioncommercialefh(hf)_bscc_75018": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H (H/F)",
+      "entreprise": "BSCC"
+    },
+    "alternanceresponsabledel'actioncommercialefh(hf)_bscc_75015": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H (H/F)",
+      "entreprise": "BSCC"
+    },
+    "alternanceresponsabledel'actioncommercialefh(hf)_bscc_92120": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H (H/F)",
+      "entreprise": "BSCC"
+    },
+    "alternanceresponsabledel'actioncommercialefh(hf)_bscc_75012": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H (H/F)",
+      "entreprise": "BSCC"
+    },
+    "responsabledudéveloppementcommercial(hf)__93380": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Responsable du développement commercial (H/F)",
+      "entreprise": ""
+    },
+    "alternancechargédedéveloppementcommercial-malakoff(fh)(hf)__92240": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Chargé de développement commercial - Malakoff (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "conseillerenvente(hf)_rhmania_75016": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Conseiller en vente (H/F)",
+      "entreprise": "RH MANIA"
+    },
+    "alternanceresponsabledel'actioncommercialefh(hf)_bscc_75016": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H (H/F)",
+      "entreprise": "BSCC"
+    },
+    "businessdeveloper(hf)_jjsdeveloppement_75016": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Business developer (H/F)",
+      "entreprise": "JJS DEVELOPPEMENT"
+    },
+    "apprentiassistantkeyaccountmanagerhfn(hf)_robertboschfrance_93400": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Apprenti Assistant Key Account Manager H/F/N (H/F)",
+      "entreprise": "ROBERT BOSCH FRANCE"
+    },
+    "responsabledudéveloppementcommercial(hf)__93300": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Responsable du développement commercial (H/F)",
+      "entreprise": ""
+    },
+    "alternancebusinessdeveloper-neuilly-sur-seine(fh)(hf)__92200": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Business Developer - Neuilly-sur-Seine (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "responsabledudéveloppementcommercial(hf)__93100": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Responsable du développement commercial (H/F)",
+      "entreprise": ""
+    },
+    "alternanceresponsabledel'actioncommercialefh(hf)_bscc_93100": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H (H/F)",
+      "entreprise": "BSCC"
+    },
+    "alternanceresponsabledel'actioncommercialefh(hf)_bscc_93380": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H (H/F)",
+      "entreprise": "BSCC"
+    },
+    "responsabledudéveloppementcommercial(hf)__93000": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Responsable du développement commercial (H/F)",
+      "entreprise": ""
+    },
+    "alternanceresponsabledel'actioncommercialefh(hf)_bscc_93000": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H (H/F)",
+      "entreprise": "BSCC"
+    },
+    "alternanceresponsabledel'actioncommercialefh(hf)_bscc_92230": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H (H/F)",
+      "entreprise": "BSCC"
+    },
+    "alternanceresponsabledel'actioncommercialefh(hf)_bscc_94550": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H (H/F)",
+      "entreprise": "BSCC"
+    },
+    "responsabledudéveloppementcommercial(hf)__93700": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Responsable du développement commercial (H/F)",
+      "entreprise": ""
+    },
+    "alternanceresponsabledel'actioncommercialefh(hf)_bscc_94000": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H (H/F)",
+      "entreprise": "BSCC"
+    },
+    "alternancechargé(e)dedéveloppementcommercial-stains(fh)(hf)__93240": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Chargé(e) de développement commercial - Stains (F/H) (H/F)",
+      "entreprise": ""
+    },
+    "conseillercommercialconseillèrecommercialeauprèsdesparticuliers(hf)__92500": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Conseiller commercial / Conseillère commerciale auprès des particuliers (H/F)",
+      "entreprise": ""
+    },
+    "responsabledudéveloppementcommercial(hf)__95100": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Responsable du développement commercial (H/F)",
+      "entreprise": ""
+    },
+    "alternanceresponsabledel'actioncommercialefh(hf)_bscc_95410": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H (H/F)",
+      "entreprise": "BSCC"
+    },
+    "manutan-responsabledéveloppementbusinessdeveloper(hf)_manutan_95500": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Manutan - Responsable développement / Business Developer (H/F)",
+      "entreprise": "Manutan"
+    },
+    "alternanceresponsabledel'actioncommercialefh(hf)_bscc_77185": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H (H/F)",
+      "entreprise": "BSCC"
+    },
+    "alternanceresponsabledel'actioncommercialefh(hf)_bscc_95610": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H (H/F)",
+      "entreprise": "BSCC"
+    },
+    "alternanceresponsabledel'actioncommercialefh_laposte_75001": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H",
+      "entreprise": "La Poste"
+    },
+    "alternance-conseillercommercialhfidf-bac+2_bpce_75001": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "ALTERNANCE - Conseiller Commercial H/F IDF - BAC+2",
+      "entreprise": "BPCE"
+    },
+    "alternanceresponsabledel'actioncommercialefh_laposte_92120": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H",
+      "entreprise": "La Poste"
+    },
+    "alternanceresponsabledel'actioncommercialefh_laposte_93000": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H",
+      "entreprise": "La Poste"
+    },
+    "alternance-conseiller-èreventeomnicanal(hf)_decathlon_92230": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "ALTERNANCE - Conseiller-ère Vente Omnicanal (H/F)",
+      "entreprise": "Decathlon"
+    },
+    "alternanceresponsabledel'actioncommercialefh_laposte_92230": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H",
+      "entreprise": "La Poste"
+    },
+    "alternanceresponsabledel'actioncommercialefh_laposte_94550": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H",
+      "entreprise": "La Poste"
+    },
+    "alternanceresponsabledel'actioncommercialefh_laposte_94000": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H",
+      "entreprise": "La Poste"
+    },
+    "alternanceresponsabledel'actioncommercialefh_laposte_95410": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H",
+      "entreprise": "La Poste"
+    },
+    "apprenticommercialgrandscompteshf_hubency_93420": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "APPRENTI COMMERCIAL GRANDS COMPTES H/F",
+      "entreprise": "HUBENCY"
+    },
+    "alternance-conseiller-èreventeomnicanal(hf)_decathlon_91140": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "ALTERNANCE - Conseiller-ère Vente Omnicanal (H/F)",
+      "entreprise": "Decathlon"
+    },
+    "alternanceresponsabledel'actioncommercialefh_laposte_77185": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H",
+      "entreprise": "La Poste"
+    },
+    "alternanceresponsabledel'actioncommercialefh_laposte_95610": {
+      "first_seen": "2026-03-15",
+      "last_seen": "2026-03-15",
+      "titre": "Alternance Responsable de l'action commerciale F/H",
+      "entreprise": "La Poste"
+    }
+  }
+}
