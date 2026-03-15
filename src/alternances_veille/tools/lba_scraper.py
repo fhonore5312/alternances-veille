@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-tools/lba_scraper.py - Scraper La Bonne Alternance (comportement v1)
+tools/lba_scraper.py - Scraper La Bonne Alternance V2
 """
 
 import json
@@ -23,7 +23,8 @@ BASE_DIR     = Path(__file__).parent.parent.parent.parent
 DATA_DIR     = BASE_DIR / "data"
 CONFIG_FILE  = BASE_DIR / "config" / "tracks.yml"
 OUTPUT_FILE  = DATA_DIR / "offres_lba.json"
-HISTORY_FILE = DATA_DIR / "offres_historique.json"
+# Historique léger LBA (dict-keyed) — séparé de offres_historique.json V2 (merge_offers)
+HISTORY_FILE = DATA_DIR / "lba_history.json"
 
 DATA_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -35,39 +36,60 @@ VILLES = {
     "Paris":  {"latitude": 48.8566, "longitude":  2.3522, "radius": 30, "priority": 3},
 }
 
-# ===== EXCLUSIONS ÉCOLES =====
+# ===== EXCLUSIONS ÉCOLES (nom entreprise) =====
 
 SCHOOL_EXCLUSIONS_NAME = [
-    "enseigne inconnue", "école", "ecole", "université", "universite",
-    "campus", "cfa", "centre de formation", "lycée",
-    "neogest", "education group", "institut superieur de techniques",
-    "groupe igf", "igf formation",
+    "enseigne inconnue", "ecole", "universite",
+    "campus", "cfa", "centre de formation",
+    # Organismes de formation / écoles spammant LBA
+    "neogest",
+    "education group",
+    "institut superieur de techniques",
+    "groupe igf",
+    "igf formation",
+    "rocket school",
+    "association imc",
+    # La Poste via aplitrak (faux recruteur direct)
+    "filiales service courrier colis",
+    "bscc",
+    # Forum emploi (pas un recruteur direct)
+    "talents handicap",
 ]
+
+# ===== EXCLUSIONS ÉCOLES (description) =====
 
 SCHOOL_EXCLUSIONS_DESC = [
     "l'iscod", "alticome", "alticom,", "mydigitalschool", "studi ", "sup de pub",
-    "groupe igs", "bringme", "optez pour l'alternance nouvelle génération",
-    "préparez un bachelor", "préparez un master", "recrutement en 4 étapes",
-    "formation prise en charge à 100% par l'entreprise",
+    "groupe igs", "bringme", "optez pour l'alternance nouvelle generation",
+    "preparez un bachelor", "preparez un master", "recrutement en 4 etapes",
+    "formation prise en charge a 100% par l'entreprise",
     "recherche pour l'une de ses entreprises partenaires",
-    "nos formations diplômantes reconnues par l'etat",
-    "school 100 % en alternance", "notre école recrute pour",
+    "nos formations diplomantes reconnues par l'etat",
+    "school 100 % en alternance", "notre ecole recrute pour",
     "notre cfa recrute pour",
-    "postulez à cette offre si vous souhaitez intégrer",
+    "postulez a cette offre si vous souhaitez integrer",
 ]
 
-_BAC5_KW = ["master", "bac+5", "bac +5", "m1", "m2", "dscg",
-            "grande école", "grande ecole", "msc", "bac+4", "bac +4"]
-_LOW_KW  = ["bts", "deust", "dut", "but gestion", "bac+2", "bac +2",
-            "bac/but/bachelor", "bts ou dut", "intégrer un bts",
-            "intégrez un bts", "formation bac+2", "niveau bac+2"]
+# ===== FILTRAGE NIVEAU =====
+
+_BAC5_KW = [
+    "master", "bac+5", "bac +5", "m1", "m2", "dscg",
+    "grande ecole", "msc", "bac+4", "bac +4",
+]
+_LOW_KW = [
+    "bts", "deust", "dut", "but gestion", "bac+2", "bac +2",
+    "bac/but/bachelor", "bts ou dut", "integrer un bts",
+    "integrez un bts", "formation bac+2", "niveau bac+2",
+]
+
+# ===== TITRES GÉNÉRIQUES =====
 
 _GENERIC_TITLE_PATTERNS = re.compile(
     r"^(comptable|aide[- ]comptable|collaborateur comptable|"
-    r"comptable fournisseurs|comptable clients|comptable général|"
+    r"comptable fournisseurs|comptable clients|comptable general|"
     r"aide comptable|assistant[e]? comptable|"
     r"responsable marketing|assistant[e]? marketing|"
-    r"gestionnaire|analyste financier)[^a-zà-ÿ]",
+    r"gestionnaire|analyste financier)[^a-z]",
     re.IGNORECASE
 )
 
@@ -79,16 +101,19 @@ def load_tracks() -> dict:
     return data.get("tracks", data)
 
 def clean_html(html_text: str) -> str:
-    if not html_text: return ""
+    if not html_text:
+        return ""
     text = re.sub(r"<[^>]+>", " ", html_text)
     return re.sub(r"\s+", " ", unescape(text)).strip()
 
 def truncate_text(text: str, max_length: int = 200) -> str:
-    if len(text) <= max_length: return text
+    if len(text) <= max_length:
+        return text
     return text[:max_length].rsplit(" ", 1)[0] + "..."
 
 def format_date(date_str: str):
-    if not date_str: return None
+    if not date_str:
+        return None
     try:
         dt = datetime.fromisoformat(date_str.replace("Z", "+00:00"))
         return dt.strftime("%d/%m/%Y")
@@ -96,24 +121,33 @@ def format_date(date_str: str):
         return None
 
 def _try_extract_company(title: str) -> str:
-    if not title: return ""
-    _GENERIC = {"comptable", "assistant", "assistante", "alternant", "apprenti",
-                "chargé", "chargée", "responsable", "analyste", "gestionnaire",
-                "chef", "directeur", "auditeur", "auditeur.rice", "contrôleur",
-                "controleur", "stagiaire", "alternance", "emploi", "poste"}
-    _NOISE   = {"h/f", "f/h", "(h/f)", "(f/h)", "paris", "rennes",
-                "nantes", "lyon", "bordeaux", "france", "alternance"}
+    if not title:
+        return ""
+    _GENERIC = {
+        "comptable", "collaborateur", "aide", "assistant", "assistante",
+        "assistant(e)", "assistante(e)", "alternant", "apprenti",
+        "charge", "chargee", "responsable", "analyste", "gestionnaire",
+        "chef", "directeur", "auditeur", "controleur",
+        "stagiaire", "alternance", "emploi", "offre", "poste", "recrutement",
+    }
+    _NOISE = {
+        "h/f", "f/h", "(h/f)", "(f/h)", "paris", "rennes",
+        "nantes", "lyon", "bordeaux", "france", "alternance",
+    }
     m = re.match(
-        r"^([A-ZÀ-Ü][A-Za-zÀ-ÿ0-9 &.'\-]{2,40}?)\s*[-–—]\s*"
+        r"^([A-Z\xc0-\xdc][A-Za-z\xc0-\xff0-9 &.'\-]{2,40}?)\s*[-\u2013\u2014]\s*"
         r"(?:Comptable|Auditeur|Alternance|Assistant|Collaborateur|"
-        r"Contrôleur|Gestionnaire|Analyste|Apprenti|Aide|Chargé)",
+        r"Contr\xf4leur|Gestionnaire|Analyste|Apprenti|Aide|Charg\xe9)",
         title
     )
     if m:
         c = m.group(1).strip()
         if len(c) > 3 and c.lower().split()[0] not in _GENERIC:
             return c
-    m2 = re.search(r"[-–—]\s*([A-ZÀ-Ü][A-Za-zÀ-ÿ0-9 &.'\-]{2,40})\s*$", title)
+    m2 = re.search(
+        r"[-\u2013\u2014]\s*([A-Z\xc0-\xdc][A-Za-z\xc0-\xff0-9 &.'\-]{2,40})\s*$",
+        title
+    )
     if m2:
         c = m2.group(1).strip()
         if len(c) > 3 and c.lower() not in _NOISE and c.lower().split()[0] not in _GENERIC:
@@ -134,7 +168,8 @@ def load_history() -> dict:
         if "offers" not in data:
             data["offers"] = {}
         return data
-    except Exception:
+    except Exception as e:
+        print(f"⚠️  Historique corrompu, recréation : {e}")
         return {"last_update": None, "offers": {}}
 
 def save_history(history: dict):
@@ -181,12 +216,11 @@ def transform_offer(raw: dict, ville_name: str, ville_cfg: dict,
     siret   = raw.get("workplace", {}).get("siret", "")
     addr    = raw.get("workplace", {}).get("location", {}).get("address", "")
 
-    # CORRECTION v1 : ville réelle de l'entreprise (pas la ville de recherche)
+    # Ville réelle de l'entreprise (pas la ville de recherche)
     zip_m   = re.search(r"\b(\d{5})\b", addr)
     zipcode = zip_m.group(1) if zip_m else ""
     city_m  = re.search(r"\d{5}\s+(.+)$", addr)
     city    = city_m.group(1).title() if city_m else ""
-    # Fallback : ville depuis l'API si non trouvée dans l'adresse
     if not city:
         city = raw.get("workplace", {}).get("location", {}).get("city", "") or ville_name
 
@@ -199,43 +233,42 @@ def transform_offer(raw: dict, ville_name: str, ville_cfg: dict,
 
     title_l   = title.lower()
     company_l = company.lower()
-    cle       = (f"{title_l.replace(' ','').replace('/','')}_"
-                 f"{company_l.replace(' ','')}_"
-                 f"{zipcode}")
+    cle       = (title_l.replace(" ", "").replace("/", "") + "_"
+                 + company_l.replace(" ", "") + "_"
+                 + zipcode)
 
-    skills = detect_skills(title, desc_clean, track_cfg.get("skills_keywords", {}))
-
+    skills    = detect_skills(title, desc_clean, track_cfg.get("skills_keywords", {}))
     today_str = datetime.now().strftime("%Y-%m-%d")
 
     return {
-        "id":                   cle,
-        "source":               "LBA",
-        "status":               "new",
-        "titre":                title,
-        "entreprise":           company,
-        "ville":                city,           # ← ville réelle entreprise
-        "code_postal":          zipcode,
-        "adresse_complete":     addr,
-        "description":          desc_short,
-        "description_complete": desc_clean,
+        "id":                    cle,
+        "source":                "LBA",
+        "status":                "new",
+        "titre":                 title,
+        "entreprise":            company,
+        "ville":                 city,
+        "code_postal":           zipcode,
+        "adresse_complete":      addr,
+        "description":           desc_short,
+        "description_complete":  desc_clean,
         "competences_detectees": skills,
-        "url_candidature":      raw.get("apply", {}).get("url", "#"),
-        "type_contrat":         contract,
-        "duree_contrat":        raw.get("contract", {}).get("duration"),
-        "date_creation":        None,
-        "date_debut":           format_date(raw.get("contract", {}).get("start")),
-        "date_expiration":      format_date(raw.get("offer", {}).get("expiration")),
-        "first_seen":           today_str,      # ← restauré v1
-        "last_seen":            today_str,      # ← restauré v1
-        "plateforme_source":    raw.get("identifier", {}).get("partner_label", "LBA"),
-        "siret":                siret,
-        "ville_recherche":      ville_name,     # ← ville du track (pour stats)
-        "priorite_ville":       ville_cfg["priority"],
-        "track":                track_key,
-        # Champs temporaires pour filtrage (supprimés avant sortie)
-        "_title_lower":         title_l,
-        "_company_lower":       company_l,
-        "_desc_lower":          desc_clean.lower(),
+        "url_candidature":       raw.get("apply", {}).get("url", "#"),
+        "type_contrat":          contract,
+        "duree_contrat":         raw.get("contract", {}).get("duration"),
+        "date_creation":         None,
+        "date_debut":            format_date(raw.get("contract", {}).get("start")),
+        "date_expiration":       format_date(raw.get("offer", {}).get("expiration")),
+        "first_seen":            today_str,
+        "last_seen":             today_str,
+        "plateforme_source":     raw.get("identifier", {}).get("partner_label", "LBA"),
+        "siret":                 siret,
+        "ville_recherche":       ville_name,
+        "priorite_ville":        ville_cfg["priority"],
+        "track":                 track_key,
+        # Champs temporaires pour filtrage (supprimés avant sortie JSON)
+        "_title_lower":          title_l,
+        "_company_lower":        company_l,
+        "_desc_lower":           desc_clean.lower(),
     }
 
 def strip_temp_fields(offers: list) -> list:
@@ -244,24 +277,29 @@ def strip_temp_fields(offers: list) -> list:
 # ===== FILTRAGE =====
 
 def filter_schools(offers: list) -> list:
+    """Exclut les écoles et organismes de formation (nom + description)."""
     before   = len(offers)
     filtered = [
         o for o in offers
         if not any(e in o.get("_company_lower", "") for e in SCHOOL_EXCLUSIONS_NAME)
         and not any(e in o.get("_desc_lower", "") for e in SCHOOL_EXCLUSIONS_DESC)
     ]
-    print(f"  🔍 Filtrage écoles       : {before} → {len(filtered)} offres")
+    print(f"  🔍 Filtrage écoles       : {before} → {len(filtered)} offres"
+          f" ({before - len(filtered)} exclues)")
     return filtered
 
 def filter_by_keywords(offers: list, keywords: list) -> list:
-    before     = len(offers)
-    kws_lower  = [k.lower() for k in keywords]
-    filtered   = [o for o in offers if any(k in o.get("_title_lower", "") for k in kws_lower)]
-    print(f"  🎯 Filtrage track        : {before} → {len(filtered)} offres")
+    """Garde uniquement les offres dont le titre contient un mot-clé du track."""
+    before    = len(offers)
+    kws_lower = [k.lower() for k in keywords]
+    filtered  = [o for o in offers if any(k in o.get("_title_lower", "") for k in kws_lower)]
+    print(f"  🎯 Filtrage track        : {before} → {len(filtered)} offres"
+          f" ({before - len(filtered)} exclues)")
     return filtered
 
 def filter_empty(offers: list) -> list:
-    before   = len(offers)
+    """Exclut les offres fantômes : pas d'entreprise ET titre générique ou description vide."""
+    before         = len(offers)
     kept, excluded = [], 0
     for o in offers:
         has_company   = bool(o.get("_company_lower", "").strip())
@@ -275,37 +313,39 @@ def filter_empty(offers: list) -> list:
             continue
         kept.append(o)
     if excluded:
-        print(f"  🗑️ Filtrage vides/génériques: {before} → {len(kept)} offres ({excluded} exclues)")
+        print(f"  🗑️  Filtrage vides/génériques : {before} → {len(kept)} offres"
+              f" ({excluded} exclues)")
     return kept
 
 def filter_start_date(offers: list) -> list:
-    today    = datetime.now()
+    """Exclut les offres dont la date de début est strictement dans le passé."""
+    today          = datetime.now()
     kept, excluded = [], 0
     for o in offers:
         sd = o.get("date_debut")
         if not sd:
             kept.append(o)
             continue
-        parsed = False
+        date_ok = True  # conserve si la date ne peut pas être parsée
         for fmt in ("%d/%m/%Y", "%Y-%m-%d", "%d-%m-%Y"):
             try:
-                if datetime.strptime(str(sd), fmt) >= today:
-                    kept.append(o)
-                parsed = True
+                if datetime.strptime(str(sd), fmt) < today:
+                    date_ok = False
+                    excluded += 1
                 break
             except ValueError:
                 continue
-        if not parsed:
+        if date_ok:
             kept.append(o)
-        elif datetime.strptime(str(sd), "%d/%m/%Y") < today:
-            excluded += 1
-    print(f"  📅 Filtrage dates passées : {len(offers)} → {len(kept)} offres ({excluded} exclues)")
+    print(f"  📅 Filtrage dates passées : {len(offers)} → {len(kept)} offres"
+          f" ({excluded} exclues)")
     return kept
 
 def filter_niveau_finance(offers: list, track_key: str) -> list:
+    """Finance uniquement : exclut les offres ciblant BTS/BAC+2 sans mention Master."""
     if track_key != "finance":
         return offers
-    before   = len(offers)
+    before         = len(offers)
     kept, excluded = [], 0
     for o in offers:
         text     = o.get("_desc_lower", "") + " " + o.get("_title_lower", "")
@@ -315,20 +355,22 @@ def filter_niveau_finance(offers: list, track_key: str) -> list:
             excluded += 1
         else:
             kept.append(o)
-    print(f"  🎓 Filtrage niveau BAC+5 : {before} → {len(kept)} offres ({excluded} exclues)")
+    print(f"  🎓 Filtrage niveau BAC+5 : {before} → {len(kept)} offres"
+          f" ({excluded} exclues)")
     return kept
 
 # ===== SCRAPE UN TRACK =====
 
 def scrape_track(track_key: str, track_cfg: dict) -> list:
     label = track_cfg.get("label", track_key)
-    print(f"\n{'─'*60}")
+    print("")
+    print("─" * 60)
     print(f"🎯 Track : {label} ({track_key})")
-    print(f"{'─'*60}")
+    print("─" * 60)
 
-    romes   = ",".join(track_cfg.get("rome_codes", []))
+    romes = ",".join(track_cfg.get("rome_codes", []))
     if not romes:
-        print(f"  ⚠️ Pas de codes ROME configurés pour {track_key}")
+        print(f"  ⚠️  Pas de codes ROME configurés pour {track_key}")
         return []
 
     raw_all = []
@@ -345,12 +387,13 @@ def scrape_track(track_key: str, track_cfg: dict) -> list:
     filtered = filter_start_date(filtered)
     filtered = filter_niveau_finance(filtered, track_key)
 
+    print(f"  ✅ {len(filtered)} offres retenues pour {track_key}")
     return filtered
 
 # ===== HISTORIQUE =====
 
-def apply_history(offers: list, history: dict) -> list:
-    """Met à jour status, first_seen, last_seen via l'historique."""
+def apply_history(offers: list, history: dict) -> tuple:
+    """Met à jour status, first_seen, last_seen via l'historique léger LBA."""
     today_str    = datetime.now().strftime("%Y-%m-%d")
     history_data = history.get("offers", {})
     new_count    = 0
@@ -392,7 +435,8 @@ def run_lba_scraper() -> int:
     tracks  = load_tracks()
     history = load_history()
 
-    print("\n" + "=" * 60)
+    print("")
+    print("=" * 60)
     print("🎯 LBA SCRAPER — 4 tracks")
     print("=" * 60)
 
@@ -401,13 +445,13 @@ def run_lba_scraper() -> int:
         offers = scrape_track(tk, tcfg)
         all_offers.extend(offers)
 
-    # Appliquer statuts new/active + first_seen/last_seen
-    all_offers, new_count, active_count = apply_history(all_offers, history)
+    print("")
+    print("=" * 60)
+    print(f"📦 Total toutes tracks : {len(all_offers)} offres")
 
-    # Supprimer les champs temporaires de filtrage
+    all_offers, new_count, active_count = apply_history(all_offers, history)
     all_offers = strip_temp_fields(all_offers)
 
-    # Mettre à jour et sauvegarder l'historique
     history = update_history(all_offers, history)
     save_history(history)
 
@@ -425,16 +469,16 @@ def run_lba_scraper() -> int:
     with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
 
-    print(f"\n📊 Analyse globale :")
     print(f"  🆕 Nouvelles : {new_count}")
     print(f"  ♻️  Actives   : {active_count}")
-    print(f"\n💾 Sauvegardé : {OUTPUT_FILE}")
+    print(f"💾 Sauvegardé : {OUTPUT_FILE}")
     print(f"   {len(all_offers)} offres — {new_count} nouvelles")
     print("=" * 60)
     print("➡️  PROCHAINE ÉTAPE : validator")
     print("=" * 60)
 
     return len(all_offers)
+
 
 if __name__ == "__main__":
     run_lba_scraper()

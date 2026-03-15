@@ -91,16 +91,16 @@ class VeilleFlow(Flow[VeilleState]):
     def validate(self):
         """Validation HTTP (LBA) + structure JSON (LLM)."""
         if not self.state.lba_ok:
-            print("⚠️  Validation skippée — scraping LBA en erreur")
+            print("⚠️ Validation skippée — scraping LBA en erreur")
             return
 
         if self.state.debug_mode and (DATA_DIR / "offres_lba_validated.json").exists():
-            print("⏭️  [DEBUG] Skip validation (fichiers existants)")
+            print("⏭️ [DEBUG] Skip validation (fichiers existants)")
             self.state.validated_ok = True
             return
 
         from alternances_veille.tools.validator import run_validator
-        run_validator(quick_mode=getattr(self.state, "quick_mode", False))
+        # ← ligne run_validator(quick_mode=getattr(...)) SUPPRIMÉE
         try:
             lba_count, llm_count = run_validator(quick_mode=self.state.quick_mode)
             self.state.validated_lba_count = lba_count
@@ -110,6 +110,7 @@ class VeilleFlow(Flow[VeilleState]):
         except Exception as e:
             self.state.errors.append(f"validate: {e}")
             print(f"❌ Erreur validation : {e}")
+
 
     # ── Étape 3 : Merge & déduplication ───────────────────────────────────
 

@@ -3,12 +3,12 @@
 dump_context.py — Génère un snapshot du projet pour contexte LLM
 
 Usage:
-  python dump_context.py                          → dump complet
-  python dump_context.py --groups crewai config   → groupes prédéfinis
-  python dump_context.py --files src/alternances_veille/tools/validator.py
-  python dump_context.py --since HEAD~1
-  python dump_context.py --since 2026-03-14
-  python dump_context.py --groups tools html --output session_html.txt
+    python dump_context.py                                  → dump complet
+    python dump_context.py --groups crewai config          → groupes prédéfinis
+    python dump_context.py --files src/alternances_veille/tools/validator.py
+    python dump_context.py --since HEAD~1
+    python dump_context.py --since 2026-03-14
+    python dump_context.py --groups tools html --output session_html.txt
 """
 
 import argparse
@@ -27,10 +27,7 @@ GROUPS = {
         "src/alternances_veille/tools/llm_search_agent.py",
         "config/agents.yaml",
         "config/tasks.yaml",
-        "config/agent_backstory_digitalmarketing.md",
-        "config/agent_backstory_finance.md",
-        "config/prompt_llm_search_digitalmarketing.md",
-        "config/prompt_llm_search_finance.md",
+        # backstory et prompts supprimés (fichiers obsolètes)
     ],
     "config": [
         "config/tracks.yml",
@@ -123,9 +120,9 @@ def main() -> None:
         file_list = get_files_modified_since(args.since)
         label = f"since_{args.since.replace('/', '-').replace(' ', '_')}"
         if not file_list:
-            print(f"Aucun fichier modifie detecte depuis '{args.since}'")
+            print(f"Aucun fichier modifié détecté depuis '{args.since}'")
             return
-        print(f"Fichiers detectes ({len(file_list)}) : {file_list}")
+        print(f"Fichiers détectés ({len(file_list)}) : {file_list}")
     elif args.files:
         file_list = args.files
         label = "custom"
