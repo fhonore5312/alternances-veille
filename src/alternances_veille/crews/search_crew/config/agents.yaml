@@ -1,6 +1,6 @@
 # ============================================================
-# AGENTS — VeilleSearchCrew
-# Architecture CrewAI officielle (@CrewBase)
+# AGENTS — SearchCrew
+# Crew de recherche d'offres d'alternance
 # ============================================================
 
 search_agent_digitalmarketing:

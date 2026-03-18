@@ -1,0 +1,36 @@
+hr_contact_task:
+  description: >
+    Trouve les coordonnées du contact recrutement pour :
+    - Entreprise : {company}
+    - Poste : {titre}
+    - Ville : {ville}
+
+    Fais AU MAXIMUM 2 recherches Serper puis scrape si pertinent :
+    1. `{search_query_1}`
+    2. `{search_query_2}`
+
+    Si une URL /careers, /recrutement ou /contact RH apparaît dans les résultats Serper, scrape-la.
+
+    Règles importantes :
+    - Ne jamais inventer un email ou un nom
+    - Les emails génériques (contact@, info@, dpo@, dataprivacy@, global.careers@, accueil@)
+      ne sont PAS des contacts RH — mets null pour email_rh
+    - Un email RH valide est nominatif (prenom.nom@) ou explicitement recrutement@/rh@/talent@
+    - Si tu ne trouves rien de certain, mets null et confidence=low
+    - Retourne UNIQUEMENT ce JSON, sans texte avant ni après :
+
+    {{
+      "entreprise": "{company}",
+      "corporate_site": "URL site officiel ou null",
+      "email_rh": "email DIRECT RH nominatif ou recrutement@/rh@/talent@ uniquement — sinon null",
+      "nom_contact": "Prénom Nom ou null",
+      "role_contact": "rôle exact ou null",
+      "url_careers": "URL page carrières/offres ou null",
+      "url_contact": "URL formulaire contact ou null",
+      "youtube_url": "URL vidéo YouTube recrutement ou null",
+      "source_info": "URL ou texte source",
+      "confidence": "high | medium | low",
+      "note": "infos utiles : téléphone, adresse, URL candidature directe, etc. ou null"
+    }}
+  expected_output: "JSON strict avec les clés définies, sans texte autour"
+  agent: hr_contact_agent

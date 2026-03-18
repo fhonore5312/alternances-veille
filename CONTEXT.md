@@ -35,13 +35,44 @@ Configurés dans `config/tracks.yml` — source de vérité.
 
 ---
 
-## 🏗️ Architecture V2 — CrewAI Flow
+## Architecture V2 CrewAI Flow
 
-Le projet suit l'architecture officielle CrewAI :
-- **Orchestrateur** : `src/alternances_veille/flow.py` (CrewAI Flow)
-- **Entry point** : `src/alternances_veille/main.py` → `crewai flow run`
-- **Agents LLM** : `config/agents.yaml` + `config/tasks.yaml` + `tools/llm_search_agent.py`
-- **Pas de main_flow.py** — flow.py est le seul orchestrateur
+### Pipeline flow.py
+| Étape | Méthode flow | Tool appelé | Sortie |
+|---|---|---|---|
+| 1a | `scrape_lba` | `lba_scraper.run_lba_scraper` | `data/offres_lba.json` |
+| 1b | `run_llm_agents` (parallèle) | `alternance_search_agent.run_llm_search_agent(track)` | `data/offres_agent_{track}.json` |
+| 2 | `validate` | `validator.run_validator(quick_mode)` | `offres_lba_validated.json` / `offres_llm_validated.json` |
+| 3 | `merge` | `merge_offers.run_merge_offers` | `data/offres_merged.json` |
+| 4 | `generate_email` | `html_email.run_html_email` | `docs/v2/index.html` + email |
+| 5 | `summary` | log console | — |
+
+### Structure des crews
+src/alternances_veille/
+├── flow.py # Orchestrateur CrewAI Flow PRINCIPAL
+├── main.py # Entry point (crewai flow run)
+├── crews/
+│ ├── search_crew/ # Crew recherche offres LLM
+│ │ ├── search_crew.py # @CrewBase — 2 tracks : digitalmarketing, finance
+│ │ └── config/
+│ │ ├── agents.yaml
+│ │ └── tasks.yaml
+│ └── hr_contacts_crew/ # Crew recherche contacts RH
+│ ├── hr_contacts_crew.py # @CrewBase — 1 agent / 1 offre
+│ └── config/
+│ ├── agents.yaml
+│ └── tasks.yaml
+└── tools/
+├── alternance_search_agent.py # Interface run_llm_search_agent(track)
+├── hr_contacts_agent.py # Interface run_hr_contacts_agent(track)
+├── lba_scraper.py
+├── validator.py
+├── merge_offers.py
+└── html_email.py
+
+
+### Config racine
+- `config/tracks.yml` — source de vérité tracks, couleurs, ROME, keywords
 
 ### Pipeline parallèle (flow.py)
 
@@ -95,7 +126,7 @@ alternances-veille-v2/
 │       └── tools/
 │           ├── __init__.py
 │           ├── lba_scraper.py      ← Scraper LBA V2 (4 tracks, 3 villes)
-│           ├── llm_search_agent.py ← Agent LLM search (Perplexity/Serper)
+│           ├── alternance_search_agent.py  ← Agent LLM search (Perplexity/Serper)
 │           ├── validator.py        ← Validation HTTP LBA + structure LLM
 │           ├── merge_offers.py     ← Merge + déduplication + historique
 │           └── html_email.py       ← HTML email + GitHub Pages + Gmail
@@ -129,7 +160,7 @@ alternances-veille-v2/
 - Filtre BAC+5 actif uniquement pour track `finance`
 - ⚠️ Pas de `\n` dans f-string avec emoji (SyntaxError Windows)
 
-### llm_search_agent.py
+### alternance_search_agent.py 
 - Interface : `run_llm_search_agent(track: str) -> int` (retourne nb offres)
 - Lit config depuis `config/agents.yaml` + `config/tasks.yaml`
 - Écrit `data/offres_agent_<track>.json`

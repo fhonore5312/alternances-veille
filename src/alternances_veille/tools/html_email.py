@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-tools/html_email.py - Génération HTML (pixel-perfect V1) + envoi Gmail
+tools/html_email.py - Generation HTML (pixel-perfect V1) + envoi Gmail
 Architecture :
-  - render_email_html()  → email minimal (stats + CTA) → corps MIME
-  - render_page_html()   → page riche (filtres + contacts RH + GA) → docs/v2/index.html
-  - run_html_email()     → orchestre le tout + git push + envoi Gmail
+  - render_email_html()  -> email minimal (stats + CTA) -> corps MIME
+  - render_page_html()   -> page riche (filtres + contacts RH + GA) -> docs/v2/index.html
+  - run_html_email()     -> orchestre le tout + git push + envoi Gmail
 """
 
 import json
@@ -126,13 +126,14 @@ _CSS = """
     }
 """
 
+# FIX 1 : cles alignees sur tracks.yml + emojis en entites HTML
 _TRACK_LABELS = {
-    "digital_marketing": "📱 Digital Marketing",
-    "finance":           "💰 Finance, Audit & Contrôle",
-    "supply_chain":      "📦 Supply Chain & Achats",
-    "business_dev":      "🤝 Business Development & Vente",
+    "digital_marketing": "&#128241; Digital Marketing",
+    "finance":           "&#128176; Finance, Audit &amp; Contr&ocirc;le",
+    "supplychain":       "&#128230; Supply Chain &amp; Achats",
+    "businessdev":       "&#129309; Business Development &amp; Vente",
 }
-_TRACK_ORDER = ["digital_marketing", "finance", "supply_chain", "business_dev"]
+_TRACK_ORDER = ["digital_marketing", "finance", "supplychain", "businessdev"]
 _CITY_ORDER  = ["Rennes", "Nantes", "Paris"]
 
 
@@ -178,8 +179,12 @@ def _e(text) -> str:
     return str(text).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
+# FIX 2 : parse_date_offre gere les deux conventions (avec/sans underscore)
 def parse_date_offre(offer: dict) -> datetime:
-    for field, fmt in [("date_creation", "%d/%m/%Y"), ("first_seen", "%Y-%m-%d")]:
+    for field, fmt in [
+        ("date_creation", "%d/%m/%Y"), ("datecreation", "%d/%m/%Y"),
+        ("first_seen",    "%Y-%m-%d"), ("firstseen",    "%Y-%m-%d"),
+    ]:
         val = offer.get(field)
         if val:
             try:
@@ -190,7 +195,7 @@ def parse_date_offre(offer: dict) -> datetime:
 
 
 def _format_now_long() -> str:
-    now = datetime.now()
+    now    = datetime.now()
     days   = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
     months = ["January","February","March","April","May","June",
               "July","August","September","October","November","December"]
@@ -209,7 +214,6 @@ def cleanup_archives():
 
 def git_push_html() -> bool:
     try:
-        # Vérifier uniquement docs/v2/ (jamais docs/index.html)
         result = subprocess.run(
             ["git", "status", "--porcelain", "docs/v2/"],
             capture_output=True, text=True, cwd=BASE_DIR,
@@ -217,18 +221,13 @@ def git_push_html() -> bool:
         if not result.stdout.strip():
             print("  info GitHub Pages : rien a commiter")
             return True
-
         subprocess.run(["git", "add", "docs/v2/"], check=True, cwd=BASE_DIR)
         subprocess.run(
             ["git", "commit", "-m",
              f"chore: veille {datetime.now().strftime('%Y-%m-%d %H:%M')}"],
             check=True, cwd=BASE_DIR,
         )
-        # Push docs/v2/ directement sur main (GitHub Pages)
-        subprocess.run(
-            ["git", "push", "origin", "HEAD:main"],
-            check=True, cwd=BASE_DIR,
-        )
+        subprocess.run(["git", "push", "origin", "HEAD:main"], check=True, cwd=BASE_DIR)
         print("  OK GitHub Pages mis a jour (-> main)")
         return True
     except subprocess.CalledProcessError as e:
@@ -443,22 +442,51 @@ def render_page_html(offers: list, meta: dict, track_colors: dict,
                     '<span class="badge-lba">LBA</span>'
                 )
 
+                # FIX 3 : metaparts complets — gere les deux conventions de nommage
                 meta_parts = []
+
+                # Entreprise
                 if o.get("entreprise"):
                     meta_parts.append(f'&#127970; {_e(o["entreprise"])}')
-                if o.get("date_debut"):
-                    meta_parts.append(f'&#128197; Debut : {_e(o["date_debut"])}')
-                if o.get("type_contrat"):
-                    dur = f' &middot; {_e(o["duree_contrat"])}' if o.get("duree_contrat") else ""
-                    meta_parts.append(f'&#128221; {_e(o["type_contrat"])}{dur}')
-                if o.get("date_creation"):
-                    meta_parts.append(f'&#128467;&#65039; Publie le {_e(o["date_creation"])}')
+
+                # Ville + code postal
+                ville = o.get("ville") or o.get("ville_recherche") or ""
+                cp    = o.get("codepostal") or o.get("code_postal") or ""
+                if ville:
+                    ville_str = _e(ville)
+                    if cp:
+                        ville_str += f' {_e(str(cp))}'
+                    meta_parts.append(f'&#128205; {ville_str}')
+
+                # Type contrat + duree (mois)
+                type_c = o.get("type_contrat") or o.get("typecontrat") or ""
+                duree  = o.get("duree_contrat") or o.get("dureecontrat") or ""
+                if type_c:
+                    dur_str = f' &middot; {_e(str(duree))} mois' if duree else ""
+                    meta_parts.append(f'&#128221; {_e(type_c)}{dur_str}')
+
+                # Source (France Travail, Indeed, LBA, LLM...)
+                src_label = (
+                    o.get("plateforme_source") or o.get("plateformesource")
+                    or o.get("source") or ""
+                )
+                if src_label:
+                    meta_parts.append(f'&#128279; {_e(src_label)}')
+
+                # Date creation ou first_seen
+                date_affich = (
+                    o.get("date_creation") or o.get("datecreation")
+                    or o.get("first_seen") or o.get("firstseen") or ""
+                )
+                if date_affich:
+                    meta_parts.append(f'&#128467;&#65039; {_e(date_affich)}')
+
                 meta_html = (
                     f'<div class="meta">{" &nbsp;&middot;&nbsp; ".join(meta_parts)}</div>'
                     if meta_parts else ""
                 )
 
-                desc = _e(o.get("description", ""))
+                desc      = _e(o.get("description", ""))
                 desc_html = f'<div class="description">{desc}</div>' if desc else ""
 
                 skills_html = ""
@@ -469,30 +497,35 @@ def render_page_html(offers: list, meta: dict, track_colors: dict,
                     )
                     skills_html = f'<div class="skills">{tags}</div>'
 
-                # Contact RH - affiche uniquement si contact trouve
+                # Contact RH
                 contact_html = ""
-                contact = hr_contacts.get(o.get("id", ""))
+                contact = hr_contacts.get(o.get("id"), {})
                 if contact:
-                    name      = _e(contact.get("name", ""))
-                    role      = _e(contact.get("role", ""))
-                    email_val = contact.get("email", "")
-                    li        = contact.get("linkedin", "")
-                    conf      = contact.get("confidence", "")
-                    conf_html = f'<span class="hr-conf">[{_e(conf)}]</span>' if conf else ""
-                    email_link = (
-                        f' &middot; <a href="mailto:{_e(email_val)}">{_e(email_val)}</a>'
-                        if email_val else ""
+                    conf        = contact.get("confidence", "")
+                    nom         = contact.get("nom_contact") or ""
+                    role        = contact.get("role_contact") or ""
+                    emailval    = contact.get("email_rh") or ""
+                    url_careers = contact.get("url_careers") or ""
+                    conf_html    = f'<span class="hr-conf">[{conf}]</span>' if conf else ""
+                    nom_html     = (
+                        f' &#128100; <strong>{nom}</strong>'
+                        f'{" &mdash; " + role if role else ""}'
+                        if nom else ""
                     )
-                    li_link = (
-                        f' &middot; <a href="{_e(li)}" target="_blank" rel="noopener">LinkedIn &#8599;</a>'
-                        if li else ""
+                    email_html   = (
+                        f' &middot; <a href="mailto:{emailval}">{emailval}</a>'
+                        if emailval else ""
                     )
-                    contact_html = (
-                        f'<div class="hr-contact">{conf_html}'
-                        f'&#128100; <strong>{name}</strong>'
-                        f'{(" &mdash; " + role) if role else ""}'
-                        f'{email_link}{li_link}</div>'
+                    careers_html = (
+                        f' &middot; <a href="{url_careers}" target="_blank" rel="noopener">'
+                        f'&#128188; Page carri&egrave;res</a>'
+                        if url_careers else ""
                     )
+                    if conf or nom or emailval or url_careers:
+                        contact_html = (
+                            f'<div class="hr-contact">{conf_html}{nom_html}'
+                            f'{email_html}{careers_html}</div>'
+                        )
 
                 data_city   = _e(o.get("ville_recherche") or o.get("ville", ""))
                 data_status = _e(o.get("status", ""))
@@ -661,7 +694,6 @@ def run_html_email() -> None:
     print(f"  SAVE archive/{archive_path.name}")
 
     cleanup_archives()
-
     push_ok = git_push_html()
 
     email_html = render_email_html(meta, stats_by_city, stats_by_track, tracks_cfg, push_ok)
