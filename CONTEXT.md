@@ -240,3 +240,31 @@ alternances-veille-v2/
 7. Proposer diff ou lignes modifiées — pas réécrire tout le fichier sauf demande
 8. `config/tracks.yml` = source de vérité pour tracks, couleurs, ROME, keywords
 9. Pas de `\n` à l'intérieur d'une f-string avec emoji (SyntaxError Windows)
+
+---
+
+## 🗺️ Roadmap — Évolutions prévues (mars 2026)
+
+### Sprint 1 — WhatsApp notifier (CallMeBot)
+- Nouveau fichier : `tools/notifier.py`
+- Fonction : `notify_nouvelles_offres(nouvelles: int, top_offres: list)`
+- Nouvelle étape dans flow.py : `@listen(generate_email) def notify(self)`
+- Silencieux si `nouvelles_count == 0`
+- Variables .env à ajouter : `CALLMEBOT_PHONE`, `CALLMEBOT_APIKEY`
+- API : https://api.callmebot.com/whatsapp.php
+
+### Sprint 2 — JobTeaser scraper
+- Nouveau fichier : `tools/jobteaser_scraper.py`
+- Interface : `run_jobteaser_scraper() -> int`
+- Scraping HTML (pas d'API publique) — requests + BeautifulSoup
+- Intégration : 2e `@start()` parallèle à `scrape_lba`
+- `@listen(and_(scrape_lba, scrape_jobteaser))` sur `validate`
+- Nouveau state : `jobteaser_count`, `jobteaser_ok`
+
+### Sprint 3 — Scoring Crew
+- Nouveau crew : `src/crews/scoring_crew/`
+- Ne tourne que sur les nouvelles offres (`first_seen == today`)
+- Score 0-10 + justification → enrichit `offres_merged.json`
+- Critères : profil entreprise, compétences RSB DM/Finance, localisation, date début
+- Intégration : entre `merge` et `find_hr_contacts` dans flow.py
+

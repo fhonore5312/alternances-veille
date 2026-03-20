@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 dump_context.py — Génère un snapshot du projet pour contexte LLM
 
 Usage:
-    python dump_context.py                                  → dump complet
-    python dump_context.py --groups crewai config          → groupes prédéfinis
-    python dump_context.py --files src/alternances_veille/tools/validator.py
-    python dump_context.py --since HEAD~1
-    python dump_context.py --since 2026-03-14
-    python dump_context.py --groups tools html --output session_html.txt
+  python dump_context.py                              → dump complet
+  python dump_context.py --groups crewai tools        → groupes prédéfinis
+  python dump_context.py --groups search hr           → crews ciblés
+  python dump_context.py --files src/alternances_veille/flow.py
+  python dump_context.py --since HEAD~1
+  python dump_context.py --since 2026-03-18
+  python dump_context.py --groups tools html --output session_html.txt
+
+Groupes disponibles : core, crewai, search, hr, config, tools, html, ci
 """
 
 import argparse
@@ -17,32 +21,63 @@ from datetime import datetime
 from pathlib import Path
 
 GROUPS = {
+    # ── Orchestrateur & entry points ──────────────────────────────────────
     "core": [
-        "main.py",
         "CONTEXT.md",
         "src/alternances_veille/main.py",
         "src/alternances_veille/flow.py",
+        "requirements.txt",
+        ".env.example",
     ],
+
+    # ── Crew search (agents LLM alternance DM + Finance) ──────────────────
+    "search": [
+        "src/alternances_veille/crews/search_crew/search_crew.py",
+        "src/alternances_veille/crews/search_crew/config/agents.yaml",
+        "src/alternances_veille/crews/search_crew/config/tasks.yaml",
+        "src/alternances_veille/tools/alternance_search_agent.py",
+    ],
+
+    # ── Crew HR contacts ──────────────────────────────────────────────────
+    "hr": [
+        "src/alternances_veille/crews/hr_contacts_crew/hr_contacts_crew.py",
+        "src/alternances_veille/crews/hr_contacts_crew/config/agents.yaml",
+        "src/alternances_veille/crews/hr_contacts_crew/config/tasks.yaml",
+        "src/alternances_veille/tools/hr_contacts_agent.py",
+    ],
+
+    # ── Tous les crews (search + hr) ──────────────────────────────────────
     "crewai": [
-        "src/alternances_veille/tools/llm_search_agent.py",
-        "config/agents.yaml",
-        "config/tasks.yaml",
-        # backstory et prompts supprimés (fichiers obsolètes)
+        "src/alternances_veille/crews/search_crew/search_crew.py",
+        "src/alternances_veille/crews/search_crew/config/agents.yaml",
+        "src/alternances_veille/crews/search_crew/config/tasks.yaml",
+        "src/alternances_veille/tools/alternance_search_agent.py",
+        "src/alternances_veille/crews/hr_contacts_crew/hr_contacts_crew.py",
+        "src/alternances_veille/crews/hr_contacts_crew/config/agents.yaml",
+        "src/alternances_veille/crews/hr_contacts_crew/config/tasks.yaml",
+        "src/alternances_veille/tools/hr_contacts_agent.py",
     ],
+
+    # ── Configuration globale ─────────────────────────────────────────────
     "config": [
         "config/tracks.yml",
-        "config/agents.yaml",
-        "config/tasks.yaml",
     ],
+
+    # ── Tools Python (scraping, validation, merge) ────────────────────────
     "tools": [
         "src/alternances_veille/tools/lba_scraper.py",
-        "src/alternances_veille/tools/merge_offers.py",
+        "src/alternances_veille/tools/alternance_search_agent.py",
         "src/alternances_veille/tools/validator.py",
-        "src/alternances_veille/tools/html_email.py",
+        "src/alternances_veille/tools/merge_offers.py",
+        "src/alternances_veille/tools/hr_contacts_agent.py",
     ],
+
+    # ── Génération HTML & email ───────────────────────────────────────────
     "html": [
         "src/alternances_veille/tools/html_email.py",
     ],
+
+    # ── CI/CD ─────────────────────────────────────────────────────────────
     "ci": [
         ".env.example",
         ".github/workflows/veille-alternance.yml",
@@ -111,18 +146,18 @@ def main() -> None:
         help=f"Groupes disponibles : {', '.join(GROUPS.keys())}",
     )
     parser.add_argument("--since", metavar="REF_OR_DATE",
-                        help="ex: HEAD~1, 2026-03-14")
+                        help="ex: HEAD~1, 2026-03-18")
     parser.add_argument("--output", default=None,
-                        help="Nom du fichier de sortie (défaut: CONTEXT_DUMP_<label>.txt)")
+                        help="Nom du fichier de sortie (defaut: CONTEXT_DUMP_<label>.txt)")
     args = parser.parse_args()
 
     if args.since:
         file_list = get_files_modified_since(args.since)
         label = f"since_{args.since.replace('/', '-').replace(' ', '_')}"
         if not file_list:
-            print(f"Aucun fichier modifié détecté depuis '{args.since}'")
+            print(f"Aucun fichier modifie detecte depuis '{args.since}'")
             return
-        print(f"Fichiers détectés ({len(file_list)}) : {file_list}")
+        print(f"Fichiers detectes ({len(file_list)}) : {file_list}")
     elif args.files:
         file_list = args.files
         label = "custom"

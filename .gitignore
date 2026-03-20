@@ -50,3 +50,6 @@ Alternances_Marketing_Digital_*.html
 
 # NE PAS ignorer :
 # data/offres_historique.json  ? mémoire persistante du pipeline
+
+# Setuptools
+src/*.egg-info/

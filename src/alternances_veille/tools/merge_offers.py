@@ -5,23 +5,26 @@ tools/merge_offers.py - Merge LBA + LLM, déduplication, historique
 """
 
 import json
+import re
+import unicodedata
 from datetime import datetime
 from pathlib import Path
 
-BASE_DIR         = Path(__file__).parent.parent.parent.parent
-DATA_DIR         = BASE_DIR / "data"
+BASE_DIR = Path(__file__).parent.parent.parent.parent
+DATA_DIR = BASE_DIR / "data"
 
-LBA_FILE         = DATA_DIR / "offres_lba_validated.json"
-LLM_FILE         = DATA_DIR / "offres_llm_validated.json"
-HISTORIQUE_FILE  = DATA_DIR / "offres_historique.json"
-OUTPUT_FILE      = DATA_DIR / "offres_merged.json"
+LBA_FILE       = DATA_DIR / "offres_lba_validated.json"
+LLM_FILE       = DATA_DIR / "offres_llm_validated.json"
+HISTORIQUE_FILE = DATA_DIR / "offres_historique.json"
+OUTPUT_FILE    = DATA_DIR / "offres_merged.json"
 
 # ===== DOMAINES NON VÉRIFIABLES (HTTP 403 systématique) =====
-# Ces plateformes bloquent le crawling — les offres uncertain qu'elles génèrent
-# sont exclues du merge pour éviter les liens morts.
 BLOCKED_DOMAINS_UNCERTAIN = [
     "directemploi.com",
 ]
+
+# Priorité ville pour la dédup entreprise+titre (plus petit = prioritaire)
+CITY_PRIORITY = {"rennes": 0, "nantes": 1, "paris": 2}
 
 # ===== UTILITAIRES =====
 
@@ -48,9 +51,45 @@ def is_blocked_uncertain(offer: dict) -> bool:
     """True si l'offre est uncertain ET provient d'un domaine non vérifiable (403 systématique)."""
     if offer.get("validation_status") != "uncertain":
         return False
-    url  = offer.get("url_candidature", "")
+    url = offer.get("url_candidature", "")
     code = offer.get("validation_details", {}).get("status_code")
     return code == 403 and any(d in url for d in BLOCKED_DOMAINS_UNCERTAIN)
+
+def normalize_text(text: str) -> str:
+    """Normalise : minuscules, sans accents, sans ponctuation, tronqué à 50 cars."""
+    text = unicodedata.normalize("NFD", text.lower())
+    text = "".join(c for c in text if unicodedata.category(c) != "Mn")
+    return re.sub(r"[^a-z0-9]", "", text)[:50]
+
+def dedup_by_company_title(offres: list) -> tuple[list, int]:
+    """
+    Déduplique par (entreprise normalisée + titre normalisé + track).
+    En cas de doublon, conserve la ville la plus prioritaire (Rennes > Nantes > Paris).
+    Retourne (offres_dedup, nb_supprimes).
+    """
+    seen: dict[tuple, dict] = {}
+    for o in offres:
+        key = (
+            normalize_text(o.get("entreprise", "")),
+            normalize_text(o.get("titre", "")),
+            o.get("track", ""),
+        )
+        if key[0] == "" and key[1] == "":
+            # Pas de données suffisantes pour déduper — conserver tel quel
+            seen[id(o)] = o
+            continue
+        if key not in seen:
+            seen[key] = o
+        else:
+            # Garder la ville prioritaire
+            existing_city = seen[key].get("ville", "").lower()
+            new_city      = o.get("ville", "").lower()
+            existing_prio = next((CITY_PRIORITY[c] for c in CITY_PRIORITY if c in existing_city), 99)
+            new_prio      = next((CITY_PRIORITY[c] for c in CITY_PRIORITY if c in new_city), 99)
+            if new_prio < existing_prio:
+                seen[key] = o
+    result = list(seen.values())
+    return result, len(offres) - len(result)
 
 # ===== POINT D'ENTRÉE TOOL =====
 
@@ -60,13 +99,13 @@ def run_merge_offers() -> tuple:
     Retourne (total_offres, nouvelles_offres).
     """
     print(f"\n{'='*60}")
-    print("📦 MERGE OFFERS")
+    print("MERGE OFFERS")
     print(f"{'='*60}")
 
     # 1. Charger LBA (obligatoire)
     lba_data = load_json(LBA_FILE)
     if not lba_data:
-        print(f"❌ {LBA_FILE.name} introuvable")
+        print(f"  {LBA_FILE.name} introuvable")
         return 0, 0
 
     lba_offers_raw = [
@@ -74,13 +113,13 @@ def run_merge_offers() -> tuple:
         if o.get("validation_status") in ("validated", "uncertain", "error")
     ]
     # Exclure les uncertain de domaines non vérifiables (403 systématique)
-    lba_offers    = [o for o in lba_offers_raw if not is_blocked_uncertain(o)]
-    blocked_count = len(lba_offers_raw) - len(lba_offers)
+    lba_offers     = [o for o in lba_offers_raw if not is_blocked_uncertain(o)]
+    blocked_count  = len(lba_offers_raw) - len(lba_offers)
 
-    print(f"  📥 LBA : {len(lba_offers_raw)} retenues (validées/incertaines/erreurs)")
+    print(f"  LBA : {len(lba_offers_raw)} retenues (validees/incertaines/erreurs)")
     if blocked_count:
-        print(f"  🚫 {blocked_count} uncertain 403 exclues ({', '.join(BLOCKED_DOMAINS_UNCERTAIN)})")
-    print(f"  📥 LBA conservées : {len(lba_offers)}")
+        print(f"  {blocked_count} uncertain 403 exclues ({', '.join(BLOCKED_DOMAINS_UNCERTAIN)})")
+        print(f"  LBA conservees : {len(lba_offers)}")
 
     # 2. Charger LLM (optionnel)
     llm_offers = []
@@ -90,27 +129,27 @@ def run_merge_offers() -> tuple:
             o for o in llm_data.get("offres", [])
             if o.get("validation_status") == "validated"
         ]
-        print(f"  📥 LLM : {len(llm_offers)} offres retenues")
+        print(f"  LLM : {len(llm_offers)} offres retenues")
     else:
-        print("  ℹ️  LLM : aucun fichier (agents non exécutés)")
+        print("  LLM : aucun fichier (agents non executes)")
 
     # 3. Charger historique
     historique_data = load_json(HISTORIQUE_FILE)
     if historique_data:
         historique_ids  = {get_offer_id(o) for o in historique_data.get("offres", [])}
         historique_urls = {get_url_key(o) for o in historique_data.get("offres", []) if get_url_key(o)}
-        print(f"  📚 Historique : {len(historique_ids)} offres connues")
+        print(f"  Historique : {len(historique_ids)} offres connues")
     else:
         historique_ids  = set()
         historique_urls = set()
-        print("  ℹ️  Historique : première exécution")
+        print("  Historique : premiere execution")
 
     # 4. Patch rétrocompatibilité track manquant
     for o in lba_offers + llm_offers:
         if not o.get("track"):
             o["track"] = "digital_marketing"
 
-    # 5. Dédup interne LBA
+    # 5. Dédup interne LBA par ID/URL
     seen_ids  = set()
     seen_urls = set()
     dedup_lba = []
@@ -124,7 +163,7 @@ def run_merge_offers() -> tuple:
         if ukey:
             seen_urls.add(ukey)
     if len(dedup_lba) < len(lba_offers):
-        print(f"  🧹 {len(lba_offers) - len(dedup_lba)} doublons LBA supprimés")
+        print(f"  {len(lba_offers) - len(dedup_lba)} doublons LBA (ID/URL) supprimes")
 
     # 6. Fusion LBA + LLM (sans doublons cross-source)
     all_offers = list(dedup_lba)
@@ -140,14 +179,20 @@ def run_merge_offers() -> tuple:
         if ukey:
             seen_urls.add(ukey)
     if dupes_llm:
-        print(f"  🧹 {dupes_llm} doublons LLM ignorés")
+        print(f"  {dupes_llm} doublons LLM ignores")
+
+    # 6b. Dédup sémantique par (entreprise + titre + track)
+    avant_dedup = len(all_offers)
+    all_offers, nb_dedup_semantic = dedup_by_company_title(all_offers)
+    if nb_dedup_semantic:
+        print(f"  {nb_dedup_semantic} doublons semantiques supprimes (entreprise+titre+track) — ville prioritaire conservee")
 
     # 7. Marquer new / active
     nouvelles = 0
     actives   = 0
     for o in all_offers:
-        oid      = get_offer_id(o)
-        ukey     = get_url_key(o)
+        oid  = get_offer_id(o)
+        ukey = get_url_key(o)
         is_known = oid in historique_ids or (ukey and ukey in historique_urls)
         if is_known:
             o["status"] = "active"
@@ -155,7 +200,7 @@ def run_merge_offers() -> tuple:
         else:
             o["status"] = "new"
             nouvelles += 1
-            print(f"  🆕 {o.get('titre','?')[:45]} — {o.get('entreprise','?')}")
+            print(f"  Nouvelle : {o.get('titre','?')[:45]} — {o.get('entreprise','?')}")
 
     # 8. Trier : track → priorité ville → new en premier
     all_offers.sort(key=lambda x: (
@@ -184,7 +229,7 @@ def run_merge_offers() -> tuple:
     save_json(HISTORIQUE_FILE, {
         "meta": {
             "date_mise_a_jour": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "total_offres":     len(updated_historique),
+            "total_offres": len(updated_historique),
         },
         "offres": updated_historique,
     })
@@ -192,20 +237,21 @@ def run_merge_offers() -> tuple:
     # 11. Sauvegarder offres_merged.json
     output = {
         "meta": {
-            "date_generation": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "total_offres":    len(all_offers),
-            "nouvelles":       nouvelles,
-            "actives":         actives,
-            "source_lba":      len(dedup_lba),
-            "source_llm":      len(llm_offers) - dupes_llm,
-            "stats_by_track":  stats_by_track,
+            "date_generation":  datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "total_offres":     len(all_offers),
+            "nouvelles":        nouvelles,
+            "actives":          actives,
+            "source_lba":       len(dedup_lba),
+            "source_llm":       len(llm_offers) - dupes_llm,
+            "dedup_semantic":   nb_dedup_semantic,
+            "stats_by_track":   stats_by_track,
         },
         "offres": all_offers,
     }
     save_json(OUTPUT_FILE, output)
 
-    print(f"\n  ✅ {len(all_offers)} offres fusionnées ({nouvelles} nouvelles, {actives} actives)")
-    print(f"  💾 → {OUTPUT_FILE.name}")
+    print(f"\n  {len(all_offers)} offres fusionnees ({nouvelles} nouvelles, {actives} actives)")
+    print(f"  -> {OUTPUT_FILE.name}")
 
     return len(all_offers), nouvelles
 

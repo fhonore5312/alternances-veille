@@ -193,9 +193,12 @@ class VeilleFlow(Flow[VeilleState]):
             self.state.hr_contacts_ok = True
             return
 
+        # Contacts RH uniquement sur DM et Finance
+        HR_TRACKS = ["digital_marketing", "finance"]  # ← AJOUTER
+    
         from alternances_veille.tools.hr_contacts_agent import run_hr_contacts_agent
         try:
-            count = run_hr_contacts_agent(track=None)
+            count = run_hr_contacts_agent(track=HR_TRACKS)  # ← tracks= au lieu de track=
             self.state.hr_contacts_count = count
             self.state.hr_contacts_ok = True
             print(f"✅ Contacts RH : {count} contacts actionnables")
